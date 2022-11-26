@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GaDa - Technical Report</title>
+    <link rel="stylesheet" href="css/scholarly.min.css">
+    <script src="js/scholarly.min.js"></script>
+  </head>
+  <body prefix="schema: http://schema.org">
+    <header>
+      <div class="banner">
+        <img src="marvel-characters.png" width="500" height="50" alt="marvel-logo">
+        <img style="position: relative; top: 70px;" src="pokemon-characters.png" width="500" height="50" alt="pokemon-logo">
+      </div>
+      <h1>Game On Web Of Data</h1>
+      <h3>Technical Report</h3>
+    </header>
+    <!--
+      XXX
+      - check refs
+      - the math example has too much maths
+      - bring back some of the old style
+      - make semantics, validation, processing sub-sections of each structural element
+      - have a section before that for general constructs
+        - explain why use RDFa
+        - explain our patterns: RDFa, roles
+      - figure captions need to get set throughout
+      - dedication? see doc-dedication
+      - syntactic constraints (prefix)
+      - needs more sthenurines
+      - examples of everything
+      - some notes on using Semantic CSS
+      - needs more RDFa in the spec itself
+    -->
+    <div role="contentinfo">
+      <dl>
+        <dt>Authors</dt>
+        <dd>
+          Gheorghita Butnaru
+          &amp;
+          Ionut-Catalin Hazi
+          &amp;
+          Nicoleta Luca
+      </dl>
+    </div>
+    <section typeof="sa:Abstract" id="abstract" role="doc-abstract">
+      <h2>Abstract</h2>
+      <p>
+        This technical report contains details about the internal data structures and the APIs to be 
+        used in the "Game On Web Of Data" <b>#GaDa</b> project.      
+      </p>
+    </section>
+    <section id="introduction" role="doc-introduction">
+      <!-- review? -->
+      <h2>Introduction</h2>
+      <p>
+        Our project is going to be a simple web role playing game <b>(RPG)</b> having its characters described in 
+        <b>RDF</b> based on <b>knowledge models</b>. Also, interrogations will be performed by 
+        using <b>SPARQL</b> query language.
+      </br> </br>
+
+      The objective of this report is to explain what is the game logic, how it can be played, what characters and what data is taken
+      into considerations from external APIs in order to create them. We will describe the components we will 
+      develope and integrate in our project.
+
+      <p>
+        Rules, limitations, player interactions, characteristics, and assets will be modeled and 
+        accessed by using <b>RDF</b>, <b>SPARQL</b>, <b>RDF Schema</b>, <b>SKOS</b>, and <b>OWL</b>. 
+      </p>
+        
+        <p>
+          We will use Java & Spring Framework for backend, React & Typescript for frontend, and MongoDB for database. 
+        </p>
+
+        <p>
+          <b>More info will be written as the application is developed.</b>
+        </p>
+
+    </section>
+
+    <section id="game">
+      <h2>Game Overview</h2>
+
+      <h3>Story</h3>
+      <p>The story will be influenced by the player' Pokémon, decisions, experience, and level.</p>
+
+      <h3>Exploration</h3>
+      <p>
+        The player can move his game character in different directions to different locations, can find hidden objects, 
+        can meet rivals NPC characters. Also, he can find and catch Pokémon.
+      </p>
+
+      <h3>Items</h3>
+      <p>
+        The player can find hidden objects while playing which can be used in order to get different benefits, gain or lose points.
+      </p>
+
+      <h3>Characters</h3>
+      <p>
+        At the beginning of the game, the player can select from a list which Marvel character he wants to represent. </br>
+        Also, in the game will be NPC Marvel characters. </br>
+        Each character will have a set of pokémon with different powers and abilities. These pokémon will be used in 
+        battles with other Marvel characters' pokémon. 
+      </p>
+
+      <h3>Goal</h3>
+      <p>
+        The goal is to earn enough points (or experience) to reach the next level. The player can earn points 
+        by accepting and winning pokémon battles with the NPC Marvel characters he can meet while exploring 
+        or by finding and collecting (and/or using) hidden items.
+      </p>
+
+      <h3>Levels</h3>
+      <p>
+        A certain level can give the player's Pokémon more skills, powers, and make them stronger, increasing their chances to win a battle.
+        More than that, different Pokémon, items, and NPC Marvel characters can show up after a specific level.
+      </p>
+
+      <h3>Action</h3>
+      <p>
+        As the player explores various locations, he may encounter NPC rivals with whom he can start a battle.
+      </p>
+
+      <h3>Interface</h3>
+      <p>
+        All interactions between players and the game itself is textual.
+        The player can choose from a set of options the next move he wants to make by clicking on it
+        (the available actions/moves are based on a specific context). </br> </br>
+
+        The evolution of the story will be presented through a text. </br>
+        When needed, a help info can be shown at the interface (tutorial).
+      </p>
+
+    </section>
+
+    <section id="components">
+      <h2>Software Components</h2>
+
+      <section id="component-1">
+        <h3>Database</h3>
+        <p>
+          The <b>DB</b> we are going to use is <b>MongoDB</b>.</br> We will save the relevent data such as
+          users and their game progress, or game settings.
+        </p>
+      </section>
+
+      <section id="component-2">
+        <h3>RestAPI</h3>
+        <p>
+          The API provided by the server side is able to send data to the client.
+        </p>
+      </section>
+
+      <section id="component-3">
+        <h3>Battle Strategy</h3>
+        <p>
+          This component generates rules and strategies for both player and NPC players. 
+        </p>
+      </section>
+
+      
+      <section id="component-4">
+        <h3>Game State</h3>
+        <p>
+          The game state component contains the progress of the player, his points, his level. 
+           </br> </br>
+
+          Based on the game state different actions can be generated. For example, based on a certain state:
+          <ul>
+            <li>it can be decided if the player can move to the next level</li>
+            <li>it can be decided if a specific help message can be shown to the user</li>
+            <li>it can be decided what is the next scene</li>
+          </ul>
+        </p>
+      </section>
+
+      <section id="component-5">
+        <h3>Authentification</h3>
+        <p>
+          This component is responsible for user registration and authentication.
+        </p>
+      </section>
+
+      <section id="component-5">
+        <h3>Game Settings</h3>
+        <p>
+          This component will allow the user to change and save different game settings such as sound on/off, 
+          nickname change, text colors.
+        </p>
+      </section>
+    </section>
+
+    <section id="External APIs">
+      <h3>External APIs</h3>
+      The project will use two external APIs: Marvel Comics API and PokeAPI.
+
+      <section id="api-1">
+        <h3>Marvel Comics API</h3>
+        <p>
+          We will use the <a href="https://developer.marvel.com/">Marvel Comics</a> API's base endpoint <b>http(s)://gateway.marvel.com/</b> to get
+          different resources in order to build our game characters. The resources provided by this API are
+          represented as <b>JSON objects</b> and we will be able to access them through an <b>API key</b>.
+        </p>
+        <p>
+          From the available resources provided by the Marvel Comics API, we will use in our
+          project the data about <b>Marvel Characters</b>: the women, men, organizations, alien species, deities,
+          animals, non-corporeal entities, trans-dimensional manifestations, abstract personifications, and green
+          amorphous blobs which occupy the Marvel Universe (and various alternate universes, timelines and
+          altered realities therein). For example, Spider-Man. We will also use the <b>image</b> of each marvel character.
+        </p>
+      </section>
+       
+
+      <section id="api-2">
+        <h3>PokéAPI</h3>
+        <p>
+          The second API we are going to use is <a href="https://pokeapi.co/">PokéAPI</a>. Its base endpoint is <b>https://pokeapi.co/api/</b>. 
+          This API has two versions v1, and v2. We will use the second version of it, v2. The endpoint we will use is
+          <b>https://pokeapi.co/api/v2/{endpoint}</b>.
+        </p>
+
+        <p>
+          The resources provided by this API are represented as <b>JSON objects</b> and we are able to access
+          them <b>without an API key</b>. This API can provide us useful resources in order to create pokémon with
+          different powers, abilities, levels, and more.
+        </p>
+      </section>
+
+
+    </section>
+  </body>
+</html>

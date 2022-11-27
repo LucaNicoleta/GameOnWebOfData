@@ -6,9 +6,9 @@
 ![phase1](assets/first_phase.png)
 
 #### Homepage
-A) If the user has no game in progress
+A) If the user has no game in progress  
 ![homepage1](assets/homepage1.png)
-B) If the user has a game in progress
+B) If the user has a game in progress  
 ![homepage2](assets/homepage2.png)
 
 #### Game play
@@ -16,7 +16,7 @@ The progression of the game will be realised by repeating the following steps:
 1) the scene is created using the info extracted from gameState object
 2) the user select an option
 3) a call to the games' endpoint is made, and we receive a new gameState
-![gameplay](assets/game_progress.png)
+![gameplay](assets/game_progress.png)  
 For the creation of the scene it will need info about the characters participating in the action, info that will be provided by the **characters** endpoint
 
 #### Finishing a game

@@ -1,0 +1,772 @@
+---
+openapi: 3.0.0
+info:
+  title: Game on web of data
+  description: |
+    This api provides the necessary data for allowing playing a story based web game
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: NeverLess team
+  version: 1.0.0
+externalDocs:
+  description: Test the api using swagger
+  url: https://app.swaggerhub.com/apis-docs/NeverLess/GADA/1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/NeverLess/GADA/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: users
+  description: Operations about user
+- name: auth
+  description: Authentication
+- name: games
+  description: Provides necessary data for starting and playing games
+- name: gameRecords
+  description: Provides data about finished games
+- name: characters
+  description: Provides data about the characters who appear in the game
+paths:
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: Create a new user account
+      operationId: registerUser
+      requestBody:
+        description: The date for the user object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "409":
+          description: The email address is already used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "201":
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulAuthResponse'
+          links:
+            getUserById:
+              operationId: getUserById
+              parameters:
+                userId: $response.body#/userId
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Logs user into the system
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_login_body'
+      responses:
+        "200":
+          description: Successful Authentication
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              style: simple
+              explode: false
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        "401":
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: Email not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /games/tutorial:
+    get:
+      tags:
+      - games
+      summary: Get the game tutorial
+      operationId: getTutorial
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /games:
+    post:
+      tags:
+      - games
+      summary: Start a new game
+      operationId: startGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              description: the id of the user starting the game
+      responses:
+        "404":
+          description: The userId not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "201":
+          description: Game state successfully added in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+      security:
+      - api_key: []
+  /games/{userId}:
+    get:
+      tags:
+      - games
+      summary: get gameState
+      operationId: getGameByUserId
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "404":
+          description: The userId not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+      security:
+      - api_key: []
+    put:
+      tags:
+      - games
+      summary: Replace game progress with a initial state
+      operationId: restartGame
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "404":
+          description: The userId not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "200":
+          description: Game state successfully updated in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+      security:
+      - api_key: []
+    delete:
+      tags:
+      - games
+      summary: Delete gameState
+      operationId: deleteGameState
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "404":
+          description: The userId not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "204":
+          description: Game state successfully deleted from database
+      security:
+      - api_key: []
+  /games/{id}/progress/{option}:
+    put:
+      tags:
+      - games
+      summary: Update an existing gameState according with the choice made by the player
+      operationId: advanceStory
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      - name: option
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: The option chosen by the player
+          example: A
+      responses:
+        "400":
+          description: Invalid option supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: Id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "200":
+          description: Successfully updated gameProgress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+      security:
+      - api_key: []
+  /gameRecords:
+    get:
+      tags:
+      - gameRecords
+      summary: Get the first n top scores, where n is the parameter specified in query
+      description: If the offset parameter isn't specified, it will return by default all records
+      operationId: getTopScores
+      parameters:
+      - name: offset
+        in: query
+        description: Number of results to be returned.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameArchived'
+        "400":
+          description: Invalid value provided for offset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    post:
+      tags:
+      - gameRecords
+      summary: Archive a finished game
+      operationId: archiveGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameArchived'
+      responses:
+        "404":
+          description: The gameId not found in database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "201":
+          description: GameState successfully archived
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: the id of the newly archived game
+      security:
+      - api_key: []
+  /gameRecords/{userId}:
+    get:
+      tags:
+      - gameRecords
+      summary: Get the best score of the specified user
+      operationId: getUserHighScore
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+        "400":
+          description: Invalid value provided for id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: UserId not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - api_key: []
+  /characters:
+    get:
+      tags:
+      - characters
+      summary: Return characters  from the specified category in game
+      description: If the category parameter isn't specified, it will return data about all characters
+      operationId: getAllCharacters
+      parameters:
+      - name: category
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - Marvel
+          - Pokemon
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/MarvelCharacter'
+                  - $ref: '#/components/schemas/PokemonCharacter'
+        "400":
+          description: Invalid value provided for category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /characters/{characterId}:
+    get:
+      tags:
+      - characters
+      summary: Get the character with the specified id
+      operationId: getCharacter
+      parameters:
+      - name: characterId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: Invalid value provided for id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: character not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /users/{userId}:
+    get:
+      tags:
+      - users
+      summary: Get user by user id
+      operationId: getUserById
+      parameters:
+      - name: userId
+        in: path
+        description: The id that needs to be fetched.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid userId supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - api_key: []
+    put:
+      tags:
+      - users
+      summary: Update user information
+      operationId: updateUser
+      parameters:
+      - name: userId
+        in: path
+        description: id of the user that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "400":
+          description: Invalid userId supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - api_key: []
+    delete:
+      tags:
+      - users
+      summary: Delete user account
+      operationId: deleteUser
+      parameters:
+      - name: userId
+        in: path
+        description: The id of the user that needs to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid userId supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - api_key: []
+components:
+  schemas:
+    Scene:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1111
+        storyText:
+          type: string
+          example: I look up and find myself making eye contact with a green creature resembling a pterodactyl. What should I do?
+        options:
+          type: array
+          example:
+          - Prepare to fight
+          - Wave to him
+          - Run
+          - Ignore him and keep going
+          items:
+            type: string
+        backgroundImage:
+          type: string
+        charactersInTheScene:
+          type: array
+          items:
+            type: integer
+            format: int64
+        hint:
+          type: string
+          description: Piece of information meant for user to reach in case they don't understand what they have to do
+          example: Choose the option that represents the action your character should take
+    MarvelCharacter:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 200
+        name:
+          type: string
+          description: The name of the character
+          example: 3-D Man
+        description:
+          type: string
+          description: A short bio or description of the character
+        image:
+          type: string
+          description: An url to the representative image for this character
+          format: uri
+          example: http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784.jpg
+    PokemonCharacter:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100
+        name:
+          type: string
+          description: The name of the character
+          example: pikachu
+        image:
+          type: string
+          description: An url to the representative image for this character
+          format: uri
+          example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png
+        stats:
+          $ref: '#/components/schemas/PokemonStats'
+        ability:
+          $ref: '#/components/schemas/PokemonCharacter_ability'
+    PokemonStats:
+      type: object
+      properties:
+        hp:
+          type: integer
+          description: Hit points
+          example: 10
+        attack:
+          type: integer
+          example: 6
+        defense:
+          type: integer
+          example: 4
+        specialAttack:
+          type: integer
+          example: 10
+        specialDefense:
+          type: integer
+          example: 6
+        speed:
+          type: integer
+          example: 5
+    GameState:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        sceneId:
+          type: integer
+          description: The id to the current scene
+          example: 1111
+        score:
+          type: integer
+          example: 540
+        pokemons:
+          type: array
+          description: list of the pokemons acquired by the player at the moment and their health status
+          items:
+            $ref: '#/components/schemas/GameState_pokemons'
+    GameArchived:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        score:
+          type: integer
+          example: 540
+      description: the model used to store data about the completed games in order to be used for statistics and tops
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        username:
+          type: string
+          example: gamer100
+        email:
+          type: string
+          example: gamer@gmail.com
+        password:
+          type: string
+          format: password
+          example: pass#160
+      xml:
+        name: User
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 404
+        type:
+          type: string
+          enum:
+          - Error
+          - Succes
+        message:
+          type: string
+    SuccessfulAuthResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        userId:
+          type: integer
+          description: The id of the authenticated user
+          format: int64
+          example: 1
+    auth_login_body:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email
+          format: email
+          example: name@adress.com
+        password:
+          type: string
+          description: Password
+          format: password
+          example: 124K8t9iHn!
+    inline_response_200:
+      properties:
+        text:
+          type: string
+    inline_response_200_1:
+      type: object
+      properties:
+        gameStatus:
+          type: string
+          enum:
+          - InProgress
+          - Finished-Lost
+          - Finished-Won
+    inline_response_200_2:
+      oneOf:
+      - $ref: '#/components/schemas/MarvelCharacter'
+      - $ref: '#/components/schemas/PokemonCharacter'
+    PokemonCharacter_ability:
+      type: object
+      properties:
+        name:
+          type: string
+          example: lightning-rod
+        condition:
+          type: integer
+          description: Minimum score the player must have in order to use it
+          example: 500
+    GameState_pokemons:
+      type: object
+      properties:
+        pokemonId:
+          type: integer
+          example: 100
+        health:
+          type: integer
+          example: 80
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

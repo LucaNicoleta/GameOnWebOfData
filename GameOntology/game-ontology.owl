@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://xmlns.com/foaf/0.1/"
+     xml:base="http://xmlns.com/foaf/0.1/"
+     xmlns:fn="http://www.w3.org/2005/xpath-functions#"
+     xmlns:gn="http://www.geonames.org/ontology#"
+     xmlns:IRI="http://IRI#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:wgs="http://www.w3.org/2003/01/geo/wgs84_pos#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:path="http://www.ontotext.com/path#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf4j="http://rdf4j.org/schema/rdf4j#"
+     xmlns:schema="http://schema.org/"
+     xmlns:sesame="http://www.openrdf.org/schema/sesame#"
+     xmlns:VideoGameOntology="http://purl.org/net/VideoGameOntology#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/untitled-ontology-20"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://IRI#canPerformAction -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#canPerformAction">
+        <rdfs:domain rdf:resource="http://IRI#Ability"/>
+        <rdfs:range rdf:resource="http://IRI#Action"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#canPerformItemAction -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#canPerformItemAction">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+        <rdfs:range rdf:resource="http://IRI#Action"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasAbility -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasAbility">
+        <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
+        <rdfs:range rdf:resource="http://IRI#Ability"/>
+        <rdfs:comment xml:lang="en">A Pokemon has a list of abilities.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasInventory -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasInventory">
+        <rdfs:domain rdf:resource="http://IRI#Marvel"/>
+        <rdfs:range rdf:resource="http://IRI#Inventory"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasInventoryItem -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasInventoryItem">
+        <rdfs:domain rdf:resource="http://IRI#Inventory"/>
+        <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasInventoryPokemon -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasInventoryPokemon">
+        <rdfs:domain rdf:resource="http://IRI#Inventory"/>
+        <rdfs:range rdf:resource="http://IRI#Pokemon"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasMarvelCharacter -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasMarvelCharacter">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <rdfs:range rdf:resource="http://IRI#Marvel"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasPlayer -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasPlayer">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Game"/>
+        <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasRule -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasRule">
+        <rdfs:domain rdf:resource="http://IRI#Ability"/>
+        <rdfs:range rdf:resource="http://IRI#LevelRule"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://IRI#Rule -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#Rule"/>
+    
+
+
+    <!-- http://IRI#decreasePointsLifeBy -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#decreasePointsLifeBy">
+        <rdfs:domain rdf:resource="http://IRI#PoisonDrinkItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#hasDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasDescription">
+        <rdfs:domain rdf:resource="http://IRI#Marvel"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#hasEncryptedPassword -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasEncryptedPassword">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#hasImageUrl -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasImageUrl">
+        <rdfs:domain rdf:resource="http://IRI#Marvel"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#hasLevel -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasLevel">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#healthPoints -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#healthPoints">
+        <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#increasePointsLifeBy -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#increasePointsLifeBy">
+        <rdfs:domain rdf:resource="http://IRI#LifePotionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#requiredLevel -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#requiredLevel">
+        <rdfs:subPropertyOf rdf:resource="http://IRI#Rule"/>
+        <rdfs:domain rdf:resource="http://IRI#LevelRule"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment xml:lang="en">A pokemon can perform the action of the ability if it has reached a specific level.</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#username -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#username">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://schema.org/color -->
+
+    <owl:DatatypeProperty rdf:about="http://schema.org/color">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/name -->
+
+    <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/name">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">hasName</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://IRI#Ability -->
+
+    <owl:Class rdf:about="http://IRI#Ability">
+        <rdfs:comment>A pokemon can have some abilities.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#Action -->
+
+    <owl:Class rdf:about="http://IRI#Action"/>
+    
+
+
+    <!-- http://IRI#Inventory -->
+
+    <owl:Class rdf:about="http://IRI#Inventory"/>
+    
+
+
+    <!-- http://IRI#LevelRule -->
+
+    <owl:Class rdf:about="http://IRI#LevelRule">
+        <rdfs:subClassOf rdf:resource="http://IRI#Rule"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#LifePotionItem -->
+
+    <owl:Class rdf:about="http://IRI#LifePotionItem">
+        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+        <owl:disjointWith rdf:resource="http://IRI#PoisonDrinkItem"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#LimberAbility -->
+
+    <owl:Class rdf:about="http://IRI#LimberAbility">
+        <rdfs:subClassOf rdf:resource="http://IRI#Ability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#Marvel -->
+
+    <owl:Class rdf:about="http://IRI#Marvel">
+        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
+        <owl:disjointWith rdf:resource="http://IRI#Pokemon"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#PoisonDrinkItem -->
+
+    <owl:Class rdf:about="http://IRI#PoisonDrinkItem">
+        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#Pokemon -->
+
+    <owl:Class rdf:about="http://IRI#Pokemon">
+        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#Rule -->
+
+    <owl:Class rdf:about="http://IRI#Rule"/>
+    
+
+
+    <!-- http://IRI#Story -->
+
+    <owl:Class rdf:about="http://IRI#Story">
+        <rdfs:comment>This class provides a story in the context of the current game scene.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://IRI#test -->
+
+    <owl:Class rdf:about="http://IRI#test"/>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#Character -->
+
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Character"/>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#Game -->
+
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Game"/>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#Genre -->
+
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Genre"/>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#Item -->
+
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Item">
+        <rdfs:comment>A vgo:Item portrays any item that exists in a game.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#Player -->
+
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Player"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://IRI#Ditto -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#Ditto">
+        <rdf:type rdf:resource="http://IRI#Pokemon"/>
+        <IRI:hasAbility rdf:resource="http://IRI#LimberAbility"/>
+        <IRI:healthPoints rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</IRI:healthPoints>
+        <name>Ditto</name>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#Gheorghita -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#Gheorghita">
+        <rdf:type rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <IRI:hasMarvelCharacter rdf:resource="http://IRI#Spiderman"/>
+        <IRI:hasEncryptedPassword>adas132423rsdfs</IRI:hasEncryptedPassword>
+        <IRI:hasLevel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</IRI:hasLevel>
+        <VideoGameOntology:username>Gheorghita</VideoGameOntology:username>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#LevelRule -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#LevelRule">
+        <rdf:type rdf:resource="http://IRI#LevelRule"/>
+        <IRI:requiredLevel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</IRI:requiredLevel>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#LifePotionItem -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#LifePotionItem">
+        <rdf:type rdf:resource="http://IRI#LifePotionItem"/>
+        <IRI:increasePointsLifeBy rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</IRI:increasePointsLifeBy>
+        <schema:color>Green</schema:color>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#LimberAbility -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#LimberAbility">
+        <rdf:type rdf:resource="http://IRI#Ability"/>
+        <IRI:hasRule rdf:resource="http://IRI#LevelRule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#PoisonDrinkItem -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#PoisonDrinkItem">
+        <rdf:type rdf:resource="http://IRI#PoisonDrinkItem"/>
+        <IRI:decreasePointsLifeBy rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</IRI:decreasePointsLifeBy>
+        <schema:color>Red</schema:color>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#Spiderman -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#Spiderman">
+        <rdf:type rdf:resource="http://IRI#Marvel"/>
+        <IRI:hasImageUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">www.test.com</IRI:hasImageUrl>
+        <name>Spiderman</name>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http://IRI#LevelRule">
+        <rdfs:comment>An ability can be used if the player has reached a specific level.</rdfs:comment>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

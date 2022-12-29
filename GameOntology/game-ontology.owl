@@ -168,6 +168,15 @@
     
 
 
+    <!-- http://IRI#hasDefense -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasDefense">
+        <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://IRI#hasDescription -->
 
     <owl:DatatypeProperty rdf:about="http://IRI#hasDescription">
@@ -199,6 +208,15 @@
 
     <owl:DatatypeProperty rdf:about="http://IRI#hasLevel">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#hasPowerAttack -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#hasPowerAttack">
+        <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
     

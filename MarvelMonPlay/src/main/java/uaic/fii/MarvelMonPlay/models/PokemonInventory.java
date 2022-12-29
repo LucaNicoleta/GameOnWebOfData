@@ -11,7 +11,7 @@ public class PokemonInventory {
     }
 
     public List<Pokemon> getPokemonInventory() {
-        return pokemonInventory;
+        return new ArrayList<>(pokemonInventory);
     }
 
     public void addPokemonToInventory(Pokemon pokemon) {

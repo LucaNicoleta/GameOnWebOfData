@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Marvel extends Character{
     @JsonProperty("imageURL")
-    private String imageURL;
+    private final String imageURL;
 
     @JsonProperty("description")
     private final String description;
@@ -13,10 +13,6 @@ public class Marvel extends Character{
         super(name);
         this.imageURL = imageURL;
         this.description = description;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     @Override

@@ -44,11 +44,11 @@ public class DataLoader implements CommandLineRunner {
         //new CharacterServiceImpl(sparqlEndpoint).getMarvelCharacters();
 
         //retrieves marvel character from MARVEL API
-        //Marvel marvel = new MarvelApiImpl().getMarvelCharacter("Hulk"); //Spider-Man (Ultimate)
-        //System.out.println(marvel);
+        Marvel marvel = new MarvelApiImpl().getMarvelCharacter("Hulk"); //Spider-Man (Ultimate)
+        System.out.println(marvel);
 
-        Pokemon pokemon = new PokeApiImpl().getPokemonByName("clefairy");
-        System.out.println(pokemon.toString());
+        //Pokemon pokemon = new PokeApiImpl().getPokemonByName("clefairy");
+        //System.out.println(pokemon.toString());
         // Close the repository connection
         // sparqlEndpoint.close();
         // sparqlEndpoint.shutDown();

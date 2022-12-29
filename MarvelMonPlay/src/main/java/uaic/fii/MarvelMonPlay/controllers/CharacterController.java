@@ -1,14 +1,13 @@
 package uaic.fii.MarvelMonPlay.controllers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.externalApi.MarvelApi;
+import uaic.fii.MarvelMonPlay.externalApi.PokeApi;
 import uaic.fii.MarvelMonPlay.models.Character;
 import uaic.fii.MarvelMonPlay.models.Marvel;
+import uaic.fii.MarvelMonPlay.models.Pokemon;
 import uaic.fii.MarvelMonPlay.services.CharacterService;
 
 import java.util.List;
@@ -18,10 +17,12 @@ import java.util.List;
 public class CharacterController {
     private final CharacterService characterService;
     private final MarvelApi marvelApi;
+    private final PokeApi pokeApi;
 
-    public CharacterController(CharacterService characterService, MarvelApi marvelApi) {
+    public CharacterController(CharacterService characterService, MarvelApi marvelApi, PokeApi pokeApi) {
         this.characterService = characterService;
         this.marvelApi = marvelApi;
+        this.pokeApi = pokeApi;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -40,5 +41,11 @@ public class CharacterController {
     @RequestMapping("/marvel/name")
     public Marvel getMarvelCharacter(@RequestParam String nameStartsWith) throws ResourceNotFoundException {
         return marvelApi.getMarvelCharacter(nameStartsWith);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/pokemon/{name}")
+    public Pokemon getPokemonByName(@PathVariable("name") String name) throws ResourceNotFoundException {
+        return pokeApi.getPokemonByName(name);
     }
 }

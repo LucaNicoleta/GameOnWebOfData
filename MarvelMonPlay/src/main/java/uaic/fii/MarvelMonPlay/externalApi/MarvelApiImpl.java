@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
-import uaic.fii.MarvelMonPlay.models.Marvel;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

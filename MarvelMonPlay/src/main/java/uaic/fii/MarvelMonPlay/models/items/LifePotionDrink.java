@@ -1,6 +1,8 @@
-package uaic.fii.MarvelMonPlay.services.items;
+package uaic.fii.MarvelMonPlay.models.items;
 
-import uaic.fii.MarvelMonPlay.models.items.Item;
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+
+import static uaic.fii.MarvelMonPlay.models.characters.Pokemon.MAX_HEALTH_POINTS;
 
 public class LifePotionDrink extends Item {
 
@@ -10,7 +12,8 @@ public class LifePotionDrink extends Item {
     }
 
     @Override
-    public void performAction() {
-        System.out.println("Life potion drink increases life by " + INCREASE_LIFE_BY);
+    public void performItemAction(Pokemon pokemon) {
+        int pokemonLife = pokemon.getHealthPoints();
+        pokemon.setHealthPoints(Math.min(pokemonLife + INCREASE_LIFE_BY, MAX_HEALTH_POINTS));
     }
 }

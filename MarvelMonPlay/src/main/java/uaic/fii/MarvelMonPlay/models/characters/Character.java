@@ -1,4 +1,4 @@
-package uaic.fii.MarvelMonPlay.models;
+package uaic.fii.MarvelMonPlay.models.characters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

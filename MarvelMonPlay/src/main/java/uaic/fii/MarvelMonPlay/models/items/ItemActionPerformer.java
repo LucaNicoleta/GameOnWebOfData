@@ -1,5 +1,7 @@
-package uaic.fii.MarvelMonPlay.models.actions;
+package uaic.fii.MarvelMonPlay.models.items;
+
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 
 public interface ItemActionPerformer {
-    void performItemAction();
+    void performItemAction(Pokemon pokemon);
 }

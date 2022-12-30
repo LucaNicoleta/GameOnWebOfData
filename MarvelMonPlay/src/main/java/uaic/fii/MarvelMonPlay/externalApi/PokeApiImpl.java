@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
-import uaic.fii.MarvelMonPlay.models.Ability;
-import uaic.fii.MarvelMonPlay.models.Pokemon;
+import uaic.fii.MarvelMonPlay.models.abilities.Ability;
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;

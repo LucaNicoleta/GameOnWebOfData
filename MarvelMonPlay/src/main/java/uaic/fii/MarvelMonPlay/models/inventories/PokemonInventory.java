@@ -1,9 +1,11 @@
-package uaic.fii.MarvelMonPlay.models;
+package uaic.fii.MarvelMonPlay.models.inventories;
+
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonInventory {
+public class PokemonInventory extends Inventory{
     private List<Pokemon> pokemonInventory;
 
     public PokemonInventory(){

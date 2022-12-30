@@ -1,9 +1,14 @@
-package uaic.fii.MarvelMonPlay.models;
+package uaic.fii.MarvelMonPlay.models.characters;
+
+import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 
 import java.util.List;
 
+//TODO: Init healthPoints in constructor
 public class Pokemon extends Character{
+    public static final int MAX_HEALTH_POINTS = 100;
     private List<Ability> abilities;
+    private int healthPoints = MAX_HEALTH_POINTS;
 
     public Pokemon(String name, List<Ability> abilities) {
         super(name);
@@ -12,6 +17,13 @@ public class Pokemon extends Character{
 
     public String getName() {
         return name;
+    }
+
+    public int getHealthPoints(){
+        return healthPoints;
+    }
+    public void setHealthPoints(int healthPoints){
+        this.healthPoints = healthPoints;
     }
 
     public List<Ability> getAbilities() {

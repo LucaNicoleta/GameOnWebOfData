@@ -4,8 +4,8 @@ import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
-import uaic.fii.MarvelMonPlay.models.Character;
-import uaic.fii.MarvelMonPlay.models.Marvel;
+import uaic.fii.MarvelMonPlay.models.characters.Character;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 
 import java.util.ArrayList;
 import java.util.List;

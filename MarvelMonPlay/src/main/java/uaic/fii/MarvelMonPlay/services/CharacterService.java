@@ -1,6 +1,6 @@
 package uaic.fii.MarvelMonPlay.services;
 
-import uaic.fii.MarvelMonPlay.models.Character;
+import uaic.fii.MarvelMonPlay.models.characters.Character;
 
 import java.util.List;
 

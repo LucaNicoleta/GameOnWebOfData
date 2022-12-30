@@ -1,16 +1,12 @@
 package uaic.fii.MarvelMonPlay.loaders;
 
-import org.eclipse.rdf4j.rio.RDFFormat;
-import org.springframework.util.ResourceUtils;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import uaic.fii.MarvelMonPlay.externalApi.MarvelApiImpl;
-import uaic.fii.MarvelMonPlay.externalApi.PokeApiImpl;
-import uaic.fii.MarvelMonPlay.models.Marvel;
-import uaic.fii.MarvelMonPlay.models.Pokemon;
-import uaic.fii.MarvelMonPlay.services.CharacterServiceImpl;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.items.Item;
 
 //TODO: This class is TEMPORARILY used for testing different components
 @Component
@@ -42,7 +38,6 @@ public class DataLoader implements CommandLineRunner {
 
         //retrieves marvel characters from database
         //new CharacterServiceImpl(sparqlEndpoint).getMarvelCharacters();
-
         //retrieves marvel character from MARVEL API
         Marvel marvel = new MarvelApiImpl().getMarvelCharacter("Hulk"); //Spider-Man (Ultimate)
         System.out.println(marvel);

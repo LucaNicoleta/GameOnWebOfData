@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.externalApi.MarvelApi;
 import uaic.fii.MarvelMonPlay.externalApi.PokeApi;
-import uaic.fii.MarvelMonPlay.models.Character;
-import uaic.fii.MarvelMonPlay.models.Marvel;
-import uaic.fii.MarvelMonPlay.models.Pokemon;
+import uaic.fii.MarvelMonPlay.models.characters.Character;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.services.CharacterService;
 
 import java.util.List;

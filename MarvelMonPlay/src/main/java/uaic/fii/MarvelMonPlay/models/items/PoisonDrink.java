@@ -1,6 +1,6 @@
-package uaic.fii.MarvelMonPlay.services.items;
+package uaic.fii.MarvelMonPlay.models.items;
 
-import uaic.fii.MarvelMonPlay.models.items.Item;
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 
 public class PoisonDrink extends Item {
 
@@ -11,7 +11,8 @@ public class PoisonDrink extends Item {
     }
 
     @Override
-    public void performAction() {
-        System.out.println("Poison Drink - " + DECREASE_POINTS_LIFE_BY);
+    public void performItemAction(Pokemon pokemon) {
+        int pokemonLife = pokemon.getHealthPoints();
+        pokemon.setHealthPoints(Math.max(pokemonLife - DECREASE_POINTS_LIFE_BY, 0));
     }
 }

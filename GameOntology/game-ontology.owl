@@ -251,6 +251,33 @@
     
 
 
+    <!-- http://IRI#sessionName -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#sessionName">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#endTime -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#endTime">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://purl.org/net/VideoGameOntology#startTime -->
+
+    <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#startTime">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://purl.org/net/VideoGameOntology#username -->
 
     <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#username">

@@ -12,8 +12,9 @@ public class LifePotionDrink extends Item {
     }
 
     @Override
-    public void performItemAction(Pokemon pokemon) {
+    public Pokemon performItemAction(Pokemon pokemon) {
         int pokemonLife = pokemon.getHealthPoints();
         pokemon.setHealthPoints(Math.min(pokemonLife + INCREASE_LIFE_BY, MAX_HEALTH_POINTS));
+        return pokemon;
     }
 }

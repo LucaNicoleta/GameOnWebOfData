@@ -11,8 +11,9 @@ public class PoisonDrink extends Item {
     }
 
     @Override
-    public void performItemAction(Pokemon pokemon) {
+    public Pokemon performItemAction(Pokemon pokemon) {
         int pokemonLife = pokemon.getHealthPoints();
         pokemon.setHealthPoints(Math.max(pokemonLife - DECREASE_POINTS_LIFE_BY, 0));
+        return pokemon;
     }
 }

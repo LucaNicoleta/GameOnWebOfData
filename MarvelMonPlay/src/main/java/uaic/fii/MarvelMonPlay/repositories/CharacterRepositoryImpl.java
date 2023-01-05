@@ -1,8 +1,10 @@
 package uaic.fii.MarvelMonPlay.repositories;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 
+@Repository
 public class CharacterRepositoryImpl implements CharacterRepository{
     private final SparqlEndpoint sparqlEndpoint;
 

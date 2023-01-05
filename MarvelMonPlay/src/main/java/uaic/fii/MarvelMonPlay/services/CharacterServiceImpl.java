@@ -3,33 +3,25 @@ package uaic.fii.MarvelMonPlay.services;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
-import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.characters.Character;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.repositories.CharacterRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CharacterServiceImpl implements CharacterService{
-    private final SparqlEndpoint endpoint;
+    private final CharacterRepository characterRepository;
 
-    public CharacterServiceImpl(SparqlEndpoint endpoint) {
-        this.endpoint = endpoint;
+    public CharacterServiceImpl(CharacterRepository characterRepository) {
+        this.characterRepository = characterRepository;
     }
 
     @Override
     public List<Character> getMarvelCharacters() {
         List<Character> marvelList = new ArrayList<>();
-        TupleQueryResult tupleQueryResult = endpoint.executeQuery(
-                        "PREFIX IRI: <http://IRI#>" +
-                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-                        "select ?character ?name ?imageUrl ?description where {" +
-                        "    ?character a IRI:Marvel ." +
-                        "    ?character foaf:name ?name ." +
-                        "    ?character IRI:hasImageUrl ?imageUrl ." +
-                        "    OPTIONAL{?character IRI:hasDescription ?description}" +
-                        "}");
+        TupleQueryResult tupleQueryResult = characterRepository.getMarvelCharacters();
 
         while (tupleQueryResult.hasNext()) {
             BindingSet bindingSet = tupleQueryResult.next();
@@ -48,6 +40,11 @@ public class CharacterServiceImpl implements CharacterService{
 
     @Override
     public List<Character> getPokemonCharacters() {
-        return null;
+        List<Character> pokemonList = new ArrayList<>();
+
+        // to be implemented
+        //characterRepository.getPokemonCharacters();
+
+        return pokemonList;
     }
 }

@@ -1,7 +1,10 @@
 package uaic.fii.MarvelMonPlay.models.items;
 
-public abstract class Item implements ItemActionPerformer {
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+
+public abstract class Item {
     private String color;
+    public abstract Pokemon performItemAction(Pokemon pokemon);
 
     public Item(String color) {
         this.color = color;

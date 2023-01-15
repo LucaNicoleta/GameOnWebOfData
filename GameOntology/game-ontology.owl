@@ -331,6 +331,14 @@
     
 
 
+    <!-- http://IRI#HustelAbility -->
+
+    <owl:Class rdf:about="http://IRI#HustelAbility">
+        <rdfs:subClassOf rdf:resource="http://IRI#Ability"/>
+    </owl:Class>
+    
+
+
     <!-- http://IRI#Inventory -->
 
     <owl:Class rdf:about="http://IRI#Inventory"/>
@@ -482,6 +490,7 @@
 
     <owl:NamedIndividual rdf:about="http://IRI#Ditto">
         <rdf:type rdf:resource="http://IRI#Pokemon"/>
+        <IRI:hasAbility rdf:resource="http://IRI#HustleAbility"/>
         <IRI:hasAbility rdf:resource="http://IRI#LimberAbility"/>
         <IRI:healthPoints rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</IRI:healthPoints>
         <name>Ditto</name>
@@ -497,6 +506,14 @@
         <IRI:hasEncryptedPassword>adas132423rsdfs</IRI:hasEncryptedPassword>
         <IRI:hasLevel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</IRI:hasLevel>
         <vgo:username>Gheorghita</vgo:username>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#HustleAbility -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#HustleAbility">
+        <rdf:type rdf:resource="http://IRI#HustelAbility"/>
     </owl:NamedIndividual>
     
 
@@ -523,7 +540,7 @@
     <!-- http://IRI#LimberAbility -->
 
     <owl:NamedIndividual rdf:about="http://IRI#LimberAbility">
-        <rdf:type rdf:resource="http://IRI#Ability"/>
+        <rdf:type rdf:resource="http://IRI#LimberAbility"/>
         <IRI:hasRule rdf:resource="http://IRI#LevelRule"/>
     </owl:NamedIndividual>
     

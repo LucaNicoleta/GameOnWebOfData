@@ -26,20 +26,20 @@ public class CharacterController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/marvel")
+    @GetMapping("/marvel")
     public List<Character> getMarvelCharacters(){
         return characterService.getMarvelCharacters();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/pokemon")
+    @GetMapping("/pokemon")
     public List<Character> getPokemonCharacters(){
         return characterService.getPokemonCharacters();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/marvel/name")
-    public Marvel getMarvelCharacter(@RequestParam String nameStartsWith) throws ResourceNotFoundException {
+    @GetMapping("/marvel/{name}")
+    public Marvel getMarvelCharacter(@PathVariable("name") String nameStartsWith) throws ResourceNotFoundException {
         return marvelApi.getMarvelCharacter(nameStartsWith);
     }
 

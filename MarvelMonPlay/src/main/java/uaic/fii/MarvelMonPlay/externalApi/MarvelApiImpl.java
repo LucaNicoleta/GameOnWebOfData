@@ -51,7 +51,7 @@ public class MarvelApiImpl implements MarvelApi {
             String description = results.get(0).get("description").asText();
             JsonNode thumbnailNode = results.get(0).get("thumbnail");
             String imageUrl = thumbnailNode.get("path").asText() + "." + thumbnailNode.get("extension").asText();
-            return new Marvel(name, imageUrl, description);
+            return new Marvel(name, name, imageUrl, description);
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException(NOT_FOUND_EXC_MSG);
         }

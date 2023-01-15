@@ -40,9 +40,10 @@ public class PokeApiImpl implements PokeApi{
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             JsonNode abilitiesNode = rootNode.get("abilities");
             for(int i=0; i<abilitiesNode.size(); i++){
-                abilities.add(new Ability(abilitiesNode.get(i).get("ability").get("name").asText(), "NoDescription"));
+                String abilityName = abilitiesNode.get(i).get("ability").get("name").asText();
+                abilities.add(new Ability(abilityName, abilityName, "NoDescription"));
             }
-            return new Pokemon(name, abilities);
+            return new Pokemon(name, name, abilities);
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException(NOT_FOUND_EXC_MSG);
         }

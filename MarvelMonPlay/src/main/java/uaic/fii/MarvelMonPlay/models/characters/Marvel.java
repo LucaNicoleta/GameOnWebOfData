@@ -1,8 +1,10 @@
 package uaic.fii.MarvelMonPlay.models.characters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import uaic.fii.MarvelMonPlay.models.inventories.Inventory;
 import uaic.fii.MarvelMonPlay.models.items.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Marvel extends Character{
     @JsonProperty("imageURL")
@@ -12,25 +14,48 @@ public class Marvel extends Character{
     private final String description;
 
     @JsonProperty("pokemonInventory")
-    private Inventory<Pokemon> pokemonInventory;
+    private List<Pokemon> pokemonInventory;
 
     @JsonProperty("itemInventory")
-    private Inventory<Item> itemInventory;
+    private List<Item> itemInventory;
 
-    public Marvel(String name, String imageURL, String description) {
-        super(name);
+    public Marvel(String RES_IDENTIFIER, String name, String imageURL, String description) {
+        super(RES_IDENTIFIER, name);
         this.imageURL = imageURL;
         this.description = description;
-        pokemonInventory = new Inventory<>();
-        itemInventory = new Inventory<>();
+        pokemonInventory = new ArrayList<>();
+        itemInventory = new ArrayList<>();
     }
 
-    public Inventory<Pokemon> getPokemonInventory() {
-        return pokemonInventory;
+    public List<Pokemon> getPokemonInventory() {
+        return new ArrayList<>(pokemonInventory);
     }
 
-    public Inventory<Item> getItemInventory() {
-        return itemInventory;
+    public List<Item> getItemInventory() {
+        return new ArrayList<>(itemInventory);
+    }
+
+    public void addPokemonToInventory(Pokemon pokemon){
+        pokemonInventory.add(pokemon);
+    }
+
+    public void removePokemonFromInventory(Pokemon pokemon){
+        pokemonInventory.remove(pokemon);
+    }
+
+    public void addItemToInventory(Item item){
+        itemInventory.add(item);
+    }
+
+    public void removeItemFromInventory(Item item){
+        itemInventory.remove(item);
+    }
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

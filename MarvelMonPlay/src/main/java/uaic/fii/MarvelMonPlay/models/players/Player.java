@@ -4,12 +4,14 @@ import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 
 public class Player {
+    public final String RES_IDENTIFIER;
     private String username;
     private final String encryptedPassword;
     private Marvel marvelCharacter;
     private int level;
 
-    public Player(String username, String password, Marvel marvelCharacter, int level) {
+    public Player(String RES_IDENTIFIER, String username, String password, Marvel marvelCharacter, int level) {
+        this.RES_IDENTIFIER = RES_IDENTIFIER;
         this.username = username;
         this.encryptedPassword = new PasswordManager(password).getEncryptedPassword();
         this.marvelCharacter = marvelCharacter;

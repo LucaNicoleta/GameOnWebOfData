@@ -3,12 +3,14 @@ package uaic.fii.MarvelMonPlay.models.abilities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Ability {
+    public final String RES_IDENTIFIER;
     @JsonProperty("name")
     private final String name;
     @JsonProperty("description")
     private String description;
 
-    public Ability(String name, String description) {
+    public Ability(String RES_IDENTIFIER, String name, String description) {
+        this.RES_IDENTIFIER = RES_IDENTIFIER;
         this.name = name;
         this.description = description;
     }

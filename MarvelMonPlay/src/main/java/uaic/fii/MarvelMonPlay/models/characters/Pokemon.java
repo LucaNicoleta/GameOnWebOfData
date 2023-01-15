@@ -2,6 +2,7 @@ package uaic.fii.MarvelMonPlay.models.characters;
 
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Init healthPoints in constructor
@@ -13,6 +14,11 @@ public class Pokemon extends Character{
     public Pokemon(String name, List<Ability> abilities) {
         super(name);
         this.abilities = abilities;
+    }
+
+    public Pokemon(String name){
+        super(name);
+        abilities = new ArrayList<>();
     }
 
     public String getName() {

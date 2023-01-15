@@ -28,6 +28,17 @@ public class CharacterRepositoryImpl implements CharacterRepository{
 
     @Override
     public TupleQueryResult getPokemonCharacters() {
-        return null;
+        return sparqlEndpoint.executeQuery(
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                        "PREFIX IRI: <http://IRI#>" +
+                        "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints " +
+                        "WHERE {" +
+                        "    ?character a IRI:Pokemon ." +
+                        "    ?character foaf:name ?name ." +
+                        "    ?character IRI:hasAbility ?ability ." +
+                        "    ?character IRI:healthPoints ?healthPoints ." +
+                        "}" +
+                        "GROUP BY ?character ?name ?healthPoints"
+        );
     }
 }

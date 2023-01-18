@@ -35,6 +35,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#canPerformAction">
         <rdfs:domain rdf:resource="http://IRI#Ability"/>
         <rdfs:range rdf:resource="http://IRI#Action"/>
+        <rdfs:comment>An ability can perform an action to affect another&apos;s player life</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -44,6 +45,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#canPerformItemAction">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
         <rdfs:range rdf:resource="http://IRI#Action"/>
+        <rdfs:comment>An item can perform an action to affect player life</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -63,6 +65,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasInventory">
         <rdfs:domain rdf:resource="http://IRI#Marvel"/>
         <rdfs:range rdf:resource="http://IRI#Inventory"/>
+        <rdfs:comment>An Marvel character has an inventory where information about what it owns</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -72,6 +75,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasInventoryItem">
         <rdfs:domain rdf:resource="http://IRI#Inventory"/>
         <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+        <rdfs:comment>Inventory has a list of items</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -81,6 +85,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasInventoryPokemon">
         <rdfs:domain rdf:resource="http://IRI#Inventory"/>
         <rdfs:range rdf:resource="http://IRI#Pokemon"/>
+        <rdfs:comment>Inventory has the pokemons that are owned by the player</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -90,6 +95,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasMarvelCharacter">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://IRI#Marvel"/>
+        <rdfs:comment>A player has a marvel characher that represents him during the game</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -105,6 +111,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasRule">
         <rdfs:domain rdf:resource="http://IRI#Ability"/>
         <rdfs:range rdf:resource="http://IRI#LevelRule"/>
+        <rdfs:comment>An ability has rules that dictate how this can be used in the game</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -114,6 +121,7 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasTutorial">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Game"/>
         <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Tutorial"/>
+        <rdfs:comment>The game has a tutorial that shows the player how the game is played</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -129,6 +137,7 @@
     <owl:ObjectProperty rdf:about="http://purl.org/net/VideoGameOntology#isPlayerInSession">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
+        <rdfs:comment>A player has a session, a period of time, during he plays the game</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -138,6 +147,7 @@
     <owl:ObjectProperty rdf:about="http://purl.org/net/VideoGameOntology#isSessionInGame">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
         <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Game"/>
+        <rdfs:comment>A session is in a game</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -164,6 +174,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#decreasePointsLifeBy">
         <rdfs:domain rdf:resource="http://IRI#PoisonDrinkItem"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Number of points that are decreasing player&apos;s live</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -173,6 +184,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasDefense">
         <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Pokemon&apos;s defense power</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -182,6 +194,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasDescription">
         <rdfs:domain rdf:resource="http://IRI#Marvel"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Every charater has a description</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -191,6 +204,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasEncryptedPassword">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Encriperd password of user&apos;s account</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -200,6 +214,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasImageUrl">
         <rdfs:domain rdf:resource="http://IRI#Marvel"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:comment>Every marvel character has an representative image</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -209,6 +224,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasLevel">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>a player has a leved that was acchived by playing</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -218,6 +234,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#hasPowerAttack">
         <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Pokemon&apos;s power to destroy another&apos;s player life</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -227,6 +244,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#healthPoints">
         <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Live level of a pokemon</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -236,6 +254,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#increasePointsLifeBy">
         <rdfs:domain rdf:resource="http://IRI#LifePotionItem"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>Number of points that are increasing player&apos;s live</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -256,6 +275,7 @@
     <owl:DatatypeProperty rdf:about="http://IRI#sessionName">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>the name of a game session</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -265,6 +285,7 @@
     <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#endTime">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>The time that game session is ended</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -274,6 +295,7 @@
     <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#startTime">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Session"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>Time when the session was started</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -283,6 +305,7 @@
     <owl:DatatypeProperty rdf:about="http://purl.org/net/VideoGameOntology#username">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>User unique name</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -292,6 +315,7 @@
     <owl:DatatypeProperty rdf:about="http://schema.org/color">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>Color of an item</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -301,6 +325,7 @@
     <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/name">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>the name of the character</rdfs:comment>
         <rdfs:label xml:lang="en">hasName</rdfs:label>
     </owl:DatatypeProperty>
     
@@ -327,7 +352,9 @@
 
     <!-- http://IRI#Action -->
 
-    <owl:Class rdf:about="http://IRI#Action"/>
+    <owl:Class rdf:about="http://IRI#Action">
+        <rdfs:comment>Increases or decreases player&apos;s life</rdfs:comment>
+    </owl:Class>
     
 
 
@@ -341,7 +368,9 @@
 
     <!-- http://IRI#Inventory -->
 
-    <owl:Class rdf:about="http://IRI#Inventory"/>
+    <owl:Class rdf:about="http://IRI#Inventory">
+        <rdfs:comment>Items and pokemons that are owned by a player(marvel character)</rdfs:comment>
+    </owl:Class>
     
 
 
@@ -375,6 +404,7 @@
     <owl:Class rdf:about="http://IRI#Marvel">
         <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
         <owl:disjointWith rdf:resource="http://IRI#Pokemon"/>
+        <rdfs:comment>A character from Marvel API</rdfs:comment>
     </owl:Class>
     
 
@@ -383,6 +413,7 @@
 
     <owl:Class rdf:about="http://IRI#NewGameTutorial">
         <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Tutorial"/>
+        <rdfs:comment>Is introducing the user to the game</rdfs:comment>
     </owl:Class>
     
 
@@ -399,6 +430,7 @@
 
     <owl:Class rdf:about="http://IRI#Pokemon">
         <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
+        <rdfs:comment>A character from PokeAPI</rdfs:comment>
     </owl:Class>
     
 
@@ -413,6 +445,7 @@
 
     <owl:Class rdf:about="http://IRI#SceneTutorial">
         <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Tutorial"/>
+        <rdfs:comment>Helps the user play the game in a scene</rdfs:comment>
     </owl:Class>
     
 
@@ -433,13 +466,17 @@
 
     <!-- http://purl.org/net/VideoGameOntology#Character -->
 
-    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Character"/>
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Character">
+        <rdfs:comment>An entity that is acting in the game</rdfs:comment>
+    </owl:Class>
     
 
 
     <!-- http://purl.org/net/VideoGameOntology#Game -->
 
-    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Game"/>
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Game">
+        <rdfs:comment>An activity involving skill, knowledge, or chance, in which you follow fixed rules and try to win</rdfs:comment>
+    </owl:Class>
     
 
 
@@ -459,19 +496,25 @@
 
     <!-- http://purl.org/net/VideoGameOntology#Player -->
 
-    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Player"/>
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Player">
+        <rdfs:comment>An user that creates an account and plays the game</rdfs:comment>
+    </owl:Class>
     
 
 
     <!-- http://purl.org/net/VideoGameOntology#Session -->
 
-    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Session"/>
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Session">
+        <rdfs:comment>A session is a period of time in which a player is playing the game</rdfs:comment>
+    </owl:Class>
     
 
 
     <!-- http://purl.org/net/VideoGameOntology#Tutorial -->
 
-    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Tutorial"/>
+    <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Tutorial">
+        <rdfs:comment>Shows the player how to play the game</rdfs:comment>
+    </owl:Class>
     
 
 
@@ -576,6 +619,15 @@
 
     <rdf:Description rdf:about="http://IRI#LevelRule">
         <rdfs:comment>An ability can be used if the player has reached a specific level.</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://IRI#LifePotionItem">
+        <rdfs:comment>An item that increases character&apos;s life</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://IRI#PoisonDrinkItem">
+        <rdfs:comment>An item that decreases character&apos;s life</rdfs:comment>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://IRI#Rule">
+        <rdfs:comment>A condition that should be respected for a part of the game</rdfs:comment>
     </rdf:Description>
 </rdf:RDF>
 

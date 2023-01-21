@@ -28,7 +28,9 @@ public class PokemonServiceImpl implements PokemonService {
                 String abilities = bindingSet.getValue("abilities").stringValue();
                 List<Ability> abilityList = getAbilities(abilities);
                 String healthPoints = bindingSet.getValue("healthPoints").stringValue();
-                Pokemon pokemon = new Pokemon(name, name);
+                int powerAttack = Integer.parseInt(bindingSet.getValue("powerAttack").stringValue());
+                int defenseAttack = Integer.parseInt(bindingSet.getValue("powerDefense").stringValue());
+                Pokemon pokemon = new Pokemon(name, name, powerAttack, defenseAttack);
                 pokemon.setAbilities(abilityList);
                 pokemon.setHealthPoints(Integer.parseInt(healthPoints));
                 pokemonList.add(pokemon);

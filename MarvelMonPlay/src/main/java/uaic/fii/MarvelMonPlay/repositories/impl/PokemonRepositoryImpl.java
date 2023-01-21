@@ -32,6 +32,8 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " a " + "IRI:Pokemon" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " foaf:name " + "\"" + pokemon.getName() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
                 getStatementsForAbilities(pokemon) +
                 "}"
         );
@@ -58,14 +60,16 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         return sparqlEndpoint.executeQuery(
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints " +
+            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense " +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
             "    ?character foaf:name ?name ." +
             "    ?character IRI:hasAbility ?ability ." +
             "    ?character IRI:healthPoints ?healthPoints ." +
+            "    ?character IRI:hasPowerAttack ?powerAttack ." +
+            "    ?character IRI:hasDefense ?powerDefense ." +
             "}" +
-            "GROUP BY ?character ?name ?healthPoints"
+            "GROUP BY ?character ?name ?healthPoints ?powerAttack ?powerDefense"
         );
     }
 

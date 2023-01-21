@@ -40,8 +40,8 @@ public class ItemServiceCrudImpl implements ItemServiceCrud {
     }
 
     @Override
-    public void saveOrUpdate(Item item) {
-        itemRepository.saveOrUpdate(item);
+    public void save(Item item) {
+        itemRepository.save(item);
     }
 
     @Override

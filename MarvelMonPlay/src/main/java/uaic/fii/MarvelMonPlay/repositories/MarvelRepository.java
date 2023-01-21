@@ -5,6 +5,6 @@ import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 
 public interface MarvelRepository {
     TupleQueryResult findAll();
-    void saveOrUpdate(Marvel marvel, boolean cascadeSaveOrUpdate);
+    void save(Marvel marvel, boolean cascadeSaveOrUpdate);
     void delete(Marvel marvel);
 }

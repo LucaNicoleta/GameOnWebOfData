@@ -5,6 +5,6 @@ import uaic.fii.MarvelMonPlay.models.items.Item;
 
 public interface ItemRepository {
     TupleQueryResult findAll();
-    void saveOrUpdate(Item item);
+    void save(Item item);
     void delete(Item item);
 }

@@ -30,7 +30,7 @@ public class AbilityRepositoryImpl implements AbilityRepository {
     }
 
     @Override
-    public void saveOrUpdate(Ability ability) {
+    public void save(Ability ability) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +

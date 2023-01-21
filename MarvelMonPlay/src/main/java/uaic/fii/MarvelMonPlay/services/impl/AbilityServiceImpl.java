@@ -32,8 +32,8 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
-    public void saveOrUpdate(Ability ability) {
-        abilityRepository.saveOrUpdate(ability);
+    public void save(Ability ability) {
+        abilityRepository.save(ability);
     }
 
     @Override

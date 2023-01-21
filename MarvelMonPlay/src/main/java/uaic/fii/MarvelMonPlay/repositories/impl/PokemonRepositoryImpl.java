@@ -24,7 +24,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         this.sparqlEndpoint = sparqlEndpoint;
     }
     @Override
-    public void saveOrUpdate(Pokemon pokemon, boolean cascadeSaveOrUpdate) {
+    public void save(Pokemon pokemon, boolean cascadeSave) {
         sparqlEndpoint.executeUpdate(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
@@ -38,13 +38,13 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "}"
         );
 
-        if(cascadeSaveOrUpdate){
+        if(cascadeSave){
             saveOrUpdateAbilities(pokemon.getAbilities());
         }
     }
 
     private void saveOrUpdateAbilities(List<Ability> abilities) {
-        abilities.forEach(ability -> abilityService.saveOrUpdate(ability));
+        abilities.forEach(ability -> abilityService.save(ability));
     }
 
     private String getStatementsForAbilities(Pokemon pokemon) {

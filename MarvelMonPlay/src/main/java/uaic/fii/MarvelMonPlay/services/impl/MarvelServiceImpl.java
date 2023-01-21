@@ -39,8 +39,8 @@ public class MarvelServiceImpl implements MarvelService {
     }
 
     @Override
-    public void saveOrUpdate(Marvel marvel, boolean cascadeSaveOrUpdate) {
-        marvelRepository.saveOrUpdate(marvel, cascadeSaveOrUpdate);
+    public void save(Marvel marvel, boolean cascadeSaveOrUpdate) {
+        marvelRepository.save(marvel, cascadeSaveOrUpdate);
     }
 
     @Override

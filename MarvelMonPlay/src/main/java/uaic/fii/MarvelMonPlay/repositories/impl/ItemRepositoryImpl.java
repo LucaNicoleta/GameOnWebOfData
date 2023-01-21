@@ -30,7 +30,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void saveOrUpdate(Item item) {
+    public void save(Item item) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +

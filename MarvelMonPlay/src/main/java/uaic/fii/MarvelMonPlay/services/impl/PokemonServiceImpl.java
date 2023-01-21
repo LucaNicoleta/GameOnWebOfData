@@ -50,8 +50,8 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
-    public void saveOrUpdate(Pokemon pokemon, boolean cascadeSaveOrUpdate) {
-        pokemonRepository.saveOrUpdate(pokemon, cascadeSaveOrUpdate);
+    public void save(Pokemon pokemon, boolean cascadeSaveOrUpdate) {
+        pokemonRepository.save(pokemon, cascadeSaveOrUpdate);
     }
 
     @Override

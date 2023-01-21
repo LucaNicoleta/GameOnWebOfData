@@ -40,7 +40,7 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     }
 
     @Override
-    public void saveOrUpdate(Marvel marvel, boolean cascadeSaveOrUpdate) {
+    public void save(Marvel marvel, boolean cascadeSave) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "INSERT DATA {" +
@@ -53,7 +53,7 @@ public class MarvelRepositoryImpl implements MarvelRepository {
             "}"
         );
 
-        if(cascadeSaveOrUpdate){
+        if(cascadeSave){
             saveItems(marvel.getItemInventory());
             savePokemon(marvel.getPokemonInventory());
         }
@@ -85,7 +85,7 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     }
 
     private void savePokemon(List<Pokemon> pokemonInventory) {
-        pokemonInventory.forEach(pokemon -> pokemonService.saveOrUpdate(pokemon, true));
+        pokemonInventory.forEach(pokemon -> pokemonService.save(pokemon, true));
     }
 
     private void saveItems(List<Item> itemInventory) {

@@ -1,10 +1,11 @@
-package uaic.fii.MarvelMonPlay.services;
+package uaic.fii.MarvelMonPlay.services.impl;
 
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.repositories.AbilityRepository;
+import uaic.fii.MarvelMonPlay.services.AbilityService;
 
 import java.util.ArrayList;
 import java.util.List;

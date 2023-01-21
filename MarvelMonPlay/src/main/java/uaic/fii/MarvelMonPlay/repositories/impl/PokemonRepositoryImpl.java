@@ -1,4 +1,4 @@
-package uaic.fii.MarvelMonPlay.repositories;
+package uaic.fii.MarvelMonPlay.repositories.impl;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
 import uaic.fii.MarvelMonPlay.services.AbilityService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
-public class PokemonRepositoryImpl implements PokemonRepository{
+public class PokemonRepositoryImpl implements PokemonRepository {
     private final SparqlEndpoint sparqlEndpoint;
 
     @Autowired

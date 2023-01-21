@@ -1,13 +1,14 @@
-package uaic.fii.MarvelMonPlay.repositories;
+package uaic.fii.MarvelMonPlay.repositories.impl;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
+import uaic.fii.MarvelMonPlay.repositories.AbilityRepository;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 @Repository
-public class AbilityRepositoryImpl implements AbilityRepository{
+public class AbilityRepositoryImpl implements AbilityRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
 

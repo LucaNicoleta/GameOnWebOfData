@@ -6,8 +6,12 @@ import static uaic.fii.MarvelMonPlay.models.characters.Pokemon.MAX_HEALTH_POINTS
 
 public class LifePotionDrink extends Item {
     public static final int INCREASE_LIFE_BY = 10;
-    public LifePotionDrink(String RES_IDENTIFIER, String color) {
-        super(RES_IDENTIFIER, color);
+    public static final String NAME = "LifePowerDrink";
+    public static final String COLOR = "GREEN";
+    public static final String DESCRIPTION = "This liquid increases life by " + INCREASE_LIFE_BY + " points.";
+
+    public LifePotionDrink(String RES_IDENTIFIER) {
+        super(RES_IDENTIFIER, NAME, COLOR, DESCRIPTION);
     }
 
     @Override

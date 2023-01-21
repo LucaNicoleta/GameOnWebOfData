@@ -3,7 +3,7 @@ package uaic.fii.MarvelMonPlay.services;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.items.Item;
 
-public interface ItemService {
+public interface ItemService extends ItemServiceCrud {
     /**
      *
      * @param item

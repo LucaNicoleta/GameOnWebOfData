@@ -7,9 +7,10 @@ import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.items.Item;
+import uaic.fii.MarvelMonPlay.repositories.ItemRepository;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
+import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
 import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
-import uaic.fii.MarvelMonPlay.services.PokemonService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 import java.util.List;
@@ -20,10 +21,9 @@ public class MarvelRepositoryImpl implements MarvelRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
     @Autowired
-    private PokemonService pokemonService;
-
+    private PokemonRepository pokemonRepository;
     @Autowired
-    private ItemServiceCrud itemServiceCrud;
+    private ItemRepository itemRepository;
 
     public MarvelRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
@@ -89,10 +89,10 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     }
 
     private void savePokemon(List<Pokemon> pokemonInventory) {
-        pokemonInventory.forEach(pokemon -> pokemonService.save(pokemon, true));
+        pokemonInventory.forEach(pokemon -> pokemonRepository.save(pokemon, true));
     }
 
     private void saveItems(List<Item> itemInventory) {
-        itemInventory.forEach(item -> itemServiceCrud.save(item));
+        itemInventory.forEach(item -> itemRepository.save(item));
     }
 }

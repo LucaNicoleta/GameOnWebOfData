@@ -8,6 +8,7 @@ import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.items.Item;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
+import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
 import uaic.fii.MarvelMonPlay.services.PokemonService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
@@ -20,6 +21,9 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     private final SparqlEndpoint sparqlEndpoint;
     @Autowired
     private PokemonService pokemonService;
+
+    @Autowired
+    private ItemServiceCrud itemServiceCrud;
 
     public MarvelRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
@@ -89,6 +93,6 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     }
 
     private void saveItems(List<Item> itemInventory) {
-        // TODO: implementation: use save method from Item Service
+        itemInventory.forEach(item -> itemServiceCrud.save(item));
     }
 }

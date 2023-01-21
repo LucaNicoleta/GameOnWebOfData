@@ -11,7 +11,7 @@ import uaic.fii.MarvelMonPlay.repositories.CharacterRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO: To be replaced by PokemonServiceImpl & MarvelServiceImpl
 @Service
 public class CharacterServiceImpl implements CharacterService{
     private final CharacterRepository characterRepository;
@@ -34,7 +34,7 @@ public class CharacterServiceImpl implements CharacterService{
                 description = bindingSet.getValue("description").stringValue();
             }
 
-            marvelList.add(new Marvel(name, imageUrl, description));
+            marvelList.add(new Marvel(name, name, imageUrl, description));
         }
         return marvelList;
     }
@@ -49,7 +49,7 @@ public class CharacterServiceImpl implements CharacterService{
             String abilities = bindingSet.getValue("abilities").stringValue();
             List<Ability> abilityList = getAbilities(abilities);
             String healthPoints = bindingSet.getValue("healthPoints").stringValue();
-            Pokemon pokemon = new Pokemon(name);
+            Pokemon pokemon = new Pokemon(name, name);
             pokemon.setAbilities(abilityList);
             pokemon.setHealthPoints(Integer.parseInt(healthPoints));
             pokemonList.add(pokemon);
@@ -61,7 +61,8 @@ public class CharacterServiceImpl implements CharacterService{
         String[] abilitiesSplit = abilities.split(",");
         List<Ability> abilityList = new ArrayList<>();
         for (String s : abilitiesSplit) {
-            abilityList.add(new Ability(s.substring(s.indexOf("#") + 1), "NoDescription"));
+            String abilityName = s.substring(s.indexOf("#") + 1);
+            abilityList.add(new Ability(abilityName, abilityName, "NoDescription"));
         }
         return abilityList;
     }

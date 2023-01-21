@@ -2,12 +2,14 @@ package uaic.fii.MarvelMonPlay.services;
 
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MarvelServiceImpl implements MarvelService{
 
     private final MarvelRepository marvelRepository;

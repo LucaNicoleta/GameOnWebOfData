@@ -1,6 +1,7 @@
 package uaic.fii.MarvelMonPlay.repositories;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
@@ -13,6 +14,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Repository
 public class PokemonRepositoryImpl implements PokemonRepository{
     private final SparqlEndpoint sparqlEndpoint;
+
+    @Autowired
+    private AbilityRepository abilityRepository;
 
     public PokemonRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
@@ -36,7 +40,7 @@ public class PokemonRepositoryImpl implements PokemonRepository{
     }
 
     private void saveOrUpdateAbilities(List<Ability> abilities) {
-        //TODO: use save method from Ability Service
+        abilities.forEach(ability -> abilityRepository.saveOrUpdate(ability));
     }
 
     private String getStatementsForAbilities(Pokemon pokemon) {

@@ -11,7 +11,7 @@ public interface SparqlEndpoint {
     void executeUpdate(String update);
     TupleQueryResult executeQuery(String query);
     void saveTriple(String subject, String predicate, String object);
-    void saveTriple(Model model);
+    void saveModel(Model model);
 
     /**
      * Example of calling this function: importOwlFromFile(ResourceUtils.getFile("classpath:ontology.owl"), RDFFormat.RDFXML)

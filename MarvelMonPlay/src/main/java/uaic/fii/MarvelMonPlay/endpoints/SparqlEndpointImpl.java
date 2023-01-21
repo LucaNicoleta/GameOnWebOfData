@@ -57,7 +57,7 @@ public class SparqlEndpointImpl implements SparqlEndpoint {
     }
 
     @Override
-    public void saveTriple(Model model) {
+    public void saveModel(Model model) {
         RepositoryConnection conn = repository.getConnection();
         conn.begin();
         conn.add(model);

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import uaic.fii.MarvelMonPlay.services.AbilityService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class PokemonRepositoryImpl implements PokemonRepository{
     private final SparqlEndpoint sparqlEndpoint;
 
     @Autowired
-    private AbilityRepository abilityRepository;
+    private AbilityService abilityService;
 
     public PokemonRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
@@ -40,7 +41,7 @@ public class PokemonRepositoryImpl implements PokemonRepository{
     }
 
     private void saveOrUpdateAbilities(List<Ability> abilities) {
-        abilities.forEach(ability -> abilityRepository.saveOrUpdate(ability));
+        abilities.forEach(ability -> abilityService.saveOrUpdate(ability));
     }
 
     private String getStatementsForAbilities(Pokemon pokemon) {

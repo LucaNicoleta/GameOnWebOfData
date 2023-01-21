@@ -1,11 +1,13 @@
 package uaic.fii.MarvelMonPlay.repositories;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.items.Item;
+import uaic.fii.MarvelMonPlay.services.PokemonService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MarvelRepositoryImpl implements MarvelRepository{
 
     private final SparqlEndpoint sparqlEndpoint;
+    @Autowired
+    private PokemonService pokemonService;
 
     public MarvelRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
@@ -80,7 +84,7 @@ public class MarvelRepositoryImpl implements MarvelRepository{
     }
 
     private void savePokemon(List<Pokemon> pokemonInventory) {
-        // TODO: implementation: use save method from Pokemon Service
+        pokemonInventory.forEach(pokemon -> pokemonService.saveOrUpdate(pokemon, true));
     }
 
     private void saveItems(List<Item> itemInventory) {

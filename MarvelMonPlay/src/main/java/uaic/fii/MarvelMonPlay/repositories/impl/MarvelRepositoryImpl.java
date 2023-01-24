@@ -10,7 +10,6 @@ import uaic.fii.MarvelMonPlay.models.items.Item;
 import uaic.fii.MarvelMonPlay.repositories.ItemRepository;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
-import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 import java.util.List;
@@ -32,14 +31,14 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     @Override
     public TupleQueryResult findAll() {
         return sparqlEndpoint.executeQuery(
-        "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-                "select ?character ?name ?imageUrl ?description where {" +
-                "    ?character a IRI:Marvel ." +
-                "    ?character foaf:name ?name ." +
-                "    ?character IRI:hasImageUrl ?imageUrl ." +
-                "    OPTIONAL{?character IRI:hasDescription ?description}" +
-                "}"
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "select ?character ?name ?imageUrl ?description where {" +
+            "    ?character a IRI:Marvel ." +
+            "    ?character foaf:name ?name ." +
+            "    ?character IRI:hasImageUrl ?imageUrl ." +
+            "    OPTIONAL{?character IRI:hasDescription ?description}" +
+            "}"
         );
     }
 
@@ -52,8 +51,8 @@ public class MarvelRepositoryImpl implements MarvelRepository {
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName " + "\"" + marvel.getName() + "\"" + " ." +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + marvel.getDescription() + "\"" + " ." +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + marvel.getImageURL() + "\"" + " ." +
-                getStatementsForItems(marvel) +
-                getStatementsForPokemon(marvel) +
+                getInsertStatementsForItems(marvel) +
+                getInsertStatementsForPokemon(marvel) +
             "}"
         );
 
@@ -61,6 +60,69 @@ public class MarvelRepositoryImpl implements MarvelRepository {
             saveItems(marvel.getItemInventory());
             savePokemon(marvel.getPokemonInventory());
         }
+    }
+
+    @Override
+    public void update(Marvel marvel, boolean cascadeUpdate) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "DELETE {" +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName ?o1." +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription ?o2. " +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL ?o3. " +
+                getSelectStatementsForItems(marvel, false) +
+                getSelectStatementsForPokemon(marvel, false) +
+            "}" +
+            "INSERT {" +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName " + "\"" + marvel.getName() + "\". " +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + marvel.getDescription() + "\". " +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + marvel.getImageURL() + "\". " +
+                getInsertStatementsForItems(marvel) +
+                getInsertStatementsForPokemon(marvel) +
+            "}" +
+            "WHERE {" +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName ?o1. " +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription ?o2. " +
+                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL ?o3. " +
+                getSelectStatementsForItems(marvel, true) +
+                getSelectStatementsForPokemon(marvel, true) +
+            "}"
+        );
+
+        if(cascadeUpdate){
+            updateItems(marvel.getItemInventory());
+            updatePokemon(marvel.getPokemonInventory());
+        }
+    }
+
+    private void updatePokemon(List<Pokemon> pokemonInventory) {
+        pokemonInventory.forEach(pokemon -> pokemonRepository.update(pokemon, true));
+    }
+
+    private void updateItems(List<Item> itemInventory) {
+        itemInventory.forEach(item -> itemRepository.update(item));
+    }
+
+    private String getSelectStatementsForPokemon(Marvel marvel, boolean withOptionalClause) {
+        List<Pokemon> pokemonInventory = marvel.getPokemonInventory();
+        AtomicReference<String> pokemonStatements = new AtomicReference<>("");
+        pokemonInventory.forEach(pokemon -> {
+            String str = withOptionalClause ? "OPTIONAL{IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryPokemon ?" + pokemon.getName() + "}. "
+                                          : "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryPokemon ?" + pokemon.getName() + ". ";
+            pokemonStatements.getAndAccumulate(str, (s, s2) -> s + s2);
+        });
+        return pokemonStatements.get();
+    }
+
+    private String getSelectStatementsForItems(Marvel marvel, boolean withOptionalClause) {
+        List<Item> itemInventory = marvel.getItemInventory();
+        AtomicReference<String> itemStatements = new AtomicReference<>("");
+        itemInventory.forEach(item -> {
+            String str = withOptionalClause ? "OPTIONAL{IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryItem ?" + item.getName() + "}. "
+                                            : "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryItem ?" + item.getName() + ". ";
+            itemStatements.getAndAccumulate(str, (s, s2) -> s + s2);
+        });
+        return itemStatements.get();
     }
 
     @Override
@@ -72,7 +134,7 @@ public class MarvelRepositoryImpl implements MarvelRepository {
         );
     }
 
-    private String getStatementsForPokemon(Marvel marvel) {
+    private String getInsertStatementsForPokemon(Marvel marvel) {
         List<Pokemon> pokemonInventory = marvel.getPokemonInventory();
         AtomicReference<String> pokemonStatements = new AtomicReference<>("");
         pokemonInventory.forEach(pokemon -> pokemonStatements.getAndAccumulate("IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryPokemon " +
@@ -80,7 +142,7 @@ public class MarvelRepositoryImpl implements MarvelRepository {
         return pokemonStatements.get();
     }
 
-    private String getStatementsForItems(Marvel marvel) {
+    private String getInsertStatementsForItems(Marvel marvel) {
         List<Item> itemInventory = marvel.getItemInventory();
         AtomicReference<String> itemStatements = new AtomicReference<>("");
         itemInventory.forEach(item -> itemStatements.getAndAccumulate("IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryItem " +

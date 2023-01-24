@@ -55,6 +55,11 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public void update(Pokemon pokemon, boolean cascadeUpdate) {
+        pokemonRepository.update(pokemon, cascadeUpdate);
+    }
+
+    @Override
     public void delete(Pokemon pokemon) {
         pokemonRepository.delete(pokemon);
     }

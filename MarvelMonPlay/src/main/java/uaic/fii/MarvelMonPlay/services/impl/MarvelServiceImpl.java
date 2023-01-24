@@ -44,6 +44,11 @@ public class MarvelServiceImpl implements MarvelService {
     }
 
     @Override
+    public void update(Marvel marvel, boolean cascadeUpdate) {
+        marvelRepository.update(marvel, cascadeUpdate);
+    }
+
+    @Override
     public void delete(Marvel marvel) {
         marvelRepository.delete(marvel);
     }

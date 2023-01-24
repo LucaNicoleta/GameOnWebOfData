@@ -7,5 +7,6 @@ import java.util.List;
 public interface ItemServiceCrud {
     List<Item> findAll();
     void save(Item item);
+    void update(Item item);
     void delete(Item item);
 }

@@ -42,6 +42,23 @@ public class AbilityRepositoryImpl implements AbilityRepository {
     }
 
     @Override
+    public void update(Ability ability) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "DELETE {" +
+                "IRI:" + ability.RES_IDENTIFIER + " foaf:name ?o1." +
+                "IRI:" + ability.RES_IDENTIFIER + " IRI:hasDescription ?o2. }" +
+            "INSERT {" +
+                "IRI:" + ability.RES_IDENTIFIER + " foaf:name " + "\"" + ability.getName() + "\"" + ". " +
+                "IRI:" + ability.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + ability.getDescription() + "\". }" +
+            "WHERE {" +
+                "IRI:" + ability.RES_IDENTIFIER + " foaf:name ?o1." +
+                "IRI:" + ability.RES_IDENTIFIER + " IRI:hasDescription ?o2. }"
+        );
+    }
+
+    @Override
     public void delete(Ability ability) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

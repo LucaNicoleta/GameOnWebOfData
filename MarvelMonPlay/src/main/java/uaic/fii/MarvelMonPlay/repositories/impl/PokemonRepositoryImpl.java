@@ -34,20 +34,68 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
-                getStatementsForAbilities(pokemon) +
+                getInsertStatementsForAbilities(pokemon) +
                 "}"
         );
 
         if(cascadeSave){
-            saveOrUpdateAbilities(pokemon.getAbilities());
+            saveAbilities(pokemon.getAbilities());
         }
     }
 
-    private void saveOrUpdateAbilities(List<Ability> abilities) {
+    @Override
+    public void update(Pokemon pokemon, boolean cascadeUpdate) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "DELETE {" +
+                "IRI:" + pokemon.RES_IDENTIFIER + " foaf:name ?o1. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense ?o4. " +
+                getSelectStatementsForAbilities(pokemon, false) +
+            "}" +
+            "INSERT {" +
+                "IRI:" + pokemon.RES_IDENTIFIER + " foaf:name " + "\"" + pokemon.getName() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
+                getInsertStatementsForAbilities(pokemon) +
+            "}" +
+            "WHERE {" +
+                "IRI:" + pokemon.RES_IDENTIFIER + " foaf:name ?o1. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense ?o4. " +
+                getSelectStatementsForAbilities(pokemon, true) +
+            "}"
+        );
+
+        if(cascadeUpdate){
+            updateAbilities(pokemon.getAbilities());
+        }
+    }
+
+    private void updateAbilities(List<Ability> abilities) {
+        abilities.forEach(ability -> abilityService.update(ability));
+    }
+
+    private String getSelectStatementsForAbilities(Pokemon pokemon, boolean withOptionalClause) {
+        List<Ability> abilities = pokemon.getAbilities();
+        AtomicReference<String> statements = new AtomicReference<>("");
+        abilities.forEach(ability -> {
+            String str = withOptionalClause ? "OPTIONAL{IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasAbility ?" + ability.getName() + "}. "
+                                            : "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasAbility ?" + ability.getName() + ". ";
+            statements.getAndAccumulate(str, (s, s2) -> s + s2);
+        });
+        return statements.get();
+    }
+
+    private void saveAbilities(List<Ability> abilities) {
         abilities.forEach(ability -> abilityService.save(ability));
     }
 
-    private String getStatementsForAbilities(Pokemon pokemon) {
+    private String getInsertStatementsForAbilities(Pokemon pokemon) {
         List<Ability> abilities = pokemon.getAbilities();
         AtomicReference<String> statements = new AtomicReference<>("");
         abilities.forEach(ability -> statements.getAndAccumulate("IRI:"+pokemon.RES_IDENTIFIER + " IRI:hasAbility " +

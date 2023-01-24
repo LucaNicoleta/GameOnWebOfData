@@ -45,6 +45,11 @@ public class ItemServiceCrudImpl implements ItemServiceCrud {
     }
 
     @Override
+    public void update(Item item) {
+        itemRepository.update(item);
+    }
+
+    @Override
     public void delete(Item item) {
         itemRepository.delete(item);
     }

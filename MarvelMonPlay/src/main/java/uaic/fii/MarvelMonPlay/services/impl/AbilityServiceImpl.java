@@ -37,6 +37,11 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
+    public void update(Ability ability) {
+        abilityRepository.update(ability);
+    }
+
+    @Override
     public void delete(Ability ability) {
         abilityRepository.delete(ability);
     }

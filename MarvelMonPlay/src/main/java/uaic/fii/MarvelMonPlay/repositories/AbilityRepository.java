@@ -6,5 +6,6 @@ import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 public interface AbilityRepository {
     TupleQueryResult findAll();
     void save(Ability ability);
+    void update(Ability ability);
     void delete(Ability ability);
 }

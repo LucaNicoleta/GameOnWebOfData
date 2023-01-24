@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PokemonService {
     List<Pokemon> findAll();
-    void save(Pokemon pokemon, boolean cascadeSaveOrUpdate);
+    void save(Pokemon pokemon, boolean cascadeSave);
+    void update(Pokemon pokemon, boolean cascadeUpdate);
     void delete(Pokemon pokemon);
 }

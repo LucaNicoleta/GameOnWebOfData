@@ -44,6 +44,27 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
+    public void update(Item item) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "DELETE {" +
+                "IRI:" + item.RES_IDENTIFIER + " foaf:name ?o1." +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasColor ?o2." +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasDescription ?o3. }" +
+            "INSERT {" +
+                "IRI:" + item.RES_IDENTIFIER + " foaf:name " + "\"" + item.getName() + "\"" + ". " +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasColor " + "\"" + item.getColor() + "\"" + ". " +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + item.getDescription() + "\". }" +
+            "WHERE {" +
+                "IRI:" + item.RES_IDENTIFIER + " foaf:name ?o1." +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasColor ?o2." +
+                "IRI:" + item.RES_IDENTIFIER + " IRI:hasDescription ?o3. }"
+        );
+    }
+
+    @Override
     public void delete(Item item) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

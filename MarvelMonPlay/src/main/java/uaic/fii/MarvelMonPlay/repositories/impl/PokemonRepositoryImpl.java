@@ -122,6 +122,24 @@ public class PokemonRepositoryImpl implements PokemonRepository {
     }
 
     @Override
+    public TupleQueryResult findByName(String name) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?character (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense " +
+            "WHERE {" +
+            "    ?character a IRI:Pokemon ." +
+            "    ?character foaf:name \"" + name + "\". " +
+            "    ?character IRI:hasAbility ?ability ." +
+            "    OPTIONAL{?character IRI:healthPoints ?healthPoints .}" +
+            "    OPTIONAL{?character IRI:hasPowerAttack ?powerAttack .}" +
+            "    OPTIONAL{?character IRI:hasDefense ?powerDefense .}" +
+            "}" +
+            "GROUP BY ?character ?healthPoints ?powerAttack ?powerDefense"
+        );
+    }
+
+    @Override
     public void delete(Pokemon pokemon) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

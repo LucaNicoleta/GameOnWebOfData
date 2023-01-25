@@ -7,5 +7,6 @@ public interface PokemonRepository {
     void save(Pokemon pokemon, boolean cascadeSave);
     void update(Pokemon pokemon, boolean cascadeUpdate);
     TupleQueryResult findAll();
+    TupleQueryResult findByName(String name);
     void delete(Pokemon pokemon);
 }

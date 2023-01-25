@@ -3,6 +3,8 @@ package uaic.fii.MarvelMonPlay.externalApi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import uaic.fii.MarvelMonPlay.services.PokemonService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,13 @@ import java.util.List;
 @Service
 public class PokeApiImpl implements PokeApi{
     public static final String POKE_API_CHARACTERS_ENDPOINT = "https://pokeapi.co/api/v2/pokemon";
+
+    private final PokemonService pokemonService;
+    private final Logger logger = LoggerFactory.getLogger(PokeApiImpl.class);
+
+    public PokeApiImpl(PokemonService pokemonService){
+        this.pokemonService = pokemonService;
+    }
     @Override
     public Pokemon getPokemonByName(String name) throws ResourceNotFoundException {
         final String NOT_FOUND_EXC_MSG = "Pokemon character's name: " + name + " has not been found";
@@ -43,9 +53,22 @@ public class PokeApiImpl implements PokeApi{
                 String abilityName = abilitiesNode.get(i).get("ability").get("name").asText();
                 abilities.add(new Ability(abilityName, abilityName, "NoDescription"));
             }
-            return new Pokemon(name, name, abilities);
+            Pokemon pokemon = new Pokemon(name, name, abilities);
+            saveIfNotExistsIntoDatabase(pokemon);
+            return pokemon;
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException(NOT_FOUND_EXC_MSG);
+        }
+    }
+
+    private void saveIfNotExistsIntoDatabase(Pokemon pokemon) {
+        String name = pokemon.getName();
+        try {
+            pokemonService.findByName(name);
+            logger.info("Pokemon " + name + " NOT saved into database");
+        } catch (ResourceNotFoundException e) {
+            pokemonService.save(pokemon, true);
+            logger.info("Pokemon " + name + " saved into database");
         }
     }
 }

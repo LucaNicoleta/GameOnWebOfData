@@ -32,11 +32,10 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     public TupleQueryResult findAll() {
         return sparqlEndpoint.executeQuery(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-            "select ?character ?name ?imageUrl ?description where {" +
+            "select ?character ?name ?imageURL ?description where {" +
             "    ?character a IRI:Marvel ." +
-            "    ?character foaf:name ?name ." +
-            "    ?character IRI:hasImageUrl ?imageUrl ." +
+            "    ?character IRI:hasName ?name ." +
+            "    ?character IRI:hasImageURL ?imageURL ." +
             "    OPTIONAL{?character IRI:hasDescription ?description}" +
             "}"
         );
@@ -60,6 +59,19 @@ public class MarvelRepositoryImpl implements MarvelRepository {
             saveItems(marvel.getItemInventory());
             savePokemon(marvel.getPokemonInventory());
         }
+    }
+
+    @Override
+    public TupleQueryResult findByName(String name) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?character ?name ?imageURL ?description where {" +
+            "    ?character a IRI:Marvel ." +
+            "    ?character IRI:hasName" + "\"" + name + "\" ." +
+            "    ?character IRI:hasImageURL ?imageURL ." +
+            "    OPTIONAL{?character IRI:hasDescription ?description}" +
+            "}"
+        );
     }
 
     @Override

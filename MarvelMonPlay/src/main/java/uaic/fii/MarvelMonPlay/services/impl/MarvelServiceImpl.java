@@ -3,6 +3,7 @@ package uaic.fii.MarvelMonPlay.services.impl;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
+import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.services.MarvelService;
@@ -26,7 +27,7 @@ public class MarvelServiceImpl implements MarvelService {
             while (tupleQueryResult.hasNext()) {
                 BindingSet bindingSet = tupleQueryResult.next();
                 String name = bindingSet.getValue("name").stringValue();
-                String imageUrl = bindingSet.getValue("imageUrl").stringValue();
+                String imageUrl = bindingSet.getValue("imageURL").stringValue();
                 String description = "";
                 if (bindingSet.getValue("description") != null) {
                     description = bindingSet.getValue("description").stringValue();
@@ -39,8 +40,28 @@ public class MarvelServiceImpl implements MarvelService {
     }
 
     @Override
-    public void save(Marvel marvel, boolean cascadeSaveOrUpdate) {
-        marvelRepository.save(marvel, cascadeSaveOrUpdate);
+    public void save(Marvel marvel, boolean cascadeSave) {
+        marvelRepository.save(marvel, cascadeSave);
+    }
+
+    @Override
+    public Marvel findByName(String name) throws ResourceNotFoundException {
+        Marvel marvel = null;
+        try (TupleQueryResult tqr = marvelRepository.findByName(name)) {
+            if (tqr.hasNext()) {
+                BindingSet bindingSet = tqr.next();
+                String imageUrl = bindingSet.getValue("imageURL").stringValue();
+                String description = "";
+                if (bindingSet.getValue("description") != null) {
+                    description = bindingSet.getValue("description").stringValue();
+                }
+                marvel = new Marvel(name, name, imageUrl, description);
+            }
+        }
+        if(marvel == null){
+            throw new ResourceNotFoundException("Marvel character by name " + name + " not found");
+        }
+        return marvel;
     }
 
     @Override

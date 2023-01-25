@@ -4,18 +4,28 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.xml.bind.DatatypeConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.services.MarvelService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Service
 public class MarvelApiImpl implements MarvelApi {
+
+    private final MarvelService marvelService;
+    private final Logger logger = LoggerFactory.getLogger(MarvelApiImpl.class);
+
+    public MarvelApiImpl(MarvelService marvelService){
+        this.marvelService = marvelService;
+    }
     public static final String MARVEL_API_CHARACTERS_ENDPOINT = "https://gateway.marvel.com/v1/public/characters";
 
     @Override
@@ -51,9 +61,22 @@ public class MarvelApiImpl implements MarvelApi {
             String description = results.get(0).get("description").asText();
             JsonNode thumbnailNode = results.get(0).get("thumbnail");
             String imageUrl = thumbnailNode.get("path").asText() + "." + thumbnailNode.get("extension").asText();
-            return new Marvel(name, name, imageUrl, description);
+            Marvel marvel = new Marvel(name, name, imageUrl, description);
+            saveIfNotExistsIntoDatabase(marvel);
+            return marvel;
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException(NOT_FOUND_EXC_MSG);
+        }
+    }
+
+    private void saveIfNotExistsIntoDatabase(Marvel marvel) {
+        String name = marvel.getName();
+        try{
+            marvelService.findByName(name);
+            logger.info("Marvel character " + name + " NOT saved into database");
+        } catch (ResourceNotFoundException e){
+            marvelService.save(marvel, true);
+           logger.info("Marvel character " + name + " saved into database");
         }
     }
 

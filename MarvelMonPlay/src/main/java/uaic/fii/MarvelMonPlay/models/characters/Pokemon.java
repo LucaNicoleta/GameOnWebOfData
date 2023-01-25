@@ -15,12 +15,17 @@ public class Pokemon extends Character{
     private int powerDefense;
 
 
-    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int powerAttack, int powerDefense){
+
+    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int healthPoints, int powerAttack, int powerDefense){
         super(RES_IDENTIFIER, name);
         this.abilities = abilities;
+        this.healthPoints = healthPoints;
         this.powerAttack = powerAttack;
         this.powerDefense = powerDefense;
-        healthPoints = MAX_HEALTH_POINTS;
+    }
+
+    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int powerAttack, int powerDefense){
+        this(RES_IDENTIFIER, name, abilities, MAX_HEALTH_POINTS, powerAttack, powerDefense);
     }
 
     public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities) {

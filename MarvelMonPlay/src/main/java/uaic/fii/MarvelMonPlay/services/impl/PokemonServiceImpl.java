@@ -1,8 +1,10 @@
 package uaic.fii.MarvelMonPlay.services.impl;
 
+import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
+import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
@@ -25,18 +27,46 @@ public class PokemonServiceImpl implements PokemonService {
             while (tupleQueryResult.hasNext()) {
                 BindingSet bindingSet = tupleQueryResult.next();
                 String name = bindingSet.getValue("name").stringValue();
-                String abilities = bindingSet.getValue("abilities").stringValue();
-                List<Ability> abilityList = getAbilities(abilities);
-                String healthPoints = bindingSet.getValue("healthPoints").stringValue();
-                int powerAttack = Integer.parseInt(bindingSet.getValue("powerAttack").stringValue());
-                int defenseAttack = Integer.parseInt(bindingSet.getValue("powerDefense").stringValue());
-                Pokemon pokemon = new Pokemon(name, name, powerAttack, defenseAttack);
-                pokemon.setAbilities(abilityList);
-                pokemon.setHealthPoints(Integer.parseInt(healthPoints));
-                pokemonList.add(pokemon);
+                String abilitiesValue = bindingSet.getValue("abilities").stringValue();
+                List<Ability> abilityList = getAbilities((abilitiesValue));
+                Value healthPointsValue = bindingSet.getValue("healthPoints");
+                Value powerAttackValue = bindingSet.getValue("powerAttack");
+                Value powerDefensevalue = bindingSet.getValue("powerDefense");
+
+                int healthPoints = healthPointsValue == null ? Pokemon.MAX_HEALTH_POINTS : Integer.parseInt(healthPointsValue.stringValue());
+                int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
+                int powerDefense = powerDefensevalue == null ? Pokemon.DEFAULT_POWER_DEFENSE : Integer.parseInt(powerDefensevalue.stringValue());
+
+                pokemonList.add(new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense));
             }
         }
         return pokemonList;
+    }
+
+    @Override
+    public Pokemon findByName(String name) throws ResourceNotFoundException {
+        Pokemon pokemon = null;
+        try(TupleQueryResult tqr = pokemonRepository.findByName(name)){
+            if(tqr.hasNext()){
+                BindingSet bindingSet = tqr.next();
+                String abilitiesValue = bindingSet.getValue("abilities").stringValue();
+                List<Ability> abilityList = getAbilities((abilitiesValue));
+                Value healthPointsValue = bindingSet.getValue("healthPoints");
+                Value powerAttackValue = bindingSet.getValue("powerAttack");
+                Value powerDefensevalue = bindingSet.getValue("powerDefense");
+
+                int healthPoints = healthPointsValue == null ? Pokemon.MAX_HEALTH_POINTS : Integer.parseInt(healthPointsValue.stringValue());
+                int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
+                int powerDefense = powerDefensevalue == null ? Pokemon.DEFAULT_POWER_DEFENSE : Integer.parseInt(powerDefensevalue.stringValue());
+
+                pokemon = new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense);
+            }
+        }
+        if(pokemon == null) {
+            throw new ResourceNotFoundException("Pokemon " + name + " not found");
+        }
+
+        return pokemon;
     }
 
     private List<Ability> getAbilities(String abilities) {

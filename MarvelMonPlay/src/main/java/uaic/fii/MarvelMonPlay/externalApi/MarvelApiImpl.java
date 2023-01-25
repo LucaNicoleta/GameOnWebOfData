@@ -61,7 +61,7 @@ public class MarvelApiImpl implements MarvelApi {
             String description = results.get(0).get("description").asText();
             JsonNode thumbnailNode = results.get(0).get("thumbnail");
             String imageUrl = thumbnailNode.get("path").asText() + "." + thumbnailNode.get("extension").asText();
-            Marvel marvel = new Marvel(name, name, imageUrl, description);
+            Marvel marvel = new Marvel(name.replace(" ", ""), name, imageUrl, description);
             saveIfNotExistsIntoDatabase(marvel);
             return marvel;
         } catch (JsonProcessingException e) {

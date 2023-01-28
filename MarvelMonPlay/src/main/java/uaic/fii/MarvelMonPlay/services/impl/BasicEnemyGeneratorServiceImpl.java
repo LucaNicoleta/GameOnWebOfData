@@ -76,7 +76,7 @@ public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
             pokemon.setPowerAttack(powerAttack);
             pokemon.setPowerDefense(powerDefense);
         } catch (ResourceNotFoundException e) {
-            pokemon = new Pokemon(name, name, powerAttack, powerDefense);
+            pokemon = new Pokemon(name, name, powerAttack, powerDefense, "");
         }
         return pokemon;
     }

@@ -13,31 +13,31 @@ public class Pokemon extends Character{
     private int healthPoints;
     private int powerAttack;
     private int powerDefense;
+    private String imageURL;
 
-
-
-    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int healthPoints, int powerAttack, int powerDefense){
+    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int healthPoints, int powerAttack, int powerDefense, String imageURL){
         super(RES_IDENTIFIER, name);
         this.abilities = abilities;
         this.healthPoints = healthPoints;
         this.powerAttack = powerAttack;
         this.powerDefense = powerDefense;
+        this.imageURL = imageURL;
     }
 
-    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int powerAttack, int powerDefense){
-        this(RES_IDENTIFIER, name, abilities, MAX_HEALTH_POINTS, powerAttack, powerDefense);
+    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int powerAttack, int powerDefense, String imageURL){
+        this(RES_IDENTIFIER, name, abilities, MAX_HEALTH_POINTS, powerAttack, powerDefense, imageURL);
     }
 
-    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities) {
-        this(RES_IDENTIFIER, name, abilities, DEFAULT_POWER_ATTACK, DEFAULT_POWER_DEFENSE);
+    public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, String imageURL) {
+        this(RES_IDENTIFIER, name, abilities, DEFAULT_POWER_ATTACK, DEFAULT_POWER_DEFENSE, imageURL);
     }
 
-    public Pokemon(String RES_IDENTIFIER, String name, int powerAttack, int powerDefense) {
-        this(RES_IDENTIFIER, name, new ArrayList<>(), powerAttack, powerDefense);
+    public Pokemon(String RES_IDENTIFIER, String name, int powerAttack, int powerDefense, String imageURL) {
+        this(RES_IDENTIFIER, name, new ArrayList<>(), powerAttack, powerDefense, imageURL);
     }
 
-    public Pokemon(String RES_IDENTIFIER, String name){
-        this(RES_IDENTIFIER, name, new ArrayList<>(), DEFAULT_POWER_ATTACK, DEFAULT_POWER_DEFENSE);
+    public Pokemon(String RES_IDENTIFIER, String name, String imageURL){
+        this(RES_IDENTIFIER, name, new ArrayList<>(), DEFAULT_POWER_ATTACK, DEFAULT_POWER_DEFENSE, imageURL);
     }
 
     public String getName() {
@@ -83,6 +83,14 @@ public class Pokemon extends Character{
         abilities.remove(ability);
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     @Override
     public String toString() {
         return "Pokemon{" +
@@ -90,6 +98,7 @@ public class Pokemon extends Character{
                 ", healthPoints=" + healthPoints +
                 ", powerAttack=" + powerAttack +
                 ", powerDefense=" + powerDefense +
+                ", imageURL='" + imageURL + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

@@ -37,7 +37,10 @@ public class PokemonServiceImpl implements PokemonService {
                 int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
                 int powerDefense = powerDefensevalue == null ? Pokemon.DEFAULT_POWER_DEFENSE : Integer.parseInt(powerDefensevalue.stringValue());
 
-                pokemonList.add(new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense));
+                Value imageURLValue = bindingSet.getValue("imageURL");
+                String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
+
+                pokemonList.add(new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL));
             }
         }
         return pokemonList;
@@ -59,7 +62,10 @@ public class PokemonServiceImpl implements PokemonService {
                 int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
                 int powerDefense = powerDefensevalue == null ? Pokemon.DEFAULT_POWER_DEFENSE : Integer.parseInt(powerDefensevalue.stringValue());
 
-                pokemon = new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense);
+                Value imageURLValue = bindingSet.getValue("imageURL");
+                String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
+
+                pokemon = new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
             }
         }
         if(pokemon == null) {

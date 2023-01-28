@@ -34,6 +34,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + pokemon.getImageURL() + "\"" + " ." +
                 getInsertStatementsForAbilities(pokemon) +
                 "}"
         );
@@ -53,6 +54,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense ?o4. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL ?o5. " +
                 getSelectStatementsForAbilities(pokemon, false) +
             "}" +
             "INSERT {" +
@@ -60,6 +62,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + pokemon.getImageURL() + "\". " +
                 getInsertStatementsForAbilities(pokemon) +
             "}" +
             "WHERE {" +
@@ -67,6 +70,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
                 "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense ?o4. " +
+                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL ?o5. " +
                 getSelectStatementsForAbilities(pokemon, true) +
             "}"
         );
@@ -108,7 +112,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         return sparqlEndpoint.executeQuery(
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense " +
+            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL" +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
             "    ?character foaf:name ?name ." +
@@ -116,8 +120,9 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "    ?character IRI:healthPoints ?healthPoints ." +
             "    ?character IRI:hasPowerAttack ?powerAttack ." +
             "    ?character IRI:hasDefense ?powerDefense ." +
+            "    ?character IRI:hasImageURL ?imageURL ." +
             "}" +
-            "GROUP BY ?character ?name ?healthPoints ?powerAttack ?powerDefense"
+            "GROUP BY ?character ?name ?healthPoints ?powerAttack ?powerDefense ?imageURL"
         );
     }
 
@@ -126,7 +131,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         return sparqlEndpoint.executeQuery(
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-            "SELECT ?character (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense " +
+            "SELECT ?character (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
             "    ?character foaf:name \"" + name + "\". " +
@@ -134,8 +139,9 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "    OPTIONAL{?character IRI:healthPoints ?healthPoints .}" +
             "    OPTIONAL{?character IRI:hasPowerAttack ?powerAttack .}" +
             "    OPTIONAL{?character IRI:hasDefense ?powerDefense .}" +
+            "    ?character IRI:hasImageURL ?imageURL ." +
             "}" +
-            "GROUP BY ?character ?healthPoints ?powerAttack ?powerDefense"
+            "GROUP BY ?character ?healthPoints ?powerAttack ?powerDefense ?imageURL"
         );
     }
 

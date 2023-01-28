@@ -53,7 +53,8 @@ public class PokeApiImpl implements PokeApi{
                 String abilityName = abilitiesNode.get(i).get("ability").get("name").asText();
                 abilities.add(new Ability(abilityName, abilityName, "NoDescription"));
             }
-            Pokemon pokemon = new Pokemon(name, name, abilities);
+            String imageURL = rootNode.get("sprites").get("other").get("official-artwork").get("front_default").asText();
+            Pokemon pokemon = new Pokemon(name, name, abilities, imageURL);
             saveIfNotExistsIntoDatabase(pokemon);
             return pokemon;
         } catch (JsonProcessingException e) {

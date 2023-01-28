@@ -6,7 +6,10 @@ import uaic.fii.MarvelMonPlay.externalApi.MarvelApi;
 import uaic.fii.MarvelMonPlay.externalApi.PokeApi;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import uaic.fii.MarvelMonPlay.models.levels.Level;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
+
+import java.util.List;
 
 @Service
 public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
@@ -18,33 +21,63 @@ public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
         this.marvelApi = marvelApi;
     }
     @Override
-    public Marvel generateMarvelEnemy(int level) {
+    public List<Marvel> generateMarvelEnemy(Level level) {
         switch (level){
-            case 1: return getNPCMarvel("Thor", "charizard", 5, 3);
-            case 2: return getNPCMarvel("Professor X", "gyarados", 10, 6);
-            case 3: return getNPCMarvel("Iceman", "dialga", 15, 10);
-            default: return getNPCMarvel("Captain America", "jynx", 18, 12);
+            case WATER: {
+                Marvel triton = getNPCMarvel("Triton");
+                Pokemon tentacruel = getNPCPokemon("tentacruel", 5, 3);
+                triton.addPokemonToInventory(tentacruel);
+                return List.of(triton);
+            }
+            case AIR: {
+                Marvel storm = getNPCMarvel("Storm");
+                Pokemon fearow = getNPCPokemon("fearow", 10, 6);
+                storm.addPokemonToInventory(fearow);
+                return List.of(storm);
+            }
+            case EARTH: {
+                Marvel avalanche = getNPCMarvel("Avalanche");
+                Pokemon boldore = getNPCPokemon("boldore", 15, 10);
+                avalanche.addPokemonToInventory(boldore);
+                return List.of(avalanche);
+            }
+            case FIRE:{
+                Marvel firestar = getNPCMarvel("Firestar");
+                Pokemon charmander = getNPCPokemon("charmander", 18, 20);
+                firestar.addPokemonToInventory(charmander);
+
+                Marvel firebird = getNPCMarvel("Firebird");
+                Pokemon vulpix = getNPCPokemon("vulpix", 20, 14);
+                Pokemon litten = getNPCPokemon("litten", 27, 5);
+                firebird.addPokemonToInventory(vulpix);
+                firebird.addPokemonToInventory(litten);
+                return List.of(firestar, firebird);
+            }
+            default: {
+                return List.of();
+            }
         }
     }
 
-    private Marvel getNPCMarvel(String marvelName, String pokemonName, int pokemonAttack, int pokemonDefense) {
+    private Marvel getNPCMarvel(String marvelName) {
         Marvel marvel;
-        Pokemon pokemon;
-        try {
-            pokemon = pokeApi.getPokemonByName(pokemonName);
-            pokemon.setPowerAttack(pokemonAttack);
-            pokemon.setPowerDefense(pokemonDefense);
-        } catch (ResourceNotFoundException e) {
-            pokemon = new Pokemon("NPCPokemon"+pokemonName, pokemonName, pokemonAttack, pokemonDefense);
-        }
-
         try {
             marvel = marvelApi.getMarvelCharacter(marvelName);
         } catch (ResourceNotFoundException e) {
-            marvel = new Marvel("NPCMarvel"+(marvelName.replace(" ", "")), marvelName, "", "");
+            marvel = new Marvel(marvelName.replaceAll(" ", ""), marvelName, "", "");
         }
-
-        marvel.addPokemonToInventory(pokemon);
         return marvel;
+    }
+
+    private Pokemon getNPCPokemon(String name, int powerAttack, int powerDefense){
+        Pokemon pokemon;
+        try {
+            pokemon = pokeApi.getPokemonByName(name);
+            pokemon.setPowerAttack(powerAttack);
+            pokemon.setPowerDefense(powerDefense);
+        } catch (ResourceNotFoundException e) {
+            pokemon = new Pokemon(name, name, powerAttack, powerDefense);
+        }
+        return pokemon;
     }
 }

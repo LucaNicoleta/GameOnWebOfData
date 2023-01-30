@@ -4,7 +4,7 @@ import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import uaic.fii.MarvelMonPlay.services.CharacterService;
+//import uaic.fii.MarvelMonPlay.services.CharacterService;
 
 //TODO: This class is TEMPORARILY used for testing different components
 @Component
@@ -13,8 +13,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private SparqlEndpoint sparqlEndpoint;
 
-    @Autowired
-    private CharacterService characterService;
+//    @Autowired
+//    private CharacterService characterService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,8 +43,8 @@ public class DataLoader implements CommandLineRunner {
 //        Marvel marvel = new MarvelApiImpl().getMarvelCharacter("Hulk"); //Spider-Man (Ultimate)
 //        System.out.println(marvel);
 
-        characterService.getPokemonCharacters().forEach(System.out::println);
-        characterService.getMarvelCharacters().forEach(System.out::println);
+//        characterService.getPokemonCharacters().forEach(System.out::println);
+//        characterService.getMarvelCharacters().forEach(System.out::println);
 
         //Pokemon pokemon = new PokeApiImpl().getPokemonByName("clefairy");
         //System.out.println(pokemon.toString());

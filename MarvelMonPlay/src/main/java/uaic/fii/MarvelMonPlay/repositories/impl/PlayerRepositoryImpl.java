@@ -2,12 +2,16 @@ package uaic.fii.MarvelMonPlay.repositories.impl;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;
 import uaic.fii.MarvelMonPlay.services.PokemonService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
+import java.util.Optional;
+
+@Service
 public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
@@ -20,7 +24,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
 
     //TODO: findPlayer
     @Override
-    public Player findPlayerByUsername(String username) {
+    public Optional<Player> findPlayerByUsername(String username) {
         TupleQueryResult result = sparqlEndpoint.executeQuery(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
@@ -31,32 +35,29 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                         "    OPTIONAL{?character IRI:hasDescription ?description}" +
                         "}"
         );
-        return null;
+        return Optional.empty();
     }
 
     //TODO: verify if player exists
-    @Override
     public boolean existsPlayerByUsername(String username) {
-        TupleQueryResult result = sparqlEndpoint.executeQuery(
-                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-                        "select ?RES_IDENTIFIER ?username ?encryptedPassword ?marvelCharacter ?level where {" +
-                        "    ?character a IRI:Player ." +
-                        "    ?character foaf:name ?name ." +
-                        "    ?character IRI:hasImageUrl ?imageUrl ." +
-                        "    OPTIONAL{?character IRI:hasDescription ?description}" +
-                        "}"
-        );
-        return true;
+//        TupleQueryResult result = sparqlEndpoint.executeQuery(
+//                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+//                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+//                        "select ?RES_IDENTIFIER ?username ?encryptedPassword ?marvelCharacter ?level where {" +
+//                        "    ?character a IRI:Player ." +
+//                        "    ?character foaf:name ?name ." +
+//                        "    ?character IRI:hasImageUrl ?imageUrl ." +
+//                        "    OPTIONAL{?character IRI:hasDescription ?description}" +
+//                        "}"
+//        );
+        return false;
     }
 
     //TODO: saveOrUpdate
-    @Override
-    public void saveOrUpdate(Player player, boolean cascadeSaveOrUpdate) {
+    public void save(Player player) {
 
     }
 
-    @Override
     public void delete(Player player) {
         sparqlEndpoint.executeUpdate(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

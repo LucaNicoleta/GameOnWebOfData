@@ -1,5 +1,6 @@
 package uaic.fii.MarvelMonPlay.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.http.HttpStatus;
@@ -8,48 +9,42 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.managers.PasswordManager;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;
+import uaic.fii.MarvelMonPlay.services.impl.RegistrationService;
 import uaic.fii.MarvelMonPlay.utils.LoginDto;
 import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(path = "/auth")
+@AllArgsConstructor
 public class PlayerController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private RegistrationService registrationService;
 
-    @Autowired
-    private PlayerRepository playerRepository;
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginPlayer(@RequestBody LoginDto loginDto){
+////        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+////                loginDto.getUsername(), loginDto.getPassword()));
+////
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+////        return new ResponseEntity<>("User logged-in successfully!.", HttpStatus.OK);
+//    }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginPlayer(@RequestBody LoginDto loginDto){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(), loginDto.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User logged-in successfully!.", HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/test/{name}")
+    public String getPokemon(@PathVariable("name") String name) throws ResourceNotFoundException {
+        return name + "hello123";
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterDto registerDto){
+    public String registerUser(@RequestBody RegisterDto registerDto){
 
-        // add check for username exists in a DB
-        if(playerRepository.existsPlayerByUsername(registerDto.getUsername())){
-            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
-        }
-
-        // create player object
-        Player player = new Player(
-                registerDto.getRES_IDENTIFIER(), registerDto.getUsername(), new PasswordManager(
-                        registerDto.getPassword()).getEncryptedPassword(), registerDto.getMarvelCharacter(),0);
-
-
-        playerRepository.saveOrUpdate(player, true);
-
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        return registrationService.register(registerDto);
 
     }
 

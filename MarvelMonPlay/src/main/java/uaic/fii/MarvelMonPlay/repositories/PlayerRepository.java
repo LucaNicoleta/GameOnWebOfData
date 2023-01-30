@@ -1,12 +1,13 @@
 package uaic.fii.MarvelMonPlay.repositories;
 
-import org.eclipse.rdf4j.query.TupleQueryResult;
-import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import org.springframework.beans.factory.annotation.Autowired;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 
+import java.util.Optional;
+
 public interface PlayerRepository {
-    Player findPlayerByUsername(String username);
+    Optional<Player> findPlayerByUsername(String username);
     boolean existsPlayerByUsername(String username);
-    void saveOrUpdate(Player player, boolean cascadeSaveOrUpdate);
+    void save(Player player);
     void delete(Player player);
 }

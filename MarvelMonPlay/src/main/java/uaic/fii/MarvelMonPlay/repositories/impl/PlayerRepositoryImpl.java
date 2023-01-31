@@ -2,63 +2,60 @@ package uaic.fii.MarvelMonPlay.repositories.impl;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
-import uaic.fii.MarvelMonPlay.models.characters.Marvel;
-import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
+import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.players.Player;
+import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;
-import uaic.fii.MarvelMonPlay.services.PokemonService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
-
-import java.util.Optional;
 
 @Service
 public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
+
     @Autowired
-    private PokemonService pokemonService;
+    private MarvelRepository marvelRepository;
 
     public PlayerRepositoryImpl(SparqlEndpoint sparqlEndpoint) {
         this.sparqlEndpoint = sparqlEndpoint;
     }
 
-    //TODO: findPlayer
     @Override
-    public Optional<Player> findPlayerByUsername(String username) {
-//        TupleQueryResult result = sparqlEndpoint.executeQuery(
-//                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-//                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-//                        "select ?RES_IDENTIFIER ?username ?encryptedPassword ?marvelCharacter ?level where {" +
-//                        "    ?character a IRI:Player ." +
-//                        "    ?character foaf:name ?name ." +
-//                        "    ?character IRI:hasImageUrl ?imageUrl ." +
-//                        "    OPTIONAL{?character IRI:hasDescription ?description}" +
-//                        "}"
-//        );
-        return Optional.of(new Player("01", "hazicatalin", new BCryptPasswordEncoder().encode("12345678A@").toString(), new Marvel("1", "1", "1", "1"), 0, AppUserRole.USER));
+    public TupleQueryResult findPlayerByUsername(String username) {
+        return sparqlEndpoint.executeQuery(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                "SELECT ?player ?encryptedPassword ?marvelCharacter ?level ?appUserRole " +
+                "WHERE {" +
+                "  ?player a vgo:Player. " +
+                "  ?player vgo:username \"" + username + "\". " +
+                "  ?player IRI:hasEncryptedPassword ?encryptedPassword ." + //TODO: encryptedPassword does not seem to be really encrypted
+                "  ?player IRI:hasMarvelCharacter ?marvelCharacter ." +
+                "  ?player IRI:hasLevel ?level ." +
+                "  ?player IRI:hasAppUserRole ?appUserRole ." +
+            "}"
+        );
     }
 
-    //TODO: verify if player exists
-    public boolean existsPlayerByUsername(String username) {
-//        TupleQueryResult result = sparqlEndpoint.executeQuery(
-//                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-//                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-//                        "select ?RES_IDENTIFIER ?username ?encryptedPassword ?marvelCharacter ?level where {" +
-//                        "    ?character a IRI:Player ." +
-//                        "    ?character foaf:name ?name ." +
-//                        "    ?character IRI:hasImageUrl ?imageUrl ." +
-//                        "    OPTIONAL{?character IRI:hasDescription ?description}" +
-//                        "}"
-//        );
-        return false;
-    }
+    public void save(Player player, boolean cascadeSave) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "INSERT DATA {" +
+                "IRI:" + player.RES_IDENTIFIER + " a " + "vgo:Player" + "; " +
+                "vgo:username " + "\"" + player.getUsername() + "\"" + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +  //TODO: should encrypt the password?
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + player.getMarvelCharacter().RES_IDENTIFIER + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().ordinal() + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasAppUserRole " + player.getAppUserRole().ordinal() + ". " +
+            "}"
+        );
 
-    //TODO: saveOrUpdate
-    public void save(Player player) {
-
+        if(cascadeSave){
+            marvelRepository.save(player.getMarvelCharacter(), true);
+        }
     }
 
     public void delete(Player player) {

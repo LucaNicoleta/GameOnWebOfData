@@ -1,23 +1,33 @@
 package uaic.fii.MarvelMonPlay.loaders;
 
-import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-//import uaic.fii.MarvelMonPlay.services.CharacterService;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
+import uaic.fii.MarvelMonPlay.models.players.Player;
+import uaic.fii.MarvelMonPlay.services.MarvelService;
+import uaic.fii.MarvelMonPlay.services.PlayerService;
 
 //TODO: This class is TEMPORARILY used for testing different components
 @Component
 public class DataLoader implements CommandLineRunner {
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
-    private SparqlEndpoint sparqlEndpoint;
-
-//    @Autowired
-//    private CharacterService characterService;
+    private MarvelService marvelService;
 
     @Override
     public void run(String... args) throws Exception {
+        Marvel marvel = new Marvel("NEW_MARVEL", "MARVEL_NAME", "no-image.com", "no desc");
+        Player player = new Player("PLAYER_IDENT", "test_username", "test_pass", marvel, Level.EARTH, AppUserRole.USER);
+        playerService.save(player, true);
+
+        Player p = playerService.findPlayerByUsername("test_username");
+        System.out.println(p.toString());
+
 //        String subject = "http://example.com/test1";
 //        String predicate = "http://example.com/test2";
 //        String object = "http://example.com/test4";

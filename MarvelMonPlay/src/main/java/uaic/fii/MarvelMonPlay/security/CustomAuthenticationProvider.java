@@ -1,7 +1,6 @@
 package uaic.fii.MarvelMonPlay.security;
 
 import jakarta.annotation.Resource;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,20 +8,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import uaic.fii.MarvelMonPlay.models.players.Player;
-import uaic.fii.MarvelMonPlay.services.impl.PlayerService;
+import uaic.fii.MarvelMonPlay.services.impl.PlayerServiceImpl;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Resource
-    PlayerService playerService;
+    PlayerServiceImpl playerService;
     private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -33,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         Player player = null;
         try {
-            player = playerService.loadUserByUsername(userName);
+            player = playerService.findPlayerByUsername(userName);
             logger.info("log1");
             logger.info(player.getUsername()+"; "+player.getPassword()+"; "+encryptedPassword);
         }catch (UsernameNotFoundException exception) {

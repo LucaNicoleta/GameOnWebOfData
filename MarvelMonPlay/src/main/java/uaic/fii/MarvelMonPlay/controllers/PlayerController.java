@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import uaic.fii.MarvelMonPlay.exceptions.PlayerAlreadyRegisteredException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
@@ -42,7 +43,7 @@ public class PlayerController {
     }
 
     @PostMapping("/signup")
-    public String registerUser(@RequestBody RegisterDto registerDto){
+    public String registerUser(@RequestBody RegisterDto registerDto) throws PlayerAlreadyRegisteredException {
 
         return registrationService.register(registerDto);
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.levels.Level;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,10 +23,11 @@ public class Player implements UserDetails {
     private String username;
     private String password;
     private Marvel marvelCharacter;
-    private int level;
+    private Level level;
     private AppUserRole appUserRole;
 
-    public Player(String RES_IDENTIFIER, String username, String password, Marvel marvelCharacter, int level, AppUserRole appUserRole) {
+    public Player(String RES_IDENTIFIER, String username, String password, Marvel marvelCharacter, Level level, AppUserRole appUserRole) {
+        this.RES_IDENTIFIER = RES_IDENTIFIER;
         this.username = username;
         this.password = password;
         this.marvelCharacter = marvelCharacter;
@@ -80,11 +82,11 @@ public class Player implements UserDetails {
         this.marvelCharacter = marvelCharacter;
     }
 
-    public int getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 }

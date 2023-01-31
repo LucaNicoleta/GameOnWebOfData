@@ -1,5 +1,6 @@
 package uaic.fii.MarvelMonPlay.services.impl;
 
+import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,25 @@ public class MarvelServiceImpl implements MarvelService {
         }
         if(marvel == null){
             throw new ResourceNotFoundException("Marvel character by name " + name + " not found");
+        }
+        return marvel;
+    }
+
+    @Override
+    public Marvel findByResIdentifier(String RES_IDENTIFIER) throws ResourceNotFoundException {
+        Marvel marvel = null;
+        try (TupleQueryResult tqr = marvelRepository.findByResIdentifier(RES_IDENTIFIER)) {
+            if (tqr.hasNext()) {
+                BindingSet bindingSet = tqr.next();
+                String name = bindingSet.getValue("name").stringValue();
+                String imageUrl = bindingSet.getValue("imageURL").stringValue();
+                Value descriptionValue = bindingSet.getValue("description");
+                String description = descriptionValue == null ? "" : descriptionValue.stringValue();
+                marvel = new Marvel(name, name, imageUrl, description);
+            }
+        }
+        if(marvel == null){
+            throw new ResourceNotFoundException("Marvel by res identifier " + RES_IDENTIFIER + " not found");
         }
         return marvel;
     }

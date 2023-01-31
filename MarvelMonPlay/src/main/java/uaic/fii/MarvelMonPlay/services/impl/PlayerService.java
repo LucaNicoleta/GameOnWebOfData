@@ -19,7 +19,7 @@ public class PlayerService implements  UserDetailsService {
     private final PlayerRepositoryImpl playerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public Player loadUserByUsername(String username) throws UsernameNotFoundException {
         return playerRepository.findPlayerByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, username)));
     }

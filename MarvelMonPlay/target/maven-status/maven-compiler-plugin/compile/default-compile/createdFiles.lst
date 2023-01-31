@@ -45,6 +45,7 @@ uaic\fii\MarvelMonPlay\DemoApplication.class
 uaic\fii\MarvelMonPlay\models\levels\Level.class
 uaic\fii\MarvelMonPlay\controllers\PokemonController.class
 uaic\fii\MarvelMonPlay\models\characters\Marvel.class
+uaic\fii\MarvelMonPlay\security\CustomAuthenticationProvider.class
 uaic\fii\MarvelMonPlay\repositories\impl\PokemonRepositoryImpl.class
 uaic\fii\MarvelMonPlay\repositories\impl\PlayerRepositoryImpl.class
 uaic\fii\MarvelMonPlay\security\PasswordEncoder.class

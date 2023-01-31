@@ -1,3 +1,3 @@
 # MarvelMonPlay game ontology
 
-![Screenshot of my application](ont.JPG)
+![Screenshot of my application](owl.PNG)

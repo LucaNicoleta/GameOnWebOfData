@@ -112,7 +112,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         return sparqlEndpoint.executeQuery(
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL" +
+            "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
             "    ?character foaf:name ?name ." +

@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authProvider()).formLogin().and()
+        http.authenticationProvider(authProvider()).formLogin().defaultSuccessUrl("/auth/success").failureUrl("/auth/failure").and()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
                         .and()
                         .authorizeHttpRequests().anyRequest().authenticated();

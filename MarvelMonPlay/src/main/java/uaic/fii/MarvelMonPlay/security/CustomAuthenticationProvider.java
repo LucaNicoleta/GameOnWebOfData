@@ -38,6 +38,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword(), player.getAuthorities());
         }
         else{
+            logger.info("unmatch");
             throw new BadCredentialsException("Invalid credentials");
         }
     }

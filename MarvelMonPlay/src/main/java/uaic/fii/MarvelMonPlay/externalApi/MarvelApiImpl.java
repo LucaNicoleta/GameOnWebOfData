@@ -16,6 +16,7 @@ import uaic.fii.MarvelMonPlay.services.MarvelService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 @Service
 public class MarvelApiImpl implements MarvelApi {
@@ -61,7 +62,7 @@ public class MarvelApiImpl implements MarvelApi {
             String description = results.get(0).get("description").asText();
             JsonNode thumbnailNode = results.get(0).get("thumbnail");
             String imageUrl = thumbnailNode.get("path").asText() + "." + thumbnailNode.get("extension").asText();
-            Marvel marvel = new Marvel(name.replace(" ", ""), name, imageUrl, description);
+            Marvel marvel = new Marvel(UUID.randomUUID().toString(), name, imageUrl, description);
             saveIfNotExistsIntoDatabase(marvel);
             return marvel;
         } catch (JsonProcessingException e) {
@@ -72,7 +73,7 @@ public class MarvelApiImpl implements MarvelApi {
     private void saveIfNotExistsIntoDatabase(Marvel marvel) {
         String name = marvel.getName();
         try{
-            marvelService.findByName(name);
+            marvelService.findByResIdentifier(marvel.RES_IDENTIFIER);
             logger.info("Marvel character " + name + " NOT saved into database");
         } catch (ResourceNotFoundException e){
             marvelService.save(marvel, true);

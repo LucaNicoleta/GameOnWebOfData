@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.services.impl.PlayerServiceImpl;
 
-import java.util.Objects;
-
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Resource
@@ -26,17 +24,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encryptedPassword = bCryptPasswordEncoder.encode(password);
 
         Player player = null;
         try {
             player = playerService.findPlayerByUsername(userName);
             logger.info("log1");
-            logger.info(player.getUsername()+"; "+player.getPassword()+"; "+encryptedPassword);
+            logger.info(player.getUsername()+"; "+player.getPassword()+"; ");
         }catch (UsernameNotFoundException exception) {
             throw new BadCredentialsException("invalid login details");
         }
-        if(Objects.equals(player.getPassword(), encryptedPassword)){
+        if(bCryptPasswordEncoder.matches(password, player.getPassword())){
+            logger.info("match");
             return new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword(), player.getAuthorities());
         }
         else{

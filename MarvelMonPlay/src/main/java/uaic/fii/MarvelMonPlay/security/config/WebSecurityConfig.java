@@ -38,14 +38,6 @@ public class WebSecurityConfig {
         return new CustomAuthenticationProvider();
     }
 
-//    @Bean
-//    public DaoAuthenticationProvider authProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(playerService);
-//        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
-//        return authProvider;
-//    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

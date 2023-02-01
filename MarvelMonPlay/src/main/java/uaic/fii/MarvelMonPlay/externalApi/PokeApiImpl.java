@@ -16,6 +16,7 @@ import uaic.fii.MarvelMonPlay.services.PokemonService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PokeApiImpl implements PokeApi{
@@ -51,10 +52,10 @@ public class PokeApiImpl implements PokeApi{
             JsonNode abilitiesNode = rootNode.get("abilities");
             for(int i=0; i<abilitiesNode.size(); i++){
                 String abilityName = abilitiesNode.get(i).get("ability").get("name").asText();
-                abilities.add(new Ability(abilityName, abilityName, "NoDescription"));
+                abilities.add(new Ability(UUID.randomUUID().toString(), abilityName, "NoDescription"));
             }
             String imageURL = rootNode.get("sprites").get("other").get("official-artwork").get("front_default").asText();
-            Pokemon pokemon = new Pokemon(name, name, abilities, imageURL);
+            Pokemon pokemon = new Pokemon(UUID.randomUUID().toString(), name, abilities, imageURL);
             saveIfNotExistsIntoDatabase(pokemon);
             return pokemon;
         } catch (JsonProcessingException e) {

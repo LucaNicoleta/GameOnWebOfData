@@ -70,11 +70,16 @@
       </p>
         
         <p>
-          We will use Java & Spring Framework for backend, React & Typescript for frontend, and MongoDB for database. 
-        </p>
-
-        <p>
-          <b>More info will be written as the application is developed.</b>
+          Main tehnologies we have used:
+          <ul>
+            <li><b>Java & Spring Framework</b> for server side</li>
+            <li><b>React & Typescript</b> for client side</li>
+            <li><b>GraphDB</b> for storage</li>
+            <li><b>RDF4J</b>, a java library and framework for working with RDF data - used to manipulate 
+              <b>RDF</b> data, as well for its <b>SPARQL</b> query engine </li>
+            <li><b>Protege</b>, an ontology editor and framework for building intelligent systems which includes useful 
+              plugins for tasks such as inference (<b>HermiT</b>, <b>Pellet</b>), visualization (<b>OWLViz</b>, <b>VOWL</b>), and data integration</li>
+          </ul>
         </p>
 
     </section>
@@ -84,17 +89,32 @@
 
       <h3>Story</h3>
       <p>The story will be influenced by the player' Pokémon, decisions, experience, and level.</p>
+      <p>The game has four levels and each level contains a number of scenes. The levels:
+        <ul>
+            <li><b>Water</b> - first level</li>
+            <li><b>Air</b> - second level</li>
+            <li><b>Earh</b> - third level</li>
+            <li><b>Fire</b> - fourth level</li>
+        </ul> 
+        A scene may contain an image, an informative text, a question and/or answer options. Based on the actual scene and based on 
+      the answer of the player, the next scene may take place.</p>
+      <p>To see the entire story based on levels, click <a href="https://www.figma.com/file/9FQZebnYuzNVE9QYBN4SnA/ModelScene?node-id=170%3A491&t=px3HCIWxZKqZOVtZ-1">here</a>.</p>
 
       <h3>Exploration</h3>
       <p>
         The player can move his game character in different directions to different locations, can find hidden objects, 
         can meet rivals NPC characters. Also, he can find and catch Pokémon.
       </p>
+      <p>
+        At this point, the player can find only two items, one of them can increase the health points of the pokemon that used it, and the 
+        other one can decrease the health points of the pokemon that used in.
+      </p>
 
       <h3>Items</h3>
       <p>
         The player can find hidden objects while playing which can be used in order to get different benefits, gain or lose points.
       </p>
+      <p>There are two types of items: bad items, and good items. Bad items can harm the life of a Pokémon, while good items have the opposite effect and improve their life.</p>
 
       <h3>Characters</h3>
       <p>
@@ -103,23 +123,45 @@
         Each character will have a set of pokémon with different powers and abilities. These pokémon will be used in 
         battles with other Marvel characters' pokémon. 
       </p>
+      <p>The available Marvel characters to be chosen at the begin of the game are: <b>Namor</b> (Water), <b>Thor</b> (Air), <b>Dust</b> (Earth), <b>Human Torch</b> (Fire)</b></p>
+      <P>
+        Another characters are the pokemon that can be found on each level: <b>squirtle</b> (Water), <b>pidgeot</b> (Air), <b>rockruff</b>(Earth),
+         and for the last level (Fire), the pokemon will not be found, it will have to be earned through battle.
+      </p>
+      <p>
+        There are NPCs who will be opponents in the fight:
+        <ul>
+          <li><b>Triton</b>(Water) - has a pokemon named <b>tentacruel</b></li> 
+          <li> <b>Storm</b>(Air) - has a pokemon named <b>fearow</b></li> 
+          <li><b>Avalanche</b>(Earth) - has a pokemon named <b>boldore</b></li> 
+          <li><b>Firestar</b>(Fire) - has a pokemon named <b>charmander</b></li>  
+          <li><b>Firebird</b>(Fire) - has two named species: <b>vulpix</b>, and <b>litten</b></li> 
+        </ul>
+      </p>
+
 
       <h3>Goal</h3>
       <p>
-        The goal is to earn enough points (or experience) to reach the next level. The player can earn points 
-        by accepting and winning pokémon battles with the NPC Marvel characters he can meet while exploring 
-        or by finding and collecting (and/or using) hidden items.
+        The goal is to complete all levels by interacting with the NPC players, by answering at the given questions,
+        and by accepting and winning pokémon battles with the NPC Marvel characters he can meet while exploring 
+        or by finding and collecting (and/or using) hidden items or/and different pokémon species.
       </p>
 
       <h3>Levels</h3>
       <p>
         A certain level can give the player's Pokémon more skills, powers, and make them stronger, increasing their chances to win a battle.
-        More than that, different Pokémon, items, and NPC Marvel characters can show up after a specific level.
+        More than that, different Pokémon, items, and NPC Marvel characters can show up after a specific level. 
+      </p>
+      <p>
+        According to the current story of the game, he can catch a pokemon by winning a battle which takes place at the last level.
       </p>
 
       <h3>Action</h3>
       <p>
         As the player explores various locations, he may encounter NPC rivals with whom he can start a battle.
+      </p>
+      <p>Another type of action is the interaction between player and different NPCs where the player is asked a question and he can give an answer 
+        by choosing one possible response from the list of the available responses. Based on the given response, a specific scene may show up.
       </p>
 
       <h3>Interface</h3>
@@ -139,17 +181,105 @@
       <section id="component-1">
         <h3>Database</h3>
         <p>
-          The <b>DB</b> we are going to use is <b>MongoDB</b>.</br> We will save the relevent data such as
-          users and their game state, and game settings.
+          The <b>DB</b> we are using in our project is <b>GraphDB</b>, a database management system that is designed to store, manage, and query graph data.
+          All relevent data such as users and their game state, characters (Marvel & Pokémon), abilities, items, players goes here.
+        </p>
+        <p>
+          The data is stored as a graph structure, consisting of nodes and edges. 
+          Each node represents a subject, predicate, or object in the RDF triple, 
+          and the edges represent the relationships between the subjects and objects.
+        </p>
+      </section>
+
+      <section id="component-data">
+        <h2>Data</h2>
+        <p>
+            As above said, the data is stored in GraphDB consisting of RDF triples. 
+            We have our ontology saved into a <b>.owl</b> file in the RDF/XML format (exported from Protege) and imported it into GraphDB by the help of 
+            GraphDB Workbench.
+        </p>
+        <p>
+          The ontology has the following hierarchy of classes, object properties, and data properties: <br/>
+          <img src="img/protege.png"/>
+        </p>
+        <p>
+          We save, update, retrieve, and delete our data through a <b>SPARQL Endpoint</b> which uses a connection with our GraphDB created by the help of RDF4J library.
+        </p>
+        <p>
+          The <b>SPARQL Endpoint</b> needs <b>SPARQL Queries</b> in order to perform the desired CRUD operations on the data. For example, when we want to 
+          find a pokemon by name, we use the following query:
+          <img src="img/findQuery.GIF"/>
+        </p>
+        <p>
+          Or, when we want to update an item, we use the following query: 
+          <img src="img/updateQuery.GIF"/>
+        </p>
+        <p>The complete ontology overview with <b>VOWL</b> plugin: <img src="img/owl.png"/></p>
+        <p>
+          For our ontology we have used some existent ontologies:
+          <ul>
+            <li><b>http://purl.org/dc/terms/</b> - Dublin Core Metadata Element Set, an ontology that provides a simple standard for describing resources on the web</li>
+            <li><b>http://purl.org/net/VideoGameOntology#</b> - Video Game Ontology, an ontology that provides a vocabulary for describing information about video games</li>
+            <li><b>http://xmlns.com/foaf/0.1/</b> - Friend of a Friend (FOAF) ontology, an ontology that provides a vocabulary for describing information about people and the relationships between them</li>
+          </ul>
         </p>
       </section>
 
       <section id="component-2">
         <h3>RestAPI</h3>
         <p>
-          The API provided by the server side is able to send data to the client. More info about this 
-          component can be found on the OpenAPI specification.
+          The API provided by the server side is able to send data to the client. 
         </p>
+        <h4>Basic endpoints:</h4>
+        <section id="enemy-gen">  
+          <h3>Enemy generator - "/npc/{level}"</h3>
+          <p>
+            Marvel enemies may be ganerated based on the levels: WATER, AIR, EARTH, FIRE.
+            <img src="img/enemy.gif"/>
+            The name, imageURL, description for the marvel character is taken from MarvelAPI. </br>
+            The name, imageURL, abilities for the pokemon is taken from PokeAPI. </br>
+            The powerAttack, powerDefense, healthPoints for the pokemon are set based on the level. </br>
+            The RES_IDENTIFIER is an UUID to ensure the unicity of entities.
+          </p>
+        </section>
+        <section id="signup">
+          <h3>Signup - "/auth/signup"</h3>
+          <p>
+            Players can be saved through this endpoint.
+          </p>
+        </section>
+        <section id="login">
+          <h3>Signup - "/login"</h3>
+          <p>
+            Players can log in through this endpoint.
+          </p>
+        </section>
+        <section id="marvel-ep">
+          <h3>Find all marvel characters - "/marvel"</h3>
+          <p>
+            Returns a list with all marvel characters in the database.
+          </p>
+        </section>
+        <section id="marvel-name-ep">
+          <h3>Find a marvel character - "/marvel/{nameStartsWith}"</h3>
+          <p>
+            Returns a Marvel character having its name starting with the nameStartsWith if found from MarvelAPI. 
+            The result will be saved in the database.
+          </p>
+        </section>
+        <section id="pokemon-ep">
+          <h3>Find all pokemon - "/pokemon"</h3>
+          <p>
+            Returns a list of pokemon in the database.
+          </p>
+        </section>
+        <section id="pokemon-name-ep">
+          <h3>Find a pokemon - "/pokemon/name"</h3>
+          <p>
+            Returns a pokemon having its name as specified in the endpoint. The pokemon is taken from PokeAPI, 
+            and the result is saved in the database.
+          </p>
+        </section>
       </section>
 
       <section id="component-3">
@@ -219,9 +349,26 @@
       </section>
     </section>
 
+    <section id="project-structure">
+      <h3>Arhitecture (MarvelMonPlay - server)</h3>
+      <p>
+        The project is structured into three main layers (3 tier architecture):
+        <ul>
+          <li><b>Repository</b> - uses a SPARQL Endpoint to communicate with the database</li>
+          <li><b>Service</b> - contains the bussiness logic and uses the repositories when needed</li>
+          <li><b>Controller</b> - uses services and exposes endpoints for clients</li>
+        </ul>
+      </p>
+    </section>
+
+    <section id="case-studies">
+      <h3>Case Studies</h3>
+      
+    </section>
+
     <section id="External APIs">
       <h3>External APIs</h3>
-      The project will use two external APIs: Marvel Comics API and PokeAPI.
+      The application uses two external APIs: Marvel Comics API and PokeAPI.
 
       <section id="api-1">
         <h3>Marvel Comics API</h3>
@@ -236,6 +383,15 @@
           animals, non-corporeal entities, trans-dimensional manifestations, abstract personifications, and green
           amorphous blobs which occupy the Marvel Universe (and various alternate universes, timelines and
           altered realities therein). For example, Spider-Man. We will also use the <b>image</b> of each marvel character.
+        </p>
+        <p>
+          The concrete data we are take into consideration from this API is:
+          <ul>
+            <li>Name</li>
+            <li>ImageURL</li>
+            <li>Description</li>
+          </ul>
+          This data is saved in our database for the purpose of reusing it the next time without calling the API again, and to find it in the database instead.
         </p>
       </section>
        
@@ -253,9 +409,29 @@
           them <b>without an API key</b>. This API can provide us useful resources in order to create pokémon with
           different powers, abilities, levels, and more.
         </p>
+        <p>
+          From this API we take into consideration:
+          <ul>
+            <li>Abilities - with their name and description</li>
+            <li>ImageURL</li>
+            <li>Name</li>
+          </ul>
+          This data is also saved in our database for the purpose of reusing it without calling the API again.
+        </p>
       </section>
-
-
     </section>
+
+    <section id="conc"> 
+      <h3>Conclusion</h3>  
+      <p>
+        In conclusion, the team's project on "game on web of data" was a complex and demanding task, 
+        requiring a high level of expertise in web engineering and the use of different tools and technologies
+        Despite the challenges faced, the team made notable progress and completed some of the initial goals. 
+        The project was developed following best practices in web engineering, including documentation, 
+        modularity, bug reporting, and modern source-code management. All data managed by the application was described in RDF, 
+        and various interrogations were performed using the SPARQL query language, demonstrating the team's understanding of the 
+        principles of the web of data.
+      </p>
+      </section>
   </body>
 </html>

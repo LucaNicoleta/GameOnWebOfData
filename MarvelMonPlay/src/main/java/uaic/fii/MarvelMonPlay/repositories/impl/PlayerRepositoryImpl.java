@@ -4,7 +4,6 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
-import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;

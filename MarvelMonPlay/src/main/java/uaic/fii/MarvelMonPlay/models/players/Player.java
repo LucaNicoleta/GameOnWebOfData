@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uaic.fii.MarvelMonPlay.managers.PasswordManager;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
 

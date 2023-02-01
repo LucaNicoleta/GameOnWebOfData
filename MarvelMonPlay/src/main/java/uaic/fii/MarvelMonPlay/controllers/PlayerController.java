@@ -21,6 +21,12 @@ public class PlayerController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/logout_success")
+    public String logoutSuccessfully(){
+        return "Logout successfully!";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/failure")
     public String loginFailure(){
         return "Login failed!";

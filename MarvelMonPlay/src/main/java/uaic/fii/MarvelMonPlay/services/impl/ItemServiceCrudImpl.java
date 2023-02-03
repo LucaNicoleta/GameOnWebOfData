@@ -4,9 +4,9 @@ import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import uaic.fii.MarvelMonPlay.models.Action;
 import uaic.fii.MarvelMonPlay.models.items.Item;
-import uaic.fii.MarvelMonPlay.models.items.LifePotionDrink;
-import uaic.fii.MarvelMonPlay.models.items.PoisonDrink;
 import uaic.fii.MarvelMonPlay.repositories.ItemRepository;
 import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
 
@@ -24,16 +24,13 @@ public class ItemServiceCrudImpl implements ItemServiceCrud {
         try (TupleQueryResult tupleQueryResult = itemRepository.findAll()) {
             while (tupleQueryResult.hasNext()) {
                 BindingSet bindingSet = tupleQueryResult.next();
+                System.out.println(bindingSet);
                 String name = bindingSet.getValue("name").stringValue();
-
+                Action action = Action.valueOf(bindingSet.getValue("action").stringValue());
                 //TODO: find another implementation
                 Item item;
-                if (name.equals(PoisonDrink.NAME)) {
-                    item = new PoisonDrink(PoisonDrink.NAME);
-                } else {
-                    item = new LifePotionDrink(LifePotionDrink.NAME);
-                }
-                items.add(item);
+                
+                //items.add(item);
             }
         }
         return items;

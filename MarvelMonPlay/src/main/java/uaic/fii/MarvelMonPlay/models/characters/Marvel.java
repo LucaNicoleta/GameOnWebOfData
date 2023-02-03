@@ -38,7 +38,15 @@ public class Marvel extends Character{
     public void addPokemonToInventory(Pokemon pokemon){
         pokemonInventory.add(pokemon);
     }
+    
+    public boolean checkIfPokemonInInventory(Pokemon pokemon){
+        return pokemonInventory.contains(pokemon);
+    }
 
+    public boolean checkIfItemInInventory(Item item){
+        return itemInventory.contains(item);
+    }
+    
     public void removePokemonFromInventory(Pokemon pokemon){
         pokemonInventory.remove(pokemon);
     }

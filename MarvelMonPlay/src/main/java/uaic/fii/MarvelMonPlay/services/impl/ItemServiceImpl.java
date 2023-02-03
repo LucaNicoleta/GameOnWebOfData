@@ -9,6 +9,7 @@ import uaic.fii.MarvelMonPlay.services.ItemService;
 public class ItemServiceImpl extends ItemServiceCrudImpl implements ItemService {
     @Override
     public Pokemon useItemOn(Item item, Pokemon pokemon) {
-        return item.performItemAction(pokemon);
+        return pokemon;
+       // return item.performAction(pokemon);
     }
 }

@@ -17,7 +17,7 @@
      xmlns:schema="http://schema.org/"
      xmlns:sesame="http://www.openrdf.org/schema/sesame#"
      xmlns:dcterms="http://purl.org/dc/terms/">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/untitled-ontology-20"/>
+    <owl:Ontology rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada"/>
     
 
 
@@ -32,22 +32,31 @@
     
 
 
+    <!-- http://IRI#belongsToElement -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#belongsToElement">
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+        <rdfs:range rdf:resource="http://IRI#Element"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://IRI#canPerformAction -->
 
     <owl:ObjectProperty rdf:about="http://IRI#canPerformAction">
-        <rdfs:domain rdf:resource="http://IRI#Ability"/>
+        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
         <rdfs:range rdf:resource="http://IRI#Action"/>
         <rdfs:comment>An ability can perform an action to affect another&apos;s player life</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://IRI#canPerformItemAction -->
+    <!-- http://IRI#containsRefTo -->
 
-    <owl:ObjectProperty rdf:about="http://IRI#canPerformItemAction">
-        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
-        <rdfs:range rdf:resource="http://IRI#Action"/>
-        <rdfs:comment>An item can perform an action to affect player life</rdfs:comment>
+    <owl:ObjectProperty rdf:about="http://IRI#containsRefTo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#NextScenesRef"/>
+        <rdfs:range rdf:resource="http://IRI#Scene"/>
     </owl:ObjectProperty>
     
 
@@ -56,7 +65,6 @@
 
     <owl:ObjectProperty rdf:about="http://IRI#hasAbility">
         <rdfs:domain rdf:resource="http://IRI#Pokemon"/>
-        <rdfs:range rdf:resource="http://IRI#Ability"/>
         <rdfs:comment xml:lang="en">A Pokemon has a list of abilities.</rdfs:comment>
     </owl:ObjectProperty>
     
@@ -124,9 +132,19 @@
     <!-- http://IRI#hasMarvelCharacter -->
 
     <owl:ObjectProperty rdf:about="http://IRI#hasMarvelCharacter">
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
         <rdfs:range rdf:resource="http://IRI#Marvel"/>
         <rdfs:comment>A player has a marvel characher that represents him during the game</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#hasOption -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#hasOption">
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
+        <rdfs:range rdf:resource="http://IRI#Option"/>
     </owl:ObjectProperty>
     
 
@@ -136,16 +154,6 @@
     <owl:ObjectProperty rdf:about="http://IRI#hasPlayer">
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Game"/>
         <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Player"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://IRI#hasRule -->
-
-    <owl:ObjectProperty rdf:about="http://IRI#hasRule">
-        <rdfs:domain rdf:resource="http://IRI#Ability"/>
-        <rdfs:range rdf:resource="http://IRI#LevelRule"/>
-        <rdfs:comment>An ability has rules that dictate how this can be used in the game</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -187,21 +195,35 @@
     
 
 
-    <!-- http://IRI#npcMarvel -->
+    <!-- http://IRI#requiresElement -->
 
-    <owl:ObjectProperty rdf:about="http://IRI#npcMarvel">
-        <rdfs:domain rdf:resource="http://IRI#FightScene"/>
-        <rdfs:range rdf:resource="http://IRI#Marvel"/>
-        <owl:propertyDisjointWith rdf:resource="http://IRI#pcMarvel"/>
+    <owl:ObjectProperty rdf:about="http://IRI#requiresElement">
+        <rdfs:range rdf:resource="http://IRI#Element"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://IRI#pcMarvel -->
+    <!-- http://IRI#requiresItem -->
 
-    <owl:ObjectProperty rdf:about="http://IRI#pcMarvel">
-        <rdfs:domain rdf:resource="http://IRI#FightScene"/>
-        <rdfs:range rdf:resource="http://IRI#Marvel"/>
+    <owl:ObjectProperty rdf:about="http://IRI#requiresItem">
+        <rdfs:range rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#requiresPokemon -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#requiresPokemon">
+        <rdfs:range rdf:resource="http://IRI#Pokemon"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://IRI#triggerEvent -->
+
+    <owl:ObjectProperty rdf:about="http://IRI#triggerEvent">
+        <rdfs:domain rdf:resource="http://IRI#Option"/>
+        <rdfs:range rdf:resource="http://IRI#Event"/>
     </owl:ObjectProperty>
     
 
@@ -244,6 +266,16 @@
     
 
 
+    <!-- http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#hasNextScenesRef -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#hasNextScenesRef">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#NextScenesRef"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -255,28 +287,12 @@
     
 
 
-    <!-- http://IRI#Rule -->
+    <!-- http://IRI#hasContent -->
 
-    <owl:DatatypeProperty rdf:about="http://IRI#Rule"/>
-    
-
-
-    <!-- http://IRI#answers -->
-
-    <owl:DatatypeProperty rdf:about="http://IRI#answers">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://IRI#QuestionScene"/>
+    <owl:DatatypeProperty rdf:about="http://IRI#hasContent">
+        <rdfs:domain rdf:resource="http://IRI#Option"/>
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://IRI#decreasePointsLifeBy -->
-
-    <owl:DatatypeProperty rdf:about="http://IRI#decreasePointsLifeBy">
-        <rdfs:domain rdf:resource="http://IRI#BadItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:comment>Number of points that are decreasing player&apos;s live</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -312,6 +328,7 @@
     <!-- http://IRI#hasImageUrl -->
 
     <owl:DatatypeProperty rdf:about="http://IRI#hasImageUrl">
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
         <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
         <rdfs:comment>Every marvel character has an representative image</rdfs:comment>
@@ -347,16 +364,6 @@
     
 
 
-    <!-- http://IRI#increasePointsLifeBy -->
-
-    <owl:DatatypeProperty rdf:about="http://IRI#increasePointsLifeBy">
-        <rdfs:domain rdf:resource="http://IRI#GoodItem"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:comment>Number of points that are increasing player&apos;s live</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
     <!-- http://IRI#levelNumber -->
 
     <owl:DatatypeProperty rdf:about="http://IRI#levelNumber">
@@ -367,23 +374,75 @@
     
 
 
-    <!-- http://IRI#question -->
+    <!-- http://IRI#optionValue -->
 
-    <owl:DatatypeProperty rdf:about="http://IRI#question">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://IRI#QuestionScene"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:DatatypeProperty rdf:about="http://IRI#optionValue">
+        <rdfs:domain rdf:resource="http://IRI#Option"/>
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:oneOf>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                        <rdf:first>A</rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                <rdf:first>B</rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                        <rdf:first>C</rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first>D</rdf:first>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </owl:oneOf>
+            </rdfs:Datatype>
+        </rdfs:range>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://IRI#requiredLevel -->
+    <!-- http://IRI#requiresChoosenOption -->
 
-    <owl:DatatypeProperty rdf:about="http://IRI#requiredLevel">
-        <rdfs:subPropertyOf rdf:resource="http://IRI#Rule"/>
-        <rdfs:domain rdf:resource="http://IRI#LevelRule"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:comment xml:lang="en">A pokemon can perform the action of the ability if it has reached a specific level.</rdfs:comment>
+    <owl:DatatypeProperty rdf:about="http://IRI#requiresChoosenOption">
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:oneOf>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                        <rdf:first>A</rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                <rdf:first>B</rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                        <rdf:first>C</rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first>D</rdf:first>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </owl:oneOf>
+            </rdfs:Datatype>
+        </rdfs:range>
     </owl:DatatypeProperty>
     
 
@@ -394,6 +453,31 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdfs:domain rdf:resource="http://IRI#Scene"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://IRI#sceneType -->
+
+    <owl:DatatypeProperty rdf:about="http://IRI#sceneType">
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:oneOf>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                        <rdf:first>ACTIVE</rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                <rdf:first>PASSIVE</rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </owl:oneOf>
+            </rdfs:Datatype>
+        </rdfs:range>
     </owl:DatatypeProperty>
     
 
@@ -438,12 +522,54 @@
     
 
 
-    <!-- http://schema.org/color -->
+    <!-- http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#hasSelectionCriteria -->
 
-    <owl:DatatypeProperty rdf:about="http://schema.org/color">
-        <rdfs:domain rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#hasSelectionCriteria">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#NextScenesRef"/>
+        <rdfs:range>
+            <rdfs:Datatype>
+                <owl:oneOf>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                        <rdf:first>ELEMENT</rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                <rdf:first>ITEM</rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                        <rdf:first>NONE</rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first>OPTION</rdf:first>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first>POKEMON</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </owl:oneOf>
+            </rdfs:Datatype>
+        </rdfs:range>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#requires -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#requires">
+        <rdfs:domain rdf:resource="http://IRI#Scene"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>Color of an item</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -470,14 +596,6 @@
     
 
 
-    <!-- http://IRI#Ability -->
-
-    <owl:Class rdf:about="http://IRI#Ability">
-        <rdfs:comment>A pokemon can have some abilities.</rdfs:comment>
-    </owl:Class>
-    
-
-
     <!-- http://IRI#Action -->
 
     <owl:Class rdf:about="http://IRI#Action">
@@ -486,30 +604,15 @@
     
 
 
-    <!-- http://IRI#BadItem -->
+    <!-- http://IRI#Element -->
 
-    <owl:Class rdf:about="http://IRI#BadItem">
-        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
-        <owl:disjointWith rdf:resource="http://IRI#GoodItem"/>
-    </owl:Class>
+    <owl:Class rdf:about="http://IRI#Element"/>
     
 
 
-    <!-- http://IRI#FightScene -->
+    <!-- http://IRI#Event -->
 
-    <owl:Class rdf:about="http://IRI#FightScene">
-        <rdfs:subClassOf rdf:resource="http://IRI#Scene"/>
-        <owl:disjointWith rdf:resource="http://IRI#QuestionScene"/>
-        <rdfs:comment>A fight scene represents a step where the player is fighting using his pokemon</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://IRI#GoodItem -->
-
-    <owl:Class rdf:about="http://IRI#GoodItem">
-        <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Item"/>
-    </owl:Class>
+    <owl:Class rdf:about="http://IRI#Event"/>
     
 
 
@@ -525,14 +628,6 @@
 
     <owl:Class rdf:about="http://IRI#Level">
         <rdfs:comment>A level reprezents a series of actions in the game that needs to be accomplished in order to pass it.</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://IRI#LevelRule -->
-
-    <owl:Class rdf:about="http://IRI#LevelRule">
-        <rdfs:subClassOf rdf:resource="http://IRI#Rule"/>
     </owl:Class>
     
 
@@ -556,27 +651,18 @@
     
 
 
+    <!-- http://IRI#Option -->
+
+    <owl:Class rdf:about="http://IRI#Option"/>
+    
+
+
     <!-- http://IRI#Pokemon -->
 
     <owl:Class rdf:about="http://IRI#Pokemon">
         <rdfs:subClassOf rdf:resource="http://purl.org/net/VideoGameOntology#Character"/>
         <rdfs:comment>A character from PokeAPI</rdfs:comment>
     </owl:Class>
-    
-
-
-    <!-- http://IRI#QuestionScene -->
-
-    <owl:Class rdf:about="http://IRI#QuestionScene">
-        <rdfs:subClassOf rdf:resource="http://IRI#Scene"/>
-        <rdfs:comment>A question scene represents a step uith a question for the player</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://IRI#Rule -->
-
-    <owl:Class rdf:about="http://IRI#Rule"/>
     
 
 
@@ -626,6 +712,14 @@
     <!-- http://purl.org/net/VideoGameOntology#Character -->
 
     <owl:Class rdf:about="http://purl.org/net/VideoGameOntology#Character">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://IRI#Marvel"/>
+                    <rdf:Description rdf:about="http://IRI#Pokemon"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
         <rdfs:comment>An entity that is acting in the game</rdfs:comment>
     </owl:Class>
     
@@ -677,6 +771,55 @@
     
 
 
+    <!-- http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#NextScenesRef -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/gheorghita/ontologies/2022/11/gada#NextScenesRef"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://IRI#AIR -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#AIR">
+        <rdf:type rdf:resource="http://IRI#Element"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#EARTH -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#EARTH">
+        <rdf:type rdf:resource="http://IRI#Element"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#FIRE -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#FIRE">
+        <rdf:type rdf:resource="http://IRI#Element"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://IRI#WATER -->
+
+    <owl:NamedIndividual rdf:about="http://IRI#WATER">
+        <rdf:type rdf:resource="http://IRI#Element"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -685,9 +828,6 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <rdf:Description rdf:about="http://IRI#Rule">
-        <rdfs:comment>A condition that should be respected for a part of the game</rdfs:comment>
-    </rdf:Description>
     <rdf:Description rdf:about="http://IRI#hasLevel">
         <rdfs:comment>a player has a leved that was acchived by playing</rdfs:comment>
     </rdf:Description>

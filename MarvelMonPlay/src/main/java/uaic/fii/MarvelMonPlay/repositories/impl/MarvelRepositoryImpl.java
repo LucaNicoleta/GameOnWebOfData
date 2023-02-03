@@ -142,11 +142,11 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     private String getSelectStatementsForItems(Marvel marvel, boolean withOptionalClause) {
         List<Item> itemInventory = marvel.getItemInventory();
         AtomicReference<String> itemStatements = new AtomicReference<>("");
-        itemInventory.forEach(item -> {
+        /*itemInventory.forEach(item -> {
             String str = withOptionalClause ? "OPTIONAL{IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryItem ?" + item.getName() + "}. "
                                             : "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasInventoryItem ?" + item.getName() + ". ";
             itemStatements.getAndAccumulate(str, (s, s2) -> s + s2);
-        });
+        });*/
         return itemStatements.get();
     }
 

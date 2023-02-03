@@ -1,5 +1,6 @@
 package uaic.fii.MarvelMonPlay.models.characters;
 
+import uaic.fii.MarvelMonPlay.models.Event;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 
 import java.util.ArrayList;
@@ -63,6 +64,47 @@ public class Pokemon extends Character{
         this.powerAttack = powerAttack;
     }
 
+    public void increasePowerAttack() {
+        this.powerAttack+=10;
+    }
+    public void decreasePowerAttack() {
+        this.powerAttack-=10;
+        if(this.powerAttack<0)
+        this.powerAttack = 0;
+    }
+    public void increaseDefense() {
+        this.powerDefense+=10;
+    }
+    public void decreaseDefense() {
+        
+        this.powerDefense-=10;
+        if(this.powerDefense<0)
+        this.powerDefense = 0;
+    }
+    public Event receiveAttack(int power, String owner){
+        if(powerDefense<=0)
+        {
+            if(powerDefense<power){
+                int healthDamage = power - powerDefense;
+                powerDefense = 0;
+                healthPoints-=healthDamage; 
+                
+            }
+            else{
+                powerDefense-=power;
+            }
+        }
+        else{
+            if(healthPoints<=power)
+              healthPoints = 0;
+            else
+            healthPoints-=power;
+
+        }
+        if(healthPoints<=0)
+        return owner=="MC"?Event.LOST_FIGHT:Event.WON_FIGHT;
+        return Event.CONTINUE_FIGHT;
+    }
     public int getPowerDefense() {
         return powerDefense;
     }

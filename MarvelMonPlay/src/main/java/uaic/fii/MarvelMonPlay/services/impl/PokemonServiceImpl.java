@@ -5,6 +5,7 @@ import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
+import uaic.fii.MarvelMonPlay.models.Event;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
@@ -99,4 +100,18 @@ public class PokemonServiceImpl implements PokemonService {
     public void delete(Pokemon pokemon) {
         pokemonRepository.delete(pokemon);
     }
+
+    public Event fightRound(Pokemon pokemon_mc, Pokemon pokemon_npc)
+    {
+        Event firstFight = pokemon_mc.receiveAttack(pokemon_npc.getPowerAttack(),"MC");
+        if(firstFight == Event.LOST_FIGHT || firstFight == Event.WON_FIGHT)
+        return firstFight;
+        update(pokemon_npc, true);
+        update(pokemon_mc, true);
+        Event secFight = pokemon_npc.receiveAttack(pokemon_mc.getPowerAttack(), "NPC");
+        update(pokemon_npc, true);
+        update(pokemon_mc, true);
+        return secFight;
+    }
+    
 }

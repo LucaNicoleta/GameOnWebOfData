@@ -1,47 +1,49 @@
 package uaic.fii.MarvelMonPlay.repositories.impl;
 
+
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.stereotype.Repository;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.models.items.Item;
 import uaic.fii.MarvelMonPlay.repositories.ItemRepository;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
+import uaic.fii.MarvelMonPlay.models.scenes.Option;
 
-@Repository
-public class ItemRepositoryImpl implements ItemRepository {
+public class OptionRepositoryImpl {
     private final SparqlEndpoint sparqlEndpoint;
 
-    public ItemRepositoryImpl(SparqlEndpoint sparqlEndpoint){
+    public OptionRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
     }
-    @Override
-    public TupleQueryResult findAll() {
+
+    public TupleQueryResult findPerScene(String SceneIdentifier) {
         return sparqlEndpoint.executeQuery(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-            "select ?item ?action where {" +
-            "    ?item foaf:a vgo:Item ." +
-            "    ?item IRI:canPerformAction ?action ." +
+            "select ?option  where {" +
+            "    ?option foaf:a IRI:Option ." +
+            "    IRI:"+SceneIdentifier+" IRI:hasOption ?option ." +
             "}"
         );
     }
 
-    @Override
-    public void save(Item item) {
+
+    public void save(Option option) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "INSERT DATA {" +
-            "IRI:" + item.RES_IDENTIFIER + " foaf:a " + "vgo:Item" + " ." +
-            "IRI:" + item.RES_IDENTIFIER + " IRI:belongsToElement " + "IRI:" + item.getElement().toString() + "" + 
-            "IRI:" + item.RES_IDENTIFIER + " IRI:canPerformAction " + "IRI:" + item.getAction().toString() + "" + " . }"
+            "IRI:" + option.RES_IDENTIFIER + " foaf:a " + "IRI:Option" + " ." +
+            "IRI:" + option.RES_IDENTIFIER + " IRI:optionValue " + "IRI:" + option.optValue.name() + "" + " . "+
+            "IRI:" + option.RES_IDENTIFIER + " IRI:hasContent " + "\"" + option.content + "\"" + " . "+
+            "IRI:" + option.RES_IDENTIFIER + " IRI:triggerEvent " + "IRI:" + option.eventTriggered.name() + "" + " . }"
         );
     }
 
-    @Override
-    public void update(Item item) {
+/* 
+    public void update(Option option) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
@@ -62,5 +64,5 @@ public class ItemRepositoryImpl implements ItemRepository {
             "DELETE {IRI:" + item.RES_IDENTIFIER + " ?p ?o} " +
             "WHERE {IRI:" + item.RES_IDENTIFIER + " ?p ?o}"
         );
-    }
+    }*/
 }

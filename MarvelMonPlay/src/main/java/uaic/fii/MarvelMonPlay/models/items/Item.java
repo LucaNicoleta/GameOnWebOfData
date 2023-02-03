@@ -1,39 +1,38 @@
 package uaic.fii.MarvelMonPlay.models.items;
 
-import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import org.apache.solr.common.annotation.JsonProperty;
 
-public abstract class Item {
-    public final String RES_IDENTIFIER;
-    private final String name;
-    private final String color;
-    private final String description;
-    public abstract Pokemon performItemAction(Pokemon pokemon);
+import uaic.fii.MarvelMonPlay.models.Action;
+import uaic.fii.MarvelMonPlay.models.Element;
 
-    public Item(String RES_IDENTIFIER, String name, String color, String description) {
+public  class Item {
+
+    public final String RES_IDENTIFIER; 
+    @JsonProperty("element")
+    private final Element element;
+    @JsonProperty("action")
+    private final Action action;
+
+    public Item(String RES_IDENTIFIER, Element element, Action action) {
         this.RES_IDENTIFIER = RES_IDENTIFIER;
-        this.name = name;
-        this.color = color;
-        this.description = description;
+        this.element = element;
+        this.action = action;
     }
 
-    public String getName() {
-        return name;
+    public Element getElement() {
+        return element;
     }
+ 
 
-    public String getColor() {
-        return color;
-    }
-
-    public String getDescription() {
-        return description;
+    public Action getAction(){
+        return action;
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                ", description='" + description + '\'' +
+                "name='" + element + '\'' +
+                "action'="+ action.description + '\'' +
                 '}';
     }
 }

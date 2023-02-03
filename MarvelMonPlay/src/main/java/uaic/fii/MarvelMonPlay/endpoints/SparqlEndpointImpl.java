@@ -31,6 +31,7 @@ public class SparqlEndpointImpl implements SparqlEndpoint {
 
     @Override
     public void executeUpdate(String update) {
+        System.out.println(update);
         try (RepositoryConnection conn = repository.getConnection()) {
             conn.prepareUpdate(QueryLanguage.SPARQL, update).execute();
         }

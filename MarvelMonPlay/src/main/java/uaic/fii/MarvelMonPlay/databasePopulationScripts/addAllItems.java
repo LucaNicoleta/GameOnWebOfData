@@ -60,15 +60,19 @@ public class addAllItems {
         SceneRepository sc = new SceneRepository(serv);
         NextScenesRepository rf = new NextScenesRepository(serv);
         // Scene1
-        ss.add(new Scene("S1",
+        Scene s1 = new Scene("S1",
                 "You just woke up in a strange place. You look around and let yourself be overwhelmed by the magnificence of the surroundings. You find yourself laying in a patch of earth scattered by the most crystalline waters. You get up and go to inspect the area but your own reflection in the water steals your attention. A strange aura seems to be wrapped around your persona.",
-                "/realms/water.png", Collections.<Option>emptyList(), SceneTypes.PASSIVE, "", "NONE"));
+                "/realms/water.png", Collections.<Option>emptyList(), SceneTypes.PASSIVE, "", "NONE");
+        s1.setReference("S2");
+        ss.add(s1);
+
         // Scene2
         List<Option> i = new ArrayList<Option>();
         i.add(new Option("S2A", "url", Event.CHOOSE_WATER, OptionsEnum.A));
         i.add(new Option("S2B", "url", Event.CHOOSE_AIR, OptionsEnum.B));
         i.add(new Option("S2C", "url", Event.CHOOSE_EARTH, OptionsEnum.C));
         i.add(new Option("S2D", "url", Event.CHOOSE_FIRE, OptionsEnum.D));
+        ss.add(new Scene("S2", "Who do you want to see as your reflexion?", "null", i, SceneTypes.ACTIVE, "", "NONE"));
         // Scene3
         // Scene4
         i.add(new Option("S4A", "I'm a what?", Event.NONE, OptionsEnum.A));

@@ -26,12 +26,11 @@ public class NextScenesRepository {
                         "}");
     }
 
-
     public void save(NextSceneRef sceneRef) {
         StringBuilder s = new StringBuilder();
         for (String ref : sceneRef.posibleScenesRES)
             s.append("    IRI:" + sceneRef.RES_IDENTIFIER + " IRI:containsRefTo IRI:" + ref + " .");
-        
+
         sparqlEndpoint.executeUpdate(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
@@ -39,7 +38,6 @@ public class NextScenesRepository {
                         "insert data {" +
                         "IRI:" + sceneRef.RES_IDENTIFIER + " foaf:a " + "IRI:NextScenesRef" + " ." +
                         "IRI:" + sceneRef.RES_IDENTIFIER + " IRI:hasSelectionCriteria \"" + sceneRef.criteria + "\" ." +
-
 
                         s.toString() +
                         "}");

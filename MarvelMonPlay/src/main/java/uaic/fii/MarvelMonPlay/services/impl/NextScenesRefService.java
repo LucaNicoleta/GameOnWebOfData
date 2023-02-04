@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 
-import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.scenes.NextSceneRef;
 import uaic.fii.MarvelMonPlay.repositories.impl.NextScenesRepository;
 
@@ -17,11 +16,10 @@ public class NextScenesRefService {
         this.sceneRefRepository = sceneRefRepository;
     }
 
-    public NextSceneRef findByResIdentifier(String RES_Identifier)  {
-        NextSceneRef scene = null;
+    public NextSceneRef findByResIdentifier(String RES_Identifier) {
         List<String> scenes = new ArrayList<String>();
-        String criteria="";
-        String refRES="";
+        String criteria = "";
+        String refRES = "";
         try (TupleQueryResult tqr = sceneRefRepository.findRefbyScene(RES_Identifier)) {
             while (tqr.hasNext()) {
                 BindingSet bindingSet = tqr.next();
@@ -32,14 +30,10 @@ public class NextScenesRefService {
                 String ref = s.substring(s.indexOf('#') + 1);
                 scenes.add(ref);
 
-                System.out.println(ref + " \n" + criteria + "\n");
-
-
             }
         }
 
         return new NextSceneRef(refRES.substring(refRES.indexOf('#') + 1), criteria, scenes);
     }
-
 
 }

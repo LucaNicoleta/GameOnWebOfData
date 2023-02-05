@@ -30,6 +30,32 @@ public class AbilityRepositoryImpl implements AbilityRepository {
     }
 
     @Override
+    public TupleQueryResult findAbilityResIdentifiersByPokemonResIdentifier(String pokemonResIdentifier) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?ability" +
+            "    WHERE { " +
+            "    ?ability a IRI:Ability." +
+            "    IRI:" + pokemonResIdentifier + " IRI:hasAbility ?ability." +
+            "}"
+        );
+    }
+
+    @Override
+    public TupleQueryResult findByResIdentifier(String abilityResIdentifier) {
+        return sparqlEndpoint.executeQuery(
+            "    PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "    PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "    select ?name ?description " +
+            "    where {" +
+            "    IRI:" + abilityResIdentifier + " a IRI:Ability ." +
+            "    IRI:" + abilityResIdentifier + " foaf:name ?name ." +
+            "    IRI:" + abilityResIdentifier + " IRI:hasDescription ?description ." +
+            "}"
+        );
+    }
+
+    @Override
     public void save(Ability ability) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

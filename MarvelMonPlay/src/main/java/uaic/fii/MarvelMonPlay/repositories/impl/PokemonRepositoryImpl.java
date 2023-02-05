@@ -26,15 +26,15 @@ public class PokemonRepositoryImpl implements PokemonRepository {
     @Override
     public void save(Pokemon pokemon, boolean cascadeSave) {
         sparqlEndpoint.executeUpdate(
-                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
-                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-                "INSERT DATA {" +
-                "IRI:" + pokemon.RES_IDENTIFIER + " a " + "IRI:Pokemon" + ". " +
-                "IRI:" + pokemon.RES_IDENTIFIER + " foaf:name " + "\"" + pokemon.getName() + "\"" + ". " +
-                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
-                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
-                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
-                "IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + pokemon.getImageURL() + "\"" + " ." +
+                "   PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">  " +
+                "   PREFIX foaf: <http://xmlns.com/foaf/0.1/>   " +
+                "   INSERT DATA {   " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " a " + "IRI:Pokemon" + "  . " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " foaf:name " + "\"" + pokemon.getName() + "\"" + ". " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + pokemon.getImageURL() + "\"" + "." +
                 getInsertStatementsForAbilities(pokemon) +
                 "}"
         );
@@ -142,6 +142,25 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "    ?character IRI:hasImageURL ?imageURL ." +
             "}" +
             "GROUP BY ?character ?healthPoints ?powerAttack ?powerDefense ?imageURL"
+        );
+    }
+
+    @Override
+    public TupleQueryResult findByResIdentifier(String resIdentifier) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
+            "    WHERE {" +
+            "    IRI:" + resIdentifier + " a IRI:Pokemon ." +
+            "    IRI:" + resIdentifier + " foaf:name ?name. " +
+            "    IRI:" + resIdentifier + " IRI:hasAbility ?ability ." +
+            "    IRI:" + resIdentifier + " IRI:healthPoints ?healthPoints ." +
+            "    IRI:" + resIdentifier + " IRI:hasPowerAttack ?powerAttack ." +
+            "    IRI:" + resIdentifier + " IRI:hasDefense ?powerDefense ." +
+            "    IRI:" + resIdentifier + " IRI:hasImageURL ?imageURL ." +
+            "    }" +
+            "GROUP BY ?name ?healthPoints ?powerAttack ?powerDefense ?imageURL"
         );
     }
 

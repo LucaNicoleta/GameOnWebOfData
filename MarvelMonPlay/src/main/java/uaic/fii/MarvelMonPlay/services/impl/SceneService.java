@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 
+import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.scenes.NextSceneRef;
 import uaic.fii.MarvelMonPlay.models.scenes.Option;
@@ -17,6 +18,7 @@ import uaic.fii.MarvelMonPlay.models.Event;
 import uaic.fii.MarvelMonPlay.repositories.impl.NextScenesRepository;
 import uaic.fii.MarvelMonPlay.repositories.impl.SceneRepository;
 
+@Service
 public class SceneService {
     SceneRepository sceneRepository;
     NextScenesRefService nextServ;
@@ -127,8 +129,8 @@ public class SceneService {
         return options;
     }
 
-    public Scene nextScene(String SceneRES, String Marvel, String option) {
-        NextSceneRef nextScenes = nextServ.findByResIdentifier(SceneRES);
+    public Scene nextScene(String currentSceneRes, String marvelRes, String chosenOption) {
+        NextSceneRef nextScenes = nextServ.findByResIdentifier(currentSceneRes);
 
         if (nextScenes.criteria.equals("NONE"))
             try {
@@ -140,9 +142,9 @@ public class SceneService {
             }
 
         if (nextScenes.criteria.equals("OPTION"))
-            return findByChoosenOption(nextScenes, option);
+            return findByChoosenOption(nextScenes, chosenOption);
         else
 
-            return findByPlayerStats(nextScenes, Marvel, nextScenes.criteria);
+            return findByPlayerStats(nextScenes, marvelRes, nextScenes.criteria);
     }
 }

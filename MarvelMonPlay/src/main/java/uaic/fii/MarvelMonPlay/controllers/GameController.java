@@ -1,21 +1,25 @@
 package uaic.fii.MarvelMonPlay.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.api.mappings.CurrentGameStateDto;
-import uaic.fii.MarvelMonPlay.api.mappings.PlayerDto;
+import uaic.fii.MarvelMonPlay.api.mappings.InventoryDto;
 import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
+import uaic.fii.MarvelMonPlay.exceptions.ItemNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
-import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
-import uaic.fii.MarvelMonPlay.services.MarvelService;
+import uaic.fii.MarvelMonPlay.services.InventoryService;
+import uaic.fii.MarvelMonPlay.services.PlayerService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -23,18 +27,21 @@ import java.util.List;
 public class GameController {
     public static final String BASE_URL = "/api/v1/game";
     private final EnemyGeneratorService enemyGeneratorService;
+    @Autowired
+    private PlayerService playerService;
     private final SceneService sceneService;
 
     @Autowired
-    private MarvelService marvelService;
+    private InventoryService inventoryService;
 
-    public GameController(EnemyGeneratorService enemyGeneratorService, SceneService sceneService){
+    public GameController(EnemyGeneratorService enemyGeneratorService, SceneService sceneService) {
         this.enemyGeneratorService = enemyGeneratorService;
         this.sceneService = sceneService;
     }
+
     @GetMapping("/npc/{level}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Marvel> getMarvelNPC(@PathVariable Level level){
+    public List<Marvel> getMarvelNPC(@PathVariable Level level) {
         return enemyGeneratorService.generateMarvelEnemy(level);
     }
 
@@ -53,10 +60,19 @@ public class GameController {
         return sceneService.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
     }
 
-    @GetMapping("/pokemonInventory")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Pokemon> getPokemonInventory(@RequestBody PlayerDto playerDto) throws PokemonNotFoundException, AbilityNotFoundException {
-        String marvelResIdentifier = playerDto.getMarvelResIdentifier();
-        return marvelService.findPokemonInventory(marvelResIdentifier);
+    @GetMapping("/inventory")
+    @ResponseBody
+    public InventoryDto getPokemonInventory(HttpServletRequest request) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException {
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        return inventoryService.getMarvelInventory(player.getMarvelCharacter().RES_IDENTIFIER);
+    }
+
+    // This is for test
+    @GetMapping("/inventoryWithoutAuthentication/{marvelIdentifier}")
+    @ResponseBody
+    public InventoryDto getPokemonInventoryWithoutAuthentication(@PathVariable String marvelIdentifier) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException {
+        return inventoryService.getMarvelInventory(marvelIdentifier);
     }
 }

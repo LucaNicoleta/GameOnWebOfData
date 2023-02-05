@@ -6,11 +6,14 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
+import uaic.fii.MarvelMonPlay.exceptions.ItemNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
+import uaic.fii.MarvelMonPlay.models.items.Item;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
+import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
 import uaic.fii.MarvelMonPlay.services.MarvelService;
 import uaic.fii.MarvelMonPlay.services.PokemonService;
 
@@ -23,6 +26,9 @@ public class MarvelServiceImpl implements MarvelService {
     private final MarvelRepository marvelRepository;
     @Autowired
     private PokemonService pokemonService;
+
+    @Autowired
+    private ItemServiceCrud itemServiceCrud;
 
     public MarvelServiceImpl(MarvelRepository marvelRepository){
         this.marvelRepository = marvelRepository;
@@ -95,6 +101,31 @@ public class MarvelServiceImpl implements MarvelService {
             pokemonList.add(pokemon);
         }
         return pokemonList;
+    }
+
+    @Override
+    public List<String> findItemInventoryIdentifiers(String marvelResIdentifier) {
+        List<String> itemIdentifiers = new ArrayList<>();
+        try (TupleQueryResult tqr = marvelRepository.findItemIdentifiers(marvelResIdentifier)) {
+            while (tqr.hasNext()){
+                BindingSet bs = tqr.next();
+                String itemIdentifierWithIRI = bs.getValue("item").stringValue();
+                String itemIdentifierWithoutIRI = itemIdentifierWithIRI.substring(itemIdentifierWithIRI.indexOf("#")+1);
+                itemIdentifiers.add(itemIdentifierWithoutIRI);
+            }
+        }
+        return itemIdentifiers;
+    }
+
+    @Override
+    public List<Item> findItemInventory(String marvelResIdentifier) throws ItemNotFoundException {
+        List<Item> itemList = new ArrayList<>();
+        List<String> itemIdentifiers = findItemInventoryIdentifiers(marvelResIdentifier);
+        for(String itemIdentifier : itemIdentifiers){
+            Item item = itemServiceCrud.findByResIdentifier(itemIdentifier);
+            itemList.add(item);
+        }
+        return itemList;
     }
 
     @Override

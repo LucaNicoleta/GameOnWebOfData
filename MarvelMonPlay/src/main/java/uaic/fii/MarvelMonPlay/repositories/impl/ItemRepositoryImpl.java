@@ -14,6 +14,8 @@ public class ItemRepositoryImpl implements ItemRepository {
     public ItemRepositoryImpl(SparqlEndpoint sparqlEndpoint){
         this.sparqlEndpoint = sparqlEndpoint;
     }
+
+    @Deprecated
     @Override
     public TupleQueryResult findAll() {
         return sparqlEndpoint.executeQuery(
@@ -28,6 +30,20 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
+    public TupleQueryResult findByResIdentifier(String itemResIdentifier) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+            "    SELECT ?element ?action WHERE {" +
+            "    IRI:" + itemResIdentifier + " foaf:a vgo:Item ." +
+            "    IRI:" + itemResIdentifier + " IRI:belongsToElement ?element ." +
+            "    IRI:" + itemResIdentifier + " IRI:canPerformAction ?action ." +
+            "}"
+        );
+    }
+
+    @Override
     public void save(Item item) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
@@ -35,8 +51,8 @@ public class ItemRepositoryImpl implements ItemRepository {
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
             "INSERT DATA {" +
             "IRI:" + item.RES_IDENTIFIER + " foaf:a " + "vgo:Item" + " ." +
-            "IRI:" + item.RES_IDENTIFIER + " IRI:belongsToElement " + "IRI:" + item.getElement().toString() + "" + 
-            "IRI:" + item.RES_IDENTIFIER + " IRI:canPerformAction " + "IRI:" + item.getAction().toString() + "" + " . }"
+            "IRI:" + item.RES_IDENTIFIER + " IRI:belongsToElement IRI:" + item.getElement().name() + ". " +
+            "IRI:" + item.RES_IDENTIFIER + " IRI:canPerformAction IRI:" + item.getAction().name() + ". }"
         );
     }
 

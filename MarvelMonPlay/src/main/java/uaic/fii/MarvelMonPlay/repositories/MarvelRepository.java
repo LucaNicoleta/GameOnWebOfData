@@ -8,6 +8,7 @@ public interface MarvelRepository {
     void save(Marvel marvel, boolean cascadeSave);
     TupleQueryResult findByName(String name);
     TupleQueryResult findPokemonIdentifiers(String marvelResIdentifier);
+    TupleQueryResult findItemIdentifiers(String marvelResIdentifier);
     TupleQueryResult findByResIdentifier(String RES_IDENTIFIER);
     void update(Marvel marvel, boolean cascadeUpdate);
     void delete(Marvel marvel);

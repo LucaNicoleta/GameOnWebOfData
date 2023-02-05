@@ -154,7 +154,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "    WHERE {" +
             "    IRI:" + resIdentifier + " a IRI:Pokemon ." +
             "    IRI:" + resIdentifier + " foaf:name ?name. " +
-            "    IRI:" + resIdentifier + " IRI:hasAbility ?ability ." +
+            "    OPTIONAL{IRI:" + resIdentifier + " IRI:hasAbility ?ability }." +
             "    IRI:" + resIdentifier + " IRI:healthPoints ?healthPoints ." +
             "    IRI:" + resIdentifier + " IRI:hasPowerAttack ?powerAttack ." +
             "    IRI:" + resIdentifier + " IRI:hasDefense ?powerDefense ." +

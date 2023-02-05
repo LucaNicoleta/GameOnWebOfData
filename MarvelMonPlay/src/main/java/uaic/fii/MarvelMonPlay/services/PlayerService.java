@@ -6,5 +6,6 @@ import uaic.fii.MarvelMonPlay.models.players.Player;
 public interface PlayerService {
     Player findPlayerByUsername(String username) throws UsernameNotFoundException;
     void save(Player player, boolean cascadeSave);
+    void update(Player player, boolean cascadeSave);
     void delete(Player player);
 }

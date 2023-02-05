@@ -12,6 +12,7 @@ import uaic.fii.MarvelMonPlay.exceptions.PlayerAlreadyRegisteredException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.impl.PlayerRepositoryImpl;
@@ -60,11 +61,10 @@ public class PlayerServiceImpl implements PlayerService {
                 String playerResIdentifier = bindingSet.getValue("player").stringValue();
                 playerResIdentifier = playerResIdentifier.substring(playerResIdentifier.indexOf("#")+1);
                 int levelIndex = Integer.parseInt(bindingSet.getValue("level").stringValue());
-                Level level = Level.values()[levelIndex];
+                Level level = new Level(Stage.values()[levelIndex], null); //TODO:get level scene
                 int appUserRoleIndex = Integer.parseInt(bindingSet.getValue("appUserRole").stringValue());
                 AppUserRole appUserRole = AppUserRole.values()[appUserRoleIndex];
                 String password = bindingSet.getValue("encryptedPassword").stringValue();
-                //TODO: set the unencrypted password
                 return new Player(playerResIdentifier, username, password, marvel, level, appUserRole);
             }
         }
@@ -74,6 +74,11 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void save(Player player, boolean cascadeSave) {
         playerRepository.save(player, cascadeSave);
+    }
+
+    @Override
+    public void update(Player player, boolean cascadeSave) {
+        playerRepository.update(player, true);
     }
 
     @Override

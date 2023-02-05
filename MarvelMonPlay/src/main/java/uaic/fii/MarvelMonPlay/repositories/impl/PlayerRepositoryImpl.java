@@ -45,9 +45,30 @@ public class PlayerRepositoryImpl implements PlayerRepository {
             "INSERT DATA {" +
                 "IRI:" + player.RES_IDENTIFIER + " a " + "vgo:Player" + "; " +
                 "vgo:username " + "\"" + player.getUsername() + "\"" + ". " +
-                "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +  //TODO: should encrypt the password?
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + player.getMarvelCharacter().RES_IDENTIFIER + ". " +
-                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().ordinal() + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasAppUserRole " + player.getAppUserRole().ordinal() + ". " +
+            "}"
+        );
+
+        if(cascadeSave){
+            marvelRepository.save(player.getMarvelCharacter(), true);
+        }
+    }
+
+    public void update(Player player, boolean cascadeSave) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "DELETE {IRI:" + player.RES_IDENTIFIER + " ?p ?o} " +
+            "WHERE {IRI:" + player.RES_IDENTIFIER + " ?p ?o}" +
+            "INSERT DATA {" +
+                "IRI:" + player.RES_IDENTIFIER + " a " + "vgo:Player" + "; " +
+                "vgo:username " + "\"" + player.getUsername() + "\"" + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + player.getMarvelCharacter().RES_IDENTIFIER + ". " +
+                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasAppUserRole " + player.getAppUserRole().ordinal() + ". " +
             "}"
         );

@@ -22,7 +22,7 @@ public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
     }
     @Override
     public List<Marvel> generateMarvelEnemy(Level level) {
-        switch (level){
+        switch (level.stage){
             case WATER: {
                 Marvel triton = getNPCMarvel("Triton");
                 Pokemon tentacruel = getNPCPokemon("tentacruel", 5, 3);

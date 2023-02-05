@@ -12,6 +12,7 @@ import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
@@ -58,6 +59,18 @@ public class GameController {
         String marvelIdentifier = currentGameStateDto.getMarvelResIdentifier();
         String chosenOption = currentGameStateDto.getChosenOption();
         return sceneService.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
+    }
+
+    @GetMapping("/restart")
+    @ResponseStatus(HttpStatus.OK)
+    public Scene restartGame(HttpServletRequest request) throws ResourceNotFoundException {
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        player.setMarvelCharacter(new Marvel(" "," ", " ", " "));
+        player.setLevel(new Level(Stage.WATER, sceneService.findByResIdentifier("S1")));
+        playerService.update(player, true);
+        return player.getLevel().getScene();
     }
 
     @GetMapping("/inventory")

@@ -3,11 +3,16 @@ package uaic.fii.MarvelMonPlay.services.impl;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
+import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.services.MarvelService;
+import uaic.fii.MarvelMonPlay.services.PokemonService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +21,8 @@ import java.util.List;
 public class MarvelServiceImpl implements MarvelService {
 
     private final MarvelRepository marvelRepository;
+    @Autowired
+    private PokemonService pokemonService;
 
     public MarvelServiceImpl(MarvelRepository marvelRepository){
         this.marvelRepository = marvelRepository;
@@ -63,6 +70,31 @@ public class MarvelServiceImpl implements MarvelService {
             throw new ResourceNotFoundException("Marvel character by name " + name + " not found");
         }
         return marvel;
+    }
+
+    @Override
+    public List<String> findPokemonInventoryResIdentifiers(String marvelResIdentifier) {
+        List<String> pokemonResIdentifiers = new ArrayList<>();
+        try (TupleQueryResult tqr = marvelRepository.findPokemonIdentifiers(marvelResIdentifier)) {
+            while(tqr.hasNext()){
+                BindingSet bs = tqr.next();
+                String pokemonResIdentifierWithIRI = bs.getValue("pokemon").stringValue();
+                String pokemonResIdentifierWithoutIRI = pokemonResIdentifierWithIRI.substring(pokemonResIdentifierWithIRI.indexOf("#")+1);
+                pokemonResIdentifiers.add(pokemonResIdentifierWithoutIRI);
+            }
+        }
+        return pokemonResIdentifiers;
+    }
+
+    @Override
+    public List<Pokemon> findPokemonInventory(String marvelResIdentifier) throws PokemonNotFoundException, AbilityNotFoundException {
+        List<Pokemon> pokemonList = new ArrayList<>();
+        List<String> pokemonIdentifiers = findPokemonInventoryResIdentifiers(marvelResIdentifier);
+        for(String pokemonIdentifier : pokemonIdentifiers){
+            Pokemon pokemon = pokemonService.findByResIdentifier(pokemonIdentifier);
+            pokemonList.add(pokemon);
+        }
+        return pokemonList;
     }
 
     @Override

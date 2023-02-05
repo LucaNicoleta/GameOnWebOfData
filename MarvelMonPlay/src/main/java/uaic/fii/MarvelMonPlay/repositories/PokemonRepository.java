@@ -8,5 +8,6 @@ public interface PokemonRepository {
     void update(Pokemon pokemon, boolean cascadeUpdate);
     TupleQueryResult findAll();
     TupleQueryResult findByName(String name);
+    TupleQueryResult findByResIdentifier(String resIdentifier);
     void delete(Pokemon pokemon);
 }

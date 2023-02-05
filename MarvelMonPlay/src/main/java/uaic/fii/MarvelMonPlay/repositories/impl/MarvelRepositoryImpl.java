@@ -87,6 +87,18 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     }
 
     @Override
+    public TupleQueryResult findItemIdentifiers(String marvelResIdentifier) {
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?item " +
+            "    WHERE {" +
+            "    IRI:" + marvelResIdentifier + " a IRI:Marvel." +
+            "    IRI:" + marvelResIdentifier + " IRI:hasInventoryItem ?item." +
+            "}"
+        );
+    }
+
+    @Override
     public TupleQueryResult findByResIdentifier(String RES_IDENTIFIER) {
         return sparqlEndpoint.executeQuery(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

@@ -4,16 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.api.mappings.CurrentGameStateDto;
+import uaic.fii.MarvelMonPlay.api.mappings.InventoryDto;
 import uaic.fii.MarvelMonPlay.api.mappings.PlayerDto;
 import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
+import uaic.fii.MarvelMonPlay.exceptions.ItemNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
-import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
-import uaic.fii.MarvelMonPlay.services.MarvelService;
+import uaic.fii.MarvelMonPlay.services.InventoryService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class GameController {
     private final SceneService sceneService;
 
     @Autowired
-    private MarvelService marvelService;
+    private InventoryService inventoryService;
 
     public GameController(EnemyGeneratorService enemyGeneratorService, SceneService sceneService){
         this.enemyGeneratorService = enemyGeneratorService;
@@ -53,10 +54,9 @@ public class GameController {
         return sceneService.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
     }
 
-    @GetMapping("/pokemonInventory")
+    @GetMapping("/inventory")
     @ResponseStatus(HttpStatus.OK)
-    public List<Pokemon> getPokemonInventory(@RequestBody PlayerDto playerDto) throws PokemonNotFoundException, AbilityNotFoundException {
-        String marvelResIdentifier = playerDto.getMarvelResIdentifier();
-        return marvelService.findPokemonInventory(marvelResIdentifier);
+    public InventoryDto getPokemonInventory(@RequestBody PlayerDto playerDto) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException {
+       return inventoryService.getMarvelInventory(playerDto.getMarvelResIdentifier());
     }
 }

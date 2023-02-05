@@ -4,6 +4,7 @@ public class PlayerDto {
     private String playerResIdentifier;
     private String marvelResIdentifier;
 
+    public PlayerDto(){}
     private PlayerDto(String marvelResIdentifier, String playerResIdentifier){
         this.marvelResIdentifier = marvelResIdentifier;
         this.playerResIdentifier = playerResIdentifier;

@@ -1,11 +1,13 @@
 package uaic.fii.MarvelMonPlay.services.impl;
 
+import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import uaic.fii.MarvelMonPlay.exceptions.ItemNotFoundException;
 import uaic.fii.MarvelMonPlay.models.Action;
+import uaic.fii.MarvelMonPlay.models.Element;
 import uaic.fii.MarvelMonPlay.models.items.Item;
 import uaic.fii.MarvelMonPlay.repositories.ItemRepository;
 import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
@@ -13,7 +15,6 @@ import uaic.fii.MarvelMonPlay.services.ItemServiceCrud;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class ItemServiceCrudImpl implements ItemServiceCrud {
     @Autowired
     private  ItemRepository itemRepository;
@@ -34,6 +35,28 @@ public class ItemServiceCrudImpl implements ItemServiceCrud {
             }
         }
         return items;
+    }
+
+    @Override
+    public Item findByResIdentifier(String itemResIdentifier) throws ItemNotFoundException {
+        try (TupleQueryResult tqr = itemRepository.findByResIdentifier(itemResIdentifier)) {
+            if(tqr.hasNext()){
+                BindingSet bs = tqr.next();
+                Value elementValue = bs.getValue("element");
+                Value actionValue = bs.getValue("action");
+
+                String elementWithIRI = elementValue.stringValue();
+                String elementWithoutIRI = elementWithIRI.substring(elementWithIRI.indexOf("#") + 1);
+
+                String actionWithIRI = actionValue.stringValue();
+                String actionWithoutIRI = actionWithIRI.substring(actionWithIRI.indexOf("#") + 1);
+
+                Element element = Element.valueOf(elementWithoutIRI);
+                Action action = Action.valueOf(actionWithoutIRI);
+                return new Item(itemResIdentifier, element, action);
+            }
+            throw new ItemNotFoundException("Item " + itemResIdentifier + " has not been found");
+        }
     }
 
     @Override

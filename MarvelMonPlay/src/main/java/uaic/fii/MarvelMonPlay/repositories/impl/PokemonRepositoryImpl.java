@@ -80,6 +80,58 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         }
     }
 
+    @Override
+    public void updateDefense(String RES_IDENTIFIER, int value) {
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                        "DELETE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasImageURL ?o5. " +
+                        "}" +
+                        "INSERT {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasDefense " + "\"" + value + "\"" + ". " +
+                        "}" +
+                        "WHERE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasDefense ?o4. " +
+                        "}"
+        );
+
+    }
+
+    @Override
+    public void updateHealth(String RES_IDENTIFIER, int value) {
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                        "DELETE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
+                        "}" +
+                        "INSERT {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:healthPoints " + "\"" + value + "\"" + ". " +
+                        "}" +
+                        "WHERE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:healthPoints ?o2. " +
+                        "}"
+        );
+    }
+
+    @Override
+    public void updateAttack(String RES_IDENTIFIER, int value) {
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                        "DELETE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
+                        "}" +
+                        "INSERT {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + value + "\"" + ". " +
+                        "}" +
+                        "WHERE {" +
+                        "IRI:" + RES_IDENTIFIER + " IRI:hasPowerAttack ?o3. " +
+                        "}"
+        );
+    }
+
     private void updateAbilities(List<Ability> abilities) {
         abilities.forEach(ability -> abilityService.update(ability));
     }

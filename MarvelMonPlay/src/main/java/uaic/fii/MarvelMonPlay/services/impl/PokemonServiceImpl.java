@@ -141,6 +141,21 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public void updateDefense(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateDefense(RES_IDENTIFIER, value);
+    }
+
+    @Override
+    public void updateHealth(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateHealth(RES_IDENTIFIER, value);
+    }
+
+    @Override
+    public void updateAttack(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateAttack(RES_IDENTIFIER, value);
+    }
+
+    @Override
     public void delete(Pokemon pokemon) {
         pokemonRepository.delete(pokemon);
     }

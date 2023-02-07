@@ -19,8 +19,8 @@ public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
 
-
-    SceneService sceneService;
+    @Autowired
+    private SceneService sceneService;
 
     @Autowired
     private MarvelRepository marvelRepository;
@@ -117,7 +117,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
 
     @Override
     public void updateForRestart(String PLAYER_RES_IDENTIFIER) throws ResourceNotFoundException {
-        Level level = new Level(Stage.WATER, sceneService.findByResIdentifier("S1"));
+        Level level = new Level(Stage.WATER, sceneService.getFirstScene());
         sparqlEndpoint.executeUpdate(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +

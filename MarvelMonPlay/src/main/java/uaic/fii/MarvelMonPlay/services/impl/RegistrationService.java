@@ -11,13 +11,11 @@ import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class RegistrationService {
-    PlayerServiceImpl playerService;
-    SceneService sceneService;
+    private PlayerServiceImpl playerService;
+    private SceneService sceneService;
 
     //TODO: change String to Marvel type
     public String register(RegisterDto registerDto) throws PlayerAlreadyRegisteredException, ResourceNotFoundException {
@@ -25,7 +23,7 @@ public class RegistrationService {
                 registerDto.getUsername(),
                 registerDto.getPassword(),
                 new Marvel("", "", "", ""),
-                new Level(Stage.WATER,sceneService.findByResIdentifier("S1")),
+                new Level(Stage.WATER, sceneService.getFirstScene()),
                 AppUserRole.USER));
     }
 }

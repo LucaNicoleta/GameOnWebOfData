@@ -147,4 +147,8 @@ public class SceneService {
 
             return findByPlayerStats(nextScenes, marvelRes, nextScenes.criteria);
     }
+
+    public Scene getFirstScene() throws ResourceNotFoundException {
+        return findByResIdentifier("S1");
+    }
 }

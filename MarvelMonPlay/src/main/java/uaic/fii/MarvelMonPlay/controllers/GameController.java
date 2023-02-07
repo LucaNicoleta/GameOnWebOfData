@@ -12,14 +12,12 @@ import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
-import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
 import uaic.fii.MarvelMonPlay.services.InventoryService;
 import uaic.fii.MarvelMonPlay.services.PlayerService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
-import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
 import java.security.Principal;
 import java.util.List;
@@ -50,7 +48,7 @@ public class GameController {
     @GetMapping("/start")
     @ResponseStatus(HttpStatus.OK)
     public Scene startGame() throws ResourceNotFoundException {
-        return sceneService.findByResIdentifier("S1");
+        return sceneService.getFirstScene();
     }
 
     @GetMapping("/nextScene")
@@ -74,7 +72,7 @@ public class GameController {
 
     @PostMapping("/set/marvel")
     @ResponseStatus(HttpStatus.OK)
-    public String setMarvel(HttpServletRequest request, @RequestBody Marvel marvel) throws ResourceNotFoundException {
+    public String setMarvel(HttpServletRequest request, @RequestBody Marvel marvel) {
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);

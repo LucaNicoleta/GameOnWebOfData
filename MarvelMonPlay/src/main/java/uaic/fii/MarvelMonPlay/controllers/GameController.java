@@ -19,6 +19,7 @@ import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
 import uaic.fii.MarvelMonPlay.services.InventoryService;
 import uaic.fii.MarvelMonPlay.services.PlayerService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
+import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
 import java.security.Principal;
 import java.util.List;
@@ -67,10 +68,28 @@ public class GameController {
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);
-        player.setMarvelCharacter(new Marvel(" "," ", " ", " "));
-        player.setLevel(new Level(Stage.WATER, sceneService.findByResIdentifier("S1")));
-        playerService.update(player, true);
+        playerService.updateForRestart(player.RES_IDENTIFIER);
         return player.getLevel().getScene();
+    }
+
+    @PostMapping("/set/marvel")
+    @ResponseStatus(HttpStatus.OK)
+    public String setMarvel(HttpServletRequest request, @RequestBody Marvel marvel) throws ResourceNotFoundException {
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        playerService.setMarvelCharacter(player.RES_IDENTIFIER, marvel, true);
+        return "Marvel character added successfully!";
+    }
+    @PostMapping("/update/Level")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateLevel(HttpServletRequest request, @RequestBody Level level){
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        player.setLevel(level);
+        playerService.updateLevel(player.RES_IDENTIFIER, level);
+        return "Level updated successfully!";
     }
 
     @GetMapping("/inventory")

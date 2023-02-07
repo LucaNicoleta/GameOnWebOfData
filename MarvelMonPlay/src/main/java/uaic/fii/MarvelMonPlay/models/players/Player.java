@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.zookeeper.Op;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import uaic.fii.MarvelMonPlay.models.levels.Level;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @Getter
 @Setter

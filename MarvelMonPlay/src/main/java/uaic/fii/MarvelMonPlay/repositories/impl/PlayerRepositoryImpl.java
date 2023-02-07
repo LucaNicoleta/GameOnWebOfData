@@ -4,15 +4,23 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
+import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
+import uaic.fii.MarvelMonPlay.models.characters.Marvel;
+import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;
+import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 
 @Service
 public class PlayerRepositoryImpl implements PlayerRepository {
 
     private final SparqlEndpoint sparqlEndpoint;
+
+
+    SceneService sceneService;
 
     @Autowired
     private MarvelRepository marvelRepository;
@@ -76,6 +84,50 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         if(cascadeSave){
             marvelRepository.save(player.getMarvelCharacter(), true);
         }
+    }
+
+    @Override
+    public void updateLevel(String PLAYER_RES_IDENTIFIER, Level level) {
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                        "DELETE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel ?o} " +
+                        "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel ?o}" +
+                        "INSERT DATA {" +
+                        "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel " + level.getStage().ordinal() + "}"
+        );
+    }
+
+    @Override
+    public void setMarvelCharacter(String PLAYER_RES_IDENTIFIER, Marvel marvel, boolean cascadeSave) {
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                        "DELETE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o} " +
+                        "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o}" +
+                        "INSERT DATA {" +
+                        "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + marvel.RES_IDENTIFIER + "}"
+        );
+
+        if(cascadeSave){
+            marvelRepository.save(marvel, true);
+        }
+
+    }
+
+    @Override
+    public void updateForRestart(String PLAYER_RES_IDENTIFIER) throws ResourceNotFoundException {
+        Level level = new Level(Stage.WATER, sceneService.findByResIdentifier("S1"));
+        sparqlEndpoint.executeUpdate(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                        "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                        "DELETE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o ." +
+                        "IRI:" + PLAYER_RES_IDENTIFIER + " hasLevel ?o} " +
+                        "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " ?p ?o}" +
+                        "INSERT DATA {" +
+                        "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel " + level.getStage().ordinal() + "}"
+        );
+
     }
 
     public void delete(Player player) {

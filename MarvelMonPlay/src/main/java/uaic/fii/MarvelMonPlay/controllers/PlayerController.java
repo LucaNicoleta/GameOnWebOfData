@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.exceptions.PlayerAlreadyRegisteredException;
+import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.services.impl.RegistrationService;
 import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
@@ -33,7 +34,7 @@ public class PlayerController {
     }
 
     @PostMapping("/signup")
-    public String registerUser(@RequestBody RegisterDto registerDto) throws PlayerAlreadyRegisteredException {
+    public String registerUser(@RequestBody RegisterDto registerDto) throws PlayerAlreadyRegisteredException, ResourceNotFoundException {
 
         return registrationService.register(registerDto);
 

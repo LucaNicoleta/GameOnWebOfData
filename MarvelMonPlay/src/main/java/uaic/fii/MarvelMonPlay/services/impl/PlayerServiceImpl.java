@@ -1,6 +1,7 @@
 package uaic.fii.MarvelMonPlay.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.apache.zookeeper.Op;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,22 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void update(Player player, boolean cascadeSave) {
-        playerRepository.update(player, true);
+        playerRepository.update(player, cascadeSave);
+    }
+
+    @Override
+    public void updateForRestart(String PLAYER_RES_IDENTIFIER) throws ResourceNotFoundException {
+        playerRepository.updateForRestart(PLAYER_RES_IDENTIFIER);
+    }
+
+    @Override
+    public void setMarvelCharacter(String PLAYER_RES_IDENTIFIER, Marvel marvel, boolean cascadeSave) {
+        playerRepository.setMarvelCharacter(PLAYER_RES_IDENTIFIER, marvel, cascadeSave);
+    }
+
+    @Override
+    public void updateLevel(String PLAYER_RES_IDENTIFIER, Level level) {
+        playerRepository.updateLevel(PLAYER_RES_IDENTIFIER, level);
     }
 
     @Override

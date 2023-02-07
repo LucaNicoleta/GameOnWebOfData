@@ -11,6 +11,8 @@ import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.utils.RegisterDto;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -22,7 +24,7 @@ public class RegistrationService {
         return playerService.signUpUser( new Player(registerDto.getRES_IDENTIFIER(),
                 registerDto.getUsername(),
                 registerDto.getPassword(),
-                new Marvel(" "," ", " ", " "),
+                new Marvel("", "", "", ""),
                 new Level(Stage.WATER,sceneService.findByResIdentifier("S1")),
                 AppUserRole.USER));
     }

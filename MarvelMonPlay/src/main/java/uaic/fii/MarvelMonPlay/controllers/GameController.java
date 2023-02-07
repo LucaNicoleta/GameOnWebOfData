@@ -60,6 +60,15 @@ public class GameController {
         return sceneService.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
     }
 
+    @GetMapping("/currentScene")
+    @ResponseStatus(HttpStatus.OK)
+    public Scene currentScene(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        return player.getLevel().scene;
+    }
+
     @GetMapping("/restart")
     @ResponseStatus(HttpStatus.OK)
     public Scene restartGame(HttpServletRequest request) throws ResourceNotFoundException {

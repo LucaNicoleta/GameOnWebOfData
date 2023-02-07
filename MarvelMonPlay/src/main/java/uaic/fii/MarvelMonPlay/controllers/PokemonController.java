@@ -43,13 +43,13 @@ public class PokemonController {
     @PostMapping("/update/attack")
     public String updateAttack(@RequestBody Pokemon pokemon) throws ResourceNotFoundException {
         pokemonService.updateAttack(pokemon.RES_IDENTIFIER, pokemon.getPowerAttack());
-        return "Health updated successfully!";
+        return "Attack updated successfully!";
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/update/defense")
     public String updateDefense(@RequestBody Pokemon pokemon) throws ResourceNotFoundException {
         pokemonService.updateDefense(pokemon.RES_IDENTIFIER, pokemon.getPowerDefense());
-        return "Health updated successfully!";
+        return "Defense updated successfully!";
     }
 }

@@ -1,11 +1,10 @@
 package uaic.fii.MarvelMonPlay.services.impl;
 
 import lombok.AllArgsConstructor;
-import org.apache.zookeeper.Op;
+import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,6 @@ import uaic.fii.MarvelMonPlay.repositories.impl.PlayerRepositoryImpl;
 import uaic.fii.MarvelMonPlay.services.MarvelService;
 import uaic.fii.MarvelMonPlay.services.PlayerService;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
@@ -33,8 +30,7 @@ public class PlayerServiceImpl implements PlayerService {
     public String signUpUser(Player player) throws PlayerAlreadyRegisteredException {
         checkIfPlayerAlreadyRegistered(player);
         String encodedPassword = bCryptPasswordEncoder.encode(player.getPassword());
-        player.setPassword(encodedPassword);
-        playerRepository.save(player, true);
+        playerRepository.createAccount(player.getUsername(), encodedPassword, AppUserRole.USER);
         return "Player successfully registered.";
     }
 
@@ -51,13 +47,10 @@ public class PlayerServiceImpl implements PlayerService {
         try (TupleQueryResult tqr = playerRepository.findPlayerByUsername(username)) {
             if(tqr.hasNext()){
                 BindingSet bindingSet = tqr.next();
-                String marvelCharacterResIdentifier = bindingSet.getValue("marvelCharacter").stringValue();
-                Marvel marvel;
-                try {
-                    String resIdentifier = marvelCharacterResIdentifier.substring(marvelCharacterResIdentifier.indexOf("#")+1);
-                    marvel = marvelService.findByResIdentifier(resIdentifier);
-                } catch (ResourceNotFoundException e) {
-                   marvel = null;
+                Value marvelCharacterValue = bindingSet.getValue("marvelCharacter");
+                Marvel marvel = null;
+                if(marvelCharacterValue != null){
+                    marvel = getMarvel(marvelCharacterValue.stringValue());
                 }
                 String playerResIdentifier = bindingSet.getValue("player").stringValue();
                 playerResIdentifier = playerResIdentifier.substring(playerResIdentifier.indexOf("#")+1);
@@ -70,6 +63,17 @@ public class PlayerServiceImpl implements PlayerService {
             }
         }
         throw new UsernameNotFoundException("Player with username \"" + username + "\" could not be found");
+    }
+
+    private Marvel getMarvel(String marvelCharacterResIdentifier) {
+        Marvel marvel;
+        try {
+            String resIdentifier = marvelCharacterResIdentifier.substring(marvelCharacterResIdentifier.indexOf("#")+1);
+            marvel = marvelService.findByResIdentifier(resIdentifier);
+        } catch (ResourceNotFoundException e) {
+           marvel = null;
+        }
+        return marvel;
     }
 
     @Override

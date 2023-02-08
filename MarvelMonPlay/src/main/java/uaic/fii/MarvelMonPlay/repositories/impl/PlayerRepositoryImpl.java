@@ -8,6 +8,7 @@ import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
 import uaic.fii.MarvelMonPlay.models.levels.Stage;
+import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
 import uaic.fii.MarvelMonPlay.repositories.PlayerRepository;
@@ -39,7 +40,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "  ?player a vgo:Player. " +
                 "  ?player vgo:username \"" + username + "\". " +
                 "  ?player IRI:hasEncryptedPassword ?encryptedPassword ." + //TODO: encryptedPassword does not seem to be really encrypted
-                "  ?player IRI:hasMarvelCharacter ?marvelCharacter ." +
+                "  OPTIONAL{?player IRI:hasMarvelCharacter ?marvelCharacter .}" +
                 "  ?player IRI:hasLevel ?level ." +
                 "  ?player IRI:hasAppUserRole ?appUserRole ." +
             "}"
@@ -63,6 +64,20 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         if(cascadeSave){
             marvelRepository.save(player.getMarvelCharacter(), true);
         }
+    }
+
+    public void createAccount(String userName, String encryptedPassword, AppUserRole appUserRole) {
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "INSERT DATA {" +
+                "IRI:" + userName + " a " + "vgo:Player" + "; " +
+                "vgo:username " + "\"" + userName + "\"" + ". " +
+                "IRI:" + userName + " IRI:hasEncryptedPassword " + "\"" + encryptedPassword + "\"" + ". " +
+                "IRI:" + userName + " IRI:hasLevel 0." +
+                "IRI:" + userName + " IRI:hasAppUserRole " + appUserRole.ordinal() + ". " +
+            "}"
+        );
     }
 
     public void update(Player player, boolean cascadeSave) {
@@ -122,7 +137,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
                         "DELETE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o ." +
-                        "IRI:" + PLAYER_RES_IDENTIFIER + " hasLevel ?o} " +
+                        "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel ?o} " +
                         "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " ?p ?o}" +
                         "INSERT DATA {" +
                         "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasLevel " + level.getStage().ordinal() + "}"

@@ -35,9 +35,7 @@ public class PlayerController {
 
     @PostMapping("/signup")
     public String registerUser(@RequestBody RegisterDto registerDto) throws PlayerAlreadyRegisteredException, ResourceNotFoundException {
-
         return registrationService.register(registerDto);
-
     }
 
 }

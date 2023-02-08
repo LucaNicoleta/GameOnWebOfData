@@ -12,6 +12,7 @@ import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
@@ -39,10 +40,10 @@ public class GameController {
         this.sceneService = sceneService;
     }
 
-    @GetMapping("/npc/{level}")
+    @GetMapping("/npc/{stage}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Marvel> getMarvelNPC(@PathVariable Level level) {
-        return enemyGeneratorService.generateMarvelEnemy(level);
+    public List<Marvel> getMarvelNPC(@PathVariable Stage stage) {
+        return enemyGeneratorService.generateMarvelEnemy(stage);
     }
 
     @GetMapping("/start")

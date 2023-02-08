@@ -3,6 +3,7 @@ package uaic.fii.MarvelMonPlay.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.api.mappings.CurrentGameStateDto;
 import uaic.fii.MarvelMonPlay.api.mappings.InventoryDto;
@@ -48,8 +49,11 @@ public class GameController {
 
     @GetMapping("/start")
     @ResponseStatus(HttpStatus.OK)
-    public Scene startGame() throws ResourceNotFoundException {
-        return sceneService.getFirstScene();
+    public Scene startGame(HttpServletRequest request) throws UsernameNotFoundException{
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        return player.getLevel().getScene();
     }
 
     @GetMapping("/nextScene")

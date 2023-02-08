@@ -3,6 +3,7 @@ package uaic.fii.MarvelMonPlay.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.api.mappings.CurrentGameStateDto;
 import uaic.fii.MarvelMonPlay.api.mappings.InventoryDto;
@@ -12,6 +13,7 @@ import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
@@ -39,16 +41,19 @@ public class GameController {
         this.sceneService = sceneService;
     }
 
-    @GetMapping("/npc/{level}")
+    @GetMapping("/npc/{stage}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Marvel> getMarvelNPC(@PathVariable Level level) {
-        return enemyGeneratorService.generateMarvelEnemy(level);
+    public List<Marvel> getMarvelNPC(@PathVariable Stage stage) {
+        return enemyGeneratorService.generateMarvelEnemy(stage);
     }
 
     @GetMapping("/start")
     @ResponseStatus(HttpStatus.OK)
-    public Scene startGame() throws ResourceNotFoundException {
-        return sceneService.getFirstScene();
+    public Scene startGame(HttpServletRequest request) throws UsernameNotFoundException{
+        Principal principal = request.getUserPrincipal();
+        String username = principal.getName();
+        Player player = playerService.findPlayerByUsername(username);
+        return player.getLevel().getScene();
     }
 
     @GetMapping("/nextScene")

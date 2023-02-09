@@ -1,0 +1,24 @@
+.corner-border{
+    background:
+    linear-gradient(to right, brown 3px, transparent 3px) 0 0,
+    linear-gradient(to right, brown 3px, transparent 3px) 0 100%,
+    linear-gradient(to left, brown 3px, transparent 3px) 100% 0,
+    linear-gradient(to left, brown 3px, transparent 3px) 100% 100%,
+    linear-gradient(to bottom, brown 3px, transparent 3px) 0 0,
+    linear-gradient(to bottom, brown 3px, transparent 3px) 100% 0,
+    linear-gradient(to top, brown 3px, transparent 3px) 0 100%,
+    linear-gradient(to top, brown 3px, transparent 3px) 100% 100%;
+  color: rgba(9,75,121,1);
+  padding: 8px;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+}
+
+.option-button{
+    background: radial-gradient(circle, rgba(0,194,255,1) 12%, rgba(9,75,121,1) 100%);
+    color: brown;
+    font-weight: bold;
+    font-family: 'MedievalSharp';
+
+    width:100%
+}

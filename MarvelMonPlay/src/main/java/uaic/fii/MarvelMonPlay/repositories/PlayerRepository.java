@@ -4,10 +4,12 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.players.AppUserRole;
 import uaic.fii.MarvelMonPlay.models.players.Player;
 
 public interface PlayerRepository {
     TupleQueryResult findPlayerByUsername(String username);
+    void createAccount(String userName, String encryptedPassword, AppUserRole appUserRole);
     void save(Player player, boolean cascadeSave);
     void delete(Player player);
     void update(Player player, boolean cascadeSave);

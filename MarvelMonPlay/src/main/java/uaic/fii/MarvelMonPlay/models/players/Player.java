@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.zookeeper.Op;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +12,6 @@ import uaic.fii.MarvelMonPlay.models.levels.Level;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -34,6 +32,10 @@ public class Player implements UserDetails {
         this.marvelCharacter = marvelCharacter;
         this.level = level;
         this.appUserRole = appUserRole;
+    }
+
+    public Player(String RES_IDENTIFIER, String username, String password, Level level, AppUserRole appUserRole) {
+        this(RES_IDENTIFIER, username, password, null, level, appUserRole);
     }
 
     @Override

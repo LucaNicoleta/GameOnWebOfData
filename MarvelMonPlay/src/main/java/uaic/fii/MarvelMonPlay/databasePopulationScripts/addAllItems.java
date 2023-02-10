@@ -59,6 +59,7 @@ public class addAllItems {
         List<Scene> ss = new ArrayList<Scene>();
         SceneRepository sc = new SceneRepository(serv);
         NextScenesRepository rf = new NextScenesRepository(serv);
+        /* 
         // Scene1
         Scene s1 = new Scene("S1",
                 "You just woke up in a strange place. You look around and let yourself be overwhelmed by the magnificence of the surroundings. You find yourself laying in a patch of earth scattered by the most crystalline waters. You get up and go to inspect the area but your own reflection in the water steals your attention. A strange aura seems to be wrapped around your persona.",
@@ -100,16 +101,16 @@ public class addAllItems {
                 "NONE"));
         ss.add(new Scene("S3-WATER",
                 "As you analyze your own reflection, you observe a mysterious creature in the depths of the water looking curiously at you.In the blink of an eye, it jumps out of the water and turns into a small ball that lands in your palm.Before you understand what is happening, you feel the presence of another person behind you.",
-                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "WATER"));
+                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "A"));
         ss.add(new Scene("S3-EARTH",
                 "     As you analyze your own reflection, you observe a mysterious creature in the depths of the water looking curiously at you. A glimpse of suspicioun appears in its eyes and the creature is slowly moving away.Before you understand what is happening, you feel the presence of another person behind you.",
-                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "EARTH"));
+                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "C"));
         ss.add(new Scene("S3-AIR",
                 "As you analyze your own reflection, you observe a mysterious creature in the depths of the water looking curiously at you. A glimpse of suspicioun appears in its eyes and the creature is slowly moving away.Before you understand what is happening, you feel the presence of another person behind you.",
-                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "AIR"));
+                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "B"));
         ss.add(new Scene("S3-FIRE",
                 "As you analyze your own reflection, you observe a mysterious creature in the depths of the water looking curiously at you.  The creature disappears as quickly as it appeared, but not before it took a brief, fearful look at you. Before you understand what is happening, you feel the presence of another person behind you.",
-                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "FIRE"));
+                "/aditional_image", Collections.emptyList(), SceneTypes.PASSIVE, "", "D"));
 
         ss.add(new Scene("S4-FIRE", "He sensed that you’re a fire elemental as opose to him and he got scared.",
                 "/marvel", i.subList(4, 8), SceneTypes.ACTIVE, "", "NONE"));
@@ -155,7 +156,7 @@ public class addAllItems {
         List<NextSceneRef> r_list = new ArrayList<>();
 
         r_list.add(new NextSceneRef("S1_ref", "NONE", new ArrayList<String>(Arrays.asList("S2"))));
-        r_list.add(new NextSceneRef("S2_ref", "ELEMENT",
+        r_list.add(new NextSceneRef("S2_ref", "OPTION",
                 new ArrayList<String>(Arrays.asList("S3-WATER", "S3-AIR", "S3-FIRE", "S3-EARTH"))));
         r_list.add(new NextSceneRef("S3-FIRE_ref", "NONE", new ArrayList<String>(Arrays.asList("S4-FIRE"))));
         r_list.add(new NextSceneRef("S3-EARTH_ref", "NONE", new ArrayList<String>(Arrays.asList("S4-EARTH"))));
@@ -177,14 +178,21 @@ public class addAllItems {
         for (NextSceneRef r : r_list) {
             rf.save(r);
             sc.setRef(r.RES_IDENTIFIER.substring(0, r.RES_IDENTIFIER.indexOf('_')), r.RES_IDENTIFIER);
-        }
+        }*/
         System.out.println("Testam NextScene");
         SceneService sss = new SceneService(sc, rf);
         Scene s = sss.nextScene("S8", "Marvel1", "A");
-        System.out.println("Scena1:");
-        System.out.println(s.RES_IDENTIFIER);
+
+        Scene s_1 = sss.nextScene("S8", "Marvel2", "A");
+
         Scene s2 = sss.nextScene("S9", "Marvel1", "A");
-        System.out.println("Scena2:");
+        System.out.println("Scena8 when MArvel has the pokemon:");
+        System.out.println(s.RES_IDENTIFIER);
+
+        System.out.println("Scena8 when Marvel doesn't has the pokemon:");
+        System.out.println(s_1.RES_IDENTIFIER);
+        
+        System.out.println("Scena9:");
         System.out.println(s2.RES_IDENTIFIER);
         try {
             System.out.println(sss.findByResIdentifier("S2").options.size());
@@ -195,9 +203,9 @@ public class addAllItems {
     }
 
     public static void main(String[] args) {
-        addActions();
-        addEvents();
-        addItems();
+        //addActions();
+        //addEvents();
+        //addItems();
         addScenesAndOptions();
     }
 }

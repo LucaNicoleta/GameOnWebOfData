@@ -100,7 +100,7 @@ public class SceneService {
                         : "";
                 String req = bindingSet.getValue("req").stringValue();
 
-                System.out.println(text + " \n" + imageURL + "\n" + sceneType + "\n" + MarvelRES + "\n" + req);
+                //System.out.println(text + " \n" + imageURL + "\n" + sceneType + "\n" + MarvelRES + "\n" + req);
                 if (SceneTypes.ACTIVE.name().equals(sceneType))
                     return new Scene(RES_Identifier, text, imageURL, findOptionsPerScene(RES_Identifier),
                             SceneTypes.ACTIVE, MarvelRES, req);
@@ -122,7 +122,7 @@ public class SceneService {
                 String val = bindingSet.getValue("value").stringValue().substring(11);
                 String event = bindingSet.getValue("event").stringValue().substring(11);
                 String res = bindingSet.getValue("option").toString();
-                System.out.println(text + " \n" + val + "\n" + event + "\n");
+                //System.out.println(text + " \n" + val + "\n" + event + "\n");
                 options.add(new Option(res, text, Event.valueOf(event), OptionsEnum.valueOf(val)));
             }
         }

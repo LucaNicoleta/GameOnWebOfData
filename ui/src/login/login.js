@@ -11,6 +11,8 @@ import './login.css'
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [action, setAction] = React.useState("LOGIN");
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -47,15 +49,10 @@ export default function Login() {
                     <FormControl sx={{ m: 1, width: '25ch', marginLeft: '16px', marginTop: '16px', }} variant="standard">
                       <InputLabel sx={{ color: 'brown', fontWeight: 'bolder' }} htmlFor="username-register" >Username</InputLabel>
                       <Input
+                        // value = "username"
+                        onChange={() => setUsername(React.event.target.value)}
                         id="username-register"
                         type='text'
-                      />
-                    </FormControl>
-                    <FormControl sx={{ m: 1, width: '25ch', marginLeft: '16px', }} variant="standard">
-                      <InputLabel sx={{ color: 'brown', fontWeight: 'bolder' }} htmlFor="email-register">Email</InputLabel>
-                      <Input
-                        id="email-register"
-                        type='email'
                       />
                     </FormControl>
                     <FormControl sx={{ m: 1, width: '25ch', marginLeft: '16px', }} variant="standard">
@@ -66,6 +63,8 @@ export default function Login() {
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
+                              // value = "password"
+                              onChange={() => setPassword(React.event.target.value)}
                               aria-label="toggle password visibility"
                               onClick={handleClickShowPassword}
                               onMouseDown={handleMouseDownPassword}
@@ -80,7 +79,7 @@ export default function Login() {
                   <Box sx={{ marginLeft: '12px', paddingLeft: '2%', backgroundImage: `url(${'./logo_game.png'})`, backgroundSize: '100% 100%', width: '50%', margin: 'auto', height: '100%' }}></Box>
                 </Box>
 
-                <Button type='submit' href='/play' variant='contained' sx={{ bgcolor: 'brown', width: '40%', alignSelf: 'end', marginRight: '16px', marginTop: '28px' }}>{action === "LOGIN" ? "Login" : "Register"}</Button>
+                <Button type='submit' onClick={() => action === "LOGIN" ? doLogin(username, password) : doRegister(username, password)} href='/play' variant='contained' sx={{ bgcolor: 'brown', width: '40%', alignSelf: 'end', marginRight: '16px', marginTop: '28px' }}>{action === "LOGIN" ? "Login" : "Register"}</Button>
               </Box>
             </Grid>
             <Grid item xs={3} display={'flex'} justifyContent='start'>
@@ -114,4 +113,41 @@ export default function Login() {
 
     </Box>
   );
+}
+
+function doLogin(username, password){
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "localhost:8080/auth/signup");
+  xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+  var data = new FormData();
+  data.append('username', username);
+  data.append('password', password);
+  xhr.onload = function(){
+    if (xhr.readyState === 4 && xhr.status === 201) {
+      console.log(JSON.parse(xhr.responseText));
+    } else {
+      console.log(`Error: ${xhr.status}`);
+    }
+  };
+  xhr.send(data);
+  
+}
+
+function doRegister(username, password){
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:8080/auth/signup");
+  xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+  const body = JSON.stringify({
+    username: username,
+    password: password,
+    RES_IDENTIFIER: username
+  });
+  xhr.onload = () => {
+    if (xhr.readyState === 4 && xhr.status === 201) {
+      console.log(JSON.parse(xhr.responseText));
+    } else {
+      console.log(`Error: ${xhr.status}`);
+    }
+  };
+  xhr.send(body);
 }

@@ -212,7 +212,7 @@
         </p>
         <p>
           Or, when we want to update an item, we use the following query: 
-          <img src="img/updateQuery.GIF"/>
+          <img src="img/updateQuery.png"/>
         </p>
         <p>The complete ontology overview with <b>VOWL</b> plugin: <img src="img/owl.png"/></p>
         <p>
@@ -230,7 +230,7 @@
         <p>
           The API provided by the server side is able to send data to the client. 
         </p>
-        <h4>Basic endpoints:</h4>
+        <h4>Endpoints:</h4>
         <section id="enemy-gen">  
           <h3>Enemy generator - "/npc/{level}"</h3>
           <p>
@@ -280,7 +280,64 @@
             and the result is saved in the database.
           </p>
         </section>
+        <section id="start-ep">
+          <h3>Start the game - "/start"</h3>
+          <p>
+            This endpoint returns the starting scene of a game by utilizing the authenticated user's information. 
+            The scene returned is associated with the player's current level, determined based on the player's username obtained from the incoming HTTP request.
+          </p>
+        </section>
+        <section id="next-ep">
+          <h3>Next scene - "/nextScene"</h3>
+          <p>
+            This endpoint returns the next scene of the game.
+          </p>
+        </section>
+        <section id="restart-ep">
+          <h3>Restart the game - "/restart"</h3>
+          <p>
+            This endpoint resets the player's game, bringing them back to the first game scene.
+          </p>
+        </section>
+        <section id="inventory-ep">
+          <h3>Inventory - "/inventory"</h3>
+          <p>
+            This endpoint provides a list of items and Pokemon that a player has obtained through their Marvel character.
+          </p>
+        </section>
+        <section id="up-health-ep">
+          <h3>Update Health of a Pokemon - "/update/health"</h3>
+          <p>
+            This is utilized for modifying the health status of a Pokemon, whether it is a Non-Player Character (NPC) or a Player Character (PC).
+          </p>
+        </section>
+        <section id="up-attack-ep">
+          <h3>Update the attack power of a Pokemon - "/update/attack"</h3>
+          <p>
+            This serves the purpose of altering the attack strength of a Pokemon, be it a Non-Player Character (NPC) or a Player Character (PC).
+          </p>
+        </section>
+        <section id="up-defense-ep">
+          <h3>Update the defense power of a Pokemon - "/update/defense"</h3>
+          <p>
+            This serves the purpose of adjusting the power of a Pokemon's attack, whether the Pokemon is a Non-Player Character (NPC) or a Player Character (PC).
+          </p>
+        </section>
+        <section id="up-defense-ep">
+          <h3>Set the Marvel Character - "/set/marvel"</h3>
+          <p>
+            This endpoint assigns a Marvel character to the player.
+          </p>
+        </section>
+        <section id="up-defense-ep">
+          <h3>Update the level - "/update/level"</h3>
+          <p>
+            This endpoint revises the level of the player who has been authenticated.
+          </p>
+        </section>
       </section>
+    </section>
+    </section>
 
       <section id="component-3">
         <h3>Battle Strategy / Manager</h3>

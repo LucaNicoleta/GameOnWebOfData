@@ -13,6 +13,6 @@ import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 public class RegisterDto {
     private final String username;
     private final String password;
-    private final String marvelCharacter;
+    private final String marvelResIdentifier;
     private final String  RES_IDENTIFIER;
 }

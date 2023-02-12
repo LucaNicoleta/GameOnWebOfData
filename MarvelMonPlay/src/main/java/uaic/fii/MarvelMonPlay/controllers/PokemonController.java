@@ -31,4 +31,25 @@ public class PokemonController {
     public Pokemon getPokemonByName(@PathVariable("name") String name) throws ResourceNotFoundException {
         return pokeApi.getPokemonByName(name);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/update/health")
+    public String updateHealth(@RequestBody Pokemon pokemon) throws ResourceNotFoundException {
+        pokemonService.updateHealth(pokemon.RES_IDENTIFIER, pokemon.getHealthPoints());
+        return "Health updated successfully!";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/update/attack")
+    public String updateAttack(@RequestBody Pokemon pokemon) throws ResourceNotFoundException {
+        pokemonService.updateAttack(pokemon.RES_IDENTIFIER, pokemon.getPowerAttack());
+        return "Attack updated successfully!";
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/update/defense")
+    public String updateDefense(@RequestBody Pokemon pokemon) throws ResourceNotFoundException {
+        pokemonService.updateDefense(pokemon.RES_IDENTIFIER, pokemon.getPowerDefense());
+        return "Defense updated successfully!";
+    }
 }

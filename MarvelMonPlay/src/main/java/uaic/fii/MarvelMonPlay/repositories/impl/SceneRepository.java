@@ -35,13 +35,13 @@ public class SceneRepository {
     }
 
     public TupleQueryResult findSceneWithReqElement(NextSceneRef ref, String ResMarvel) {
-        System.out.println();
+
         StringBuilder scenes = new StringBuilder();
         for (String s : ref.posibleScenesRES) {
             scenes.append("?s=IRI:" + s + "||");
         }
         scenes.delete(scenes.length() - 2, scenes.length());
-        System.out.println(scenes);
+        //System.out.println(scenes);
         return sparqlEndpoint.executeQuery(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
@@ -59,23 +59,31 @@ public class SceneRepository {
     public TupleQueryResult findSceneWithReqPokemon(NextSceneRef ref, String ResMarvel) {
         System.out.println();
         StringBuilder scenes = new StringBuilder();
+        StringBuilder scenes2 = new StringBuilder();
+
         for (String s : ref.posibleScenesRES) {
-            scenes.append("?s=IRI:" + s + "||");
+            scenes.append("?s1=IRI:" + s + "||");
+            scenes2.append("?s2=IRI:" + s + "||");
+
         }
         scenes.delete(scenes.length() - 2, scenes.length());
+        scenes2.delete(scenes2.length() - 2, scenes2.length());
+
         System.out.println(scenes);
         return sparqlEndpoint.executeQuery(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
                         "select ?s  where {" +
-                        "?s   foaf:a IRI:Scene . " +
-                        "?s IRI:requires ?pn . " +
+                        "?s1   foaf:a IRI:Scene . " +
+                        "?s1 IRI:requires ?pn . " +
+                        "?s2 foaf:a IRI:Scene . " +
+                        "?s2 IRI:requires \"NONE\" . " +
                         "?m foaf:a IRI:Marvel ." +
-                        "?m IRI:hasInventory ?i . " +
                         "?i IRI:hasInventoryPokemon ?p . " +
                         "?p IRI:hasName ?pn " +
-                        "Filter(?m=IRI:" + ResMarvel + "&&(" + scenes + "))" +
+                        "Filter(?m=IRI:" + ResMarvel + "&&(" + scenes + ")"+"&&(" + scenes2 + "))" +
+                        "bind(IF(EXISTS{?m IRI:hasInventory ?i},?s1,?s2) as ?s)"+
                         "}");
     }
 

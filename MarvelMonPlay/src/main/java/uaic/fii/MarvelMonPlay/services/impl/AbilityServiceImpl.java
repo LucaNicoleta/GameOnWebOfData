@@ -27,7 +27,7 @@ public class AbilityServiceImpl implements AbilityService {
                 BindingSet bindingSet = tupleQueryResult.next();
                 String name = bindingSet.getValue("name").stringValue();
                 String description =  bindingSet.getValue("description").stringValue();
-                abilities.add(new Ability(name, name, description));
+                abilities.add(new Ability("to_be_changed", name, description));
             }
         }
         return abilities;

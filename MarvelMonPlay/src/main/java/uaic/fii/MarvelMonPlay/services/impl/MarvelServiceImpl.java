@@ -35,6 +35,7 @@ public class MarvelServiceImpl implements MarvelService {
     }
 
     @Override
+    @Deprecated
     public List<Marvel> findAll() {
         List<Marvel> marvelList = new ArrayList<>();
         try (TupleQueryResult tupleQueryResult = marvelRepository.findAll()) {
@@ -47,7 +48,7 @@ public class MarvelServiceImpl implements MarvelService {
                     description = bindingSet.getValue("description").stringValue();
                 }
 
-                marvelList.add(new Marvel(name, name, imageUrl, description));
+                marvelList.add(new Marvel("to_be_changed", name, imageUrl, description));
             }
         }
         return marvelList;
@@ -59,6 +60,7 @@ public class MarvelServiceImpl implements MarvelService {
     }
 
     @Override
+    @Deprecated
     public Marvel findByName(String name) throws ResourceNotFoundException {
         Marvel marvel = null;
         try (TupleQueryResult tqr = marvelRepository.findByName(name)) {
@@ -69,7 +71,7 @@ public class MarvelServiceImpl implements MarvelService {
                 if (bindingSet.getValue("description") != null) {
                     description = bindingSet.getValue("description").stringValue();
                 }
-                marvel = new Marvel(name, name, imageUrl, description);
+                marvel = new Marvel("to_be_changed", name, imageUrl, description);
             }
         }
         if(marvel == null){
@@ -138,7 +140,7 @@ public class MarvelServiceImpl implements MarvelService {
                 String imageUrl = bindingSet.getValue("imageURL").stringValue();
                 Value descriptionValue = bindingSet.getValue("description");
                 String description = descriptionValue == null ? "" : descriptionValue.stringValue();
-                marvel = new Marvel(name, name, imageUrl, description);
+                marvel = new Marvel(RES_IDENTIFIER, name, imageUrl, description);
             }
         }
         if(marvel == null){

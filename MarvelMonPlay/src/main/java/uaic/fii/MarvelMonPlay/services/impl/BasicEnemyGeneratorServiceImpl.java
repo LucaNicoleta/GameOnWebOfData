@@ -6,7 +6,7 @@ import uaic.fii.MarvelMonPlay.externalApi.MarvelApi;
 import uaic.fii.MarvelMonPlay.externalApi.PokeApi;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
-import uaic.fii.MarvelMonPlay.models.levels.Level;
+import uaic.fii.MarvelMonPlay.models.levels.Stage;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
         this.marvelApi = marvelApi;
     }
     @Override
-    public List<Marvel> generateMarvelEnemy(Level level) {
-        switch (level){
+    public List<Marvel> generateMarvelEnemy(Stage stage) {
+        switch (stage){
             case WATER: {
                 Marvel triton = getNPCMarvel("Triton");
                 Pokemon tentacruel = getNPCPokemon("tentacruel", 5, 3);

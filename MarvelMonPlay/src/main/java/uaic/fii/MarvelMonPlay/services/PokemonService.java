@@ -15,5 +15,8 @@ public interface PokemonService {
     List<Ability> getPokemonAbilities(String pokemonResIdentifier) throws AbilityNotFoundException;
     void save(Pokemon pokemon, boolean cascadeSave);
     void update(Pokemon pokemon, boolean cascadeUpdate);
+    void updateDefense(String RES_IDENTIFIER, int value);
+    void updateHealth(String RES_IDENTIFIER, int value);
+    void updateAttack(String RES_IDENTIFIER, int value);
     void delete(Pokemon pokemon);
 }

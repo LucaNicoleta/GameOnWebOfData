@@ -48,7 +48,7 @@ public class PokemonServiceImpl implements PokemonService {
                 Value imageURLValue = bindingSet.getValue("imageURL");
                 String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
 
-                pokemonList.add(new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL));
+                pokemonList.add(new Pokemon("to_be_changed", name, abilityList, healthPoints, powerAttack, powerDefense, imageURL));
             }
         }
         return pokemonList;
@@ -74,7 +74,7 @@ public class PokemonServiceImpl implements PokemonService {
                 Value imageURLValue = bindingSet.getValue("imageURL");
                 String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
 
-                pokemon = new Pokemon(name, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
+                pokemon = new Pokemon("to_be_changed", name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
             }
         }
         if(pokemon == null) {
@@ -138,6 +138,21 @@ public class PokemonServiceImpl implements PokemonService {
     @Override
     public void update(Pokemon pokemon, boolean cascadeUpdate) {
         pokemonRepository.update(pokemon, cascadeUpdate);
+    }
+
+    @Override
+    public void updateDefense(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateDefense(RES_IDENTIFIER, value);
+    }
+
+    @Override
+    public void updateHealth(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateHealth(RES_IDENTIFIER, value);
+    }
+
+    @Override
+    public void updateAttack(String RES_IDENTIFIER, int value) {
+        pokemonRepository.updateAttack(RES_IDENTIFIER, value);
     }
 
     @Override

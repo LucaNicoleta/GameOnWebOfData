@@ -34,6 +34,10 @@ public class Player implements UserDetails {
         this.appUserRole = appUserRole;
     }
 
+    public Player(String RES_IDENTIFIER, String username, String password, Level level, AppUserRole appUserRole) {
+        this(RES_IDENTIFIER, username, password, null, level, appUserRole);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());

@@ -11,13 +11,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import uaic.fii.MarvelMonPlay.security.CustomAuthenticationProvider;
 import uaic.fii.MarvelMonPlay.services.impl.PlayerServiceImpl;
 
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
     private final PlayerServiceImpl playerService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -25,13 +27,25 @@ public class WebSecurityConfig {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authProvider()).formLogin().defaultSuccessUrl("/auth/success").failureUrl("/auth/failure").and()
+        http.authenticationProvider(authProvider()).formLogin().defaultSuccessUrl("/auth/success", false).failureUrl("/auth/failure").and()
                 .logout().logoutSuccessUrl("/auth/logout_success").and()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
-                        .and()
-                        .authorizeHttpRequests().anyRequest().authenticated();
+                .and()
+                .authorizeHttpRequests().anyRequest().authenticated()
+                .and()
+                .cors();
         http.csrf().disable();
         return http.build();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
     @Bean

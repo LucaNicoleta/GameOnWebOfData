@@ -20,6 +20,27 @@ export default function Login() {
     event.preventDefault();
   };
 
+  const doLogin = (username, password) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/login");
+    var data = new FormData();
+    data.append('username', username);
+    data.append('password', password);
+  
+    console.log("username: " + username);
+    console.log("pass: " + password);
+  
+    xhr.onload = function(){
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+        window.location.href = '/play';
+      } else {
+        console.log("Error: " + xhr.response);
+      }
+    };
+    xhr.send(data);
+  }
+
   return (
     <Box sx={{ backgroundImage: `url(${'https://ambicular.com/skuawk-download/space/patrick-mcmanaman.jpg'})`, backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }} >
       <Grid container direction={'column'} rowGap={0.2} justifyContent='space-around' alignItems={'space-around'}>
@@ -79,8 +100,9 @@ export default function Login() {
                   <Box sx={{ marginLeft: '12px', paddingLeft: '2%', backgroundImage: `url(${'./logo_game.png'})`, backgroundSize: '100% 100%', width: '50%', margin: 'auto', height: '100%' }}></Box>
                 </Box>
 
-                <Button type='submit' onClick={() => action === "LOGIN" ? doLogin(username, password) : doRegister(username, password)} variant='contained' sx={{ bgcolor: 'brown', width: '40%', alignSelf: 'end', marginRight: '16px', marginTop: '28px' }}>{action === "LOGIN" ? "Login" : "Register"}</Button>
-                {/* href='/play' */}
+                <Button type='submit' onClick={() => {
+                  action === "LOGIN" ? doLogin(username, password) : doRegister(username, password)
+                  }} variant='contained' sx={{ bgcolor: 'brown', width: '40%', alignSelf: 'end', marginRight: '16px', marginTop: '28px' }}>{action === "LOGIN" ? "Login" : "Register"}</Button>
               </Box>
               {/*  */}
             </Grid>
@@ -117,26 +139,7 @@ export default function Login() {
   );
 }
 
-function doLogin (username, password) {
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost:8080/login");
-  var data = new FormData();
-  data.append('username', username);
-  data.append('password', password);
 
-  console.log("username: " + username);
-  console.log("pass: " + password);
-
-  xhr.onload = function(){
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      console.log(xhr.responseText);
-      //redirect("/play");
-    } else {
-      console.log("Error: " + xhr.response);
-    }
-  };
-  xhr.send(data);
-}
 
 function doRegister(username, password){
   const xhr = new XMLHttpRequest();

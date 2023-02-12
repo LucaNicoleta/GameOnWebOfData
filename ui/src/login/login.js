@@ -49,7 +49,6 @@ export default function Login() {
                     <FormControl sx={{ m: 1, width: '25ch', marginLeft: '16px', marginTop: '16px', }} variant="standard">
                       <InputLabel sx={{ color: 'brown', fontWeight: 'bolder' }} htmlFor="username-register" >Username</InputLabel>
                       <Input
-                        // value = "username"
                         onChange={() => setUsername(React.event.target.value)}
                         id="username-register"
                         type='text'
@@ -63,7 +62,6 @@ export default function Login() {
                         endAdornment={
                           <InputAdornment position="end">
                             <IconButton
-                              // value = "password"
                               onChange={() => setPassword(React.event.target.value)}
                               aria-label="toggle password visibility"
                               onClick={handleClickShowPassword}
@@ -78,7 +76,6 @@ export default function Login() {
                   </Box>
                   <Box sx={{ marginLeft: '12px', paddingLeft: '2%', backgroundImage: `url(${'./logo_game.png'})`, backgroundSize: '100% 100%', width: '50%', margin: 'auto', height: '100%' }}></Box>
                 </Box>
-
                 <Button type='submit' onClick={() => action === "LOGIN" ? doLogin(username, password) : doRegister(username, password)} href='/play' variant='contained' sx={{ bgcolor: 'brown', width: '40%', alignSelf: 'end', marginRight: '16px', marginTop: '28px' }}>{action === "LOGIN" ? "Login" : "Register"}</Button>
               </Box>
             </Grid>
@@ -114,7 +111,6 @@ export default function Login() {
     </Box>
   );
 }
-
 function doLogin(username, password){
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "localhost:8080/auth/signup");

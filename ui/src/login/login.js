@@ -7,7 +7,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import { IconButton, FormControl, InputAdornment, InputLabel, Input } from '@mui/material';
 import './login.css'
 
-
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [action, setAction] = React.useState("LOGIN");
@@ -121,7 +120,6 @@ export default function Login() {
 function doLogin (username, password) {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "http://localhost:8080/login");
-  xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
   var data = new FormData();
   data.append('username', username);
   data.append('password', password);
@@ -137,11 +135,7 @@ function doLogin (username, password) {
       console.log("Error: " + xhr.response);
     }
   };
-  xhr.send(JSON.stringify({
-    username: username,
-    password: password
-  }));
-
+  xhr.send(data);
 }
 
 function doRegister(username, password){

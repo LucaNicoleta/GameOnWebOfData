@@ -82,7 +82,7 @@ public class Pokemon extends Character{
         this.powerDefense = 0;
     }
     public Event receiveAttack(int power, String owner){
-        if(powerDefense<=0)
+        if(powerDefense>0)
         {
             if(powerDefense<power){
                 int healthDamage = power - powerDefense;

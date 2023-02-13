@@ -206,4 +206,15 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     private void saveItems(List<Item> itemInventory) {
         itemInventory.forEach(item -> itemRepository.save(item));
     }
+    @Override
+    public TupleQueryResult getListOfPokemonNamesOwnedByMarvel(String MarvelRES){
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "SELECT ?pokemonName where {" +
+            "    IRI:" + MarvelRES + " IRI:hasInventory ?i . " +
+            "?i IRI:hasInventoryPokemon ?p . "+
+            "?p IRI:hasName ?pokemonName . "+
+            "}"
+        );
+    }
 }

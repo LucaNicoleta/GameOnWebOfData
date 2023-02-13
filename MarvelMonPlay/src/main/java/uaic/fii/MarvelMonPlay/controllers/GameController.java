@@ -18,6 +18,7 @@ import uaic.fii.MarvelMonPlay.models.players.Player;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
 import uaic.fii.MarvelMonPlay.services.InventoryService;
+import uaic.fii.MarvelMonPlay.services.NextScene;
 import uaic.fii.MarvelMonPlay.services.PlayerService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 
@@ -31,14 +32,14 @@ public class GameController {
     private final EnemyGeneratorService enemyGeneratorService;
     @Autowired
     private PlayerService playerService;
-    private final SceneService sceneService;
+    private final NextScene nextSceneUseCase;
 
     @Autowired
     private InventoryService inventoryService;
 
-    public GameController(EnemyGeneratorService enemyGeneratorService, SceneService sceneService) {
+    public GameController(EnemyGeneratorService enemyGeneratorService, NextScene nextSceneUseCase) {
         this.enemyGeneratorService = enemyGeneratorService;
-        this.sceneService = sceneService;
+        this.nextSceneUseCase = nextSceneUseCase;
     }
 
     @GetMapping("/npc/{stage}")
@@ -62,7 +63,7 @@ public class GameController {
         String currentSceneIdentifier = currentGameStateDto.getCurrentSceneResIdentifier();
         String marvelIdentifier = currentGameStateDto.getMarvelResIdentifier();
         String chosenOption = currentGameStateDto.getChosenOption();
-        return sceneService.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
+        return nextSceneUseCase.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
     }
 
     @GetMapping("/currentScene")

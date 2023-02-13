@@ -158,4 +158,17 @@ public class MarvelServiceImpl implements MarvelService {
     public void delete(Marvel marvel) {
         marvelRepository.delete(marvel);
     }
+
+    public List<String> getNamesOfThePokemonsOwnedByMarvel(String RES_Marvel){
+
+        List<String> names = new ArrayList<String>();
+        try (TupleQueryResult tqr = marvelRepository.getListOfPokemonNamesOwnedByMarvel(RES_Marvel)) {
+            while (tqr.hasNext()) {
+                BindingSet bindingSet = tqr.next();
+                String name = bindingSet.getValue("pokemonName").stringValue();
+                names.add(name);
+            }
+        }
+        return names;
+    }
 }

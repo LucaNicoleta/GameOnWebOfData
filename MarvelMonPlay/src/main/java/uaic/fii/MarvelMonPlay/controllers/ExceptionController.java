@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import uaic.fii.MarvelMonPlay.exceptions.MarvelNotSetException;
 import uaic.fii.MarvelMonPlay.exceptions.PlayerAlreadyRegisteredException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
 
@@ -20,4 +21,8 @@ public class ExceptionController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(MarvelNotSetException.class)
+    public ResponseEntity<String> handlerMarvelNotSetException(Exception e, WebRequest webRequest){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
 }

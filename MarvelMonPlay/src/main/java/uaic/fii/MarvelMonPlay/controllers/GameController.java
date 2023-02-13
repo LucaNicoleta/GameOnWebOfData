@@ -7,10 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import uaic.fii.MarvelMonPlay.api.mappings.CurrentGameStateDto;
 import uaic.fii.MarvelMonPlay.api.mappings.InventoryDto;
-import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
-import uaic.fii.MarvelMonPlay.exceptions.ItemNotFoundException;
-import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
-import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
+import uaic.fii.MarvelMonPlay.exceptions.*;
 import uaic.fii.MarvelMonPlay.models.characters.Marvel;
 import uaic.fii.MarvelMonPlay.models.levels.Level;
 import uaic.fii.MarvelMonPlay.models.levels.Stage;
@@ -107,17 +104,10 @@ public class GameController {
 
     @GetMapping("/inventory")
     @ResponseBody
-    public InventoryDto getPokemonInventory(HttpServletRequest request) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException {
+    public InventoryDto getPokemonInventory(HttpServletRequest request) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException, MarvelNotSetException {
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);
-        return inventoryService.getMarvelInventory(player.getMarvelCharacter().RES_IDENTIFIER);
-    }
-
-    // This is for test
-    @GetMapping("/inventoryWithoutAuthentication/{marvelIdentifier}")
-    @ResponseBody
-    public InventoryDto getPokemonInventoryWithoutAuthentication(@PathVariable String marvelIdentifier) throws PokemonNotFoundException, AbilityNotFoundException, ItemNotFoundException {
-        return inventoryService.getMarvelInventory(marvelIdentifier);
+        return inventoryService.getMarvelInventory(player);
     }
 }

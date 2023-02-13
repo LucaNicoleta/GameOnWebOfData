@@ -34,6 +34,6 @@ function readInventory(){
         console.log(`Error: ${xhr.status}`);
       }
     };
-    xhr.send(data);
+    xhr.send();
     
   }

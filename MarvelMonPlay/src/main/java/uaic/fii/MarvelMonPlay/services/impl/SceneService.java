@@ -15,17 +15,15 @@ import uaic.fii.MarvelMonPlay.models.scenes.OptionsEnum;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.models.scenes.SceneTypes;
 import uaic.fii.MarvelMonPlay.models.Event;
-import uaic.fii.MarvelMonPlay.repositories.impl.NextScenesRepository;
 import uaic.fii.MarvelMonPlay.repositories.impl.SceneRepository;
 
 @Service
 public class SceneService {
     SceneRepository sceneRepository;
-    NextScenesRefService nextServ;
 
-    public SceneService(SceneRepository sceneRepository, NextScenesRepository nextRep) {
+
+    public SceneService(SceneRepository sceneRepository) {
         this.sceneRepository = sceneRepository;
-        this.nextServ = new NextScenesRefService(nextRep);
     }
 
     public Scene findByPlayerStats(NextSceneRef ref, String ResMarvel, String criteria) {
@@ -65,7 +63,9 @@ public class SceneService {
             }
         return scene;
     }
-
+    public void save(Scene s){
+        sceneRepository.save(s);
+    }
     public Scene findByChoosenOption(NextSceneRef ref, String option) {
         Scene scene = null;
         try (TupleQueryResult tqr = sceneRepository.findSceneWithReqOption(ref, option)) {
@@ -128,27 +128,9 @@ public class SceneService {
         }
         return options;
     }
-
-    public Scene nextScene(String currentSceneRes, String marvelRes, String chosenOption) {
-        NextSceneRef nextScenes = nextServ.findByResIdentifier(currentSceneRes);
-
-        if (nextScenes.criteria.equals("NONE"))
-            try {
-                return findByResIdentifier(nextScenes.posibleScenesRES.get(0));
-            } catch (ResourceNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return null;
-            }
-
-        if (nextScenes.criteria.equals("OPTION"))
-            return findByChoosenOption(nextScenes, chosenOption);
-        else
-
-            return findByPlayerStats(nextScenes, marvelRes, nextScenes.criteria);
-    }
-
+    
     public Scene getFirstScene() throws ResourceNotFoundException {
         return findByResIdentifier("S1");
     }
-}
+    
+    }

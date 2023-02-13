@@ -3,6 +3,7 @@ package uaic.fii.MarvelMonPlay.services;
 import uaic.fii.MarvelMonPlay.exceptions.AbilityNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.PokemonNotFoundException;
 import uaic.fii.MarvelMonPlay.exceptions.ResourceNotFoundException;
+import uaic.fii.MarvelMonPlay.models.Event;
 import uaic.fii.MarvelMonPlay.models.abilities.Ability;
 import uaic.fii.MarvelMonPlay.models.characters.Pokemon;
 
@@ -19,4 +20,9 @@ public interface PokemonService {
     void updateHealth(String RES_IDENTIFIER, int value);
     void updateAttack(String RES_IDENTIFIER, int value);
     void delete(Pokemon pokemon);
+    Event fightRound(Pokemon pokemon_mc, Pokemon pokemon_npc);
+    List<Pokemon> findPokemonsInFight(String MarvelRes);
+    String findCurrentPokemonEnemy(String Res_pokemon);
+    void pickPokemonForFight(String marvel_res,String pokemon_name, String pokemon_enemy_res);
+    Pokemon findByNameAndOwner(String name, String marvel_res);
 }

@@ -21,4 +21,5 @@ public interface MarvelService {
     Marvel findByResIdentifier(String RES_IDENTIFIER) throws ResourceNotFoundException;
     void update(Marvel marvel, boolean cascadeUpdate);
     void delete(Marvel marvel);
+    List<String> getNamesOfThePokemonsOwnedByMarvel(String RES_Marvel);
 }

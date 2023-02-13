@@ -1,13 +1,16 @@
 package uaic.fii.MarvelMonPlay.repositories.impl;
 
 import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.springframework.stereotype.Repository;
+
 import uaic.fii.MarvelMonPlay.endpoints.SparqlEndpoint;
 import uaic.fii.MarvelMonPlay.utils.IRIFactory;
 import uaic.fii.MarvelMonPlay.models.scenes.Option;
-
-public class OptionRepositoryImpl {
+import uaic.fii.MarvelMonPlay.repositories.OptionRepository;
+@Repository
+public class OptionRepositoryImpl implements OptionRepository{
     private final SparqlEndpoint sparqlEndpoint;
-
+    
     public OptionRepositoryImpl(SparqlEndpoint sparqlEndpoint) {
         this.sparqlEndpoint = sparqlEndpoint;
     }
@@ -36,7 +39,29 @@ public class OptionRepositoryImpl {
                         "IRI:" + option.RES_IDENTIFIER + " IRI:triggerEvent " + "IRI:" + option.eventTriggered.name()
                         + "" + " . }");
     }
-
+    
+    public TupleQueryResult getEventTriggeredByOption(String currentSceneRes, String choosenOption){
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                    "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "select ?event  where {" +
+                    "    IRI:" + currentSceneRes + " IRI:hasOption ?o ." +
+                    "   ?o IRI:optionValue IRI:"+choosenOption+"."+
+                    "?o IRI:triggerEvent ?event"+
+                    "}");
+    }
+    public TupleQueryResult getContentOfOption(String currentSceneRes, String choosenOption){
+        return sparqlEndpoint.executeQuery(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                    "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "select ?content  where {" +
+                    "    IRI:" + currentSceneRes + " IRI:hasOption ?o ." +
+                    "   ?o IRI:optionValue IRI:"+choosenOption+"."+
+                    "?o IRI:hasContent ?content"+
+                    "}");
+    }
     /*
      * public void update(Option option) {
      * sparqlEndpoint.executeUpdate(

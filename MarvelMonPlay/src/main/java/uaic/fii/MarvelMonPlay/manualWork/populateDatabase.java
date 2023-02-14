@@ -1,4 +1,4 @@
-package uaic.fii.MarvelMonPlay.databasePopulationScripts;
+package uaic.fii.MarvelMonPlay.manualWork;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,15 +17,20 @@ import uaic.fii.MarvelMonPlay.models.scenes.Option;
 import uaic.fii.MarvelMonPlay.models.scenes.OptionsEnum;
 import uaic.fii.MarvelMonPlay.models.scenes.Scene;
 import uaic.fii.MarvelMonPlay.models.scenes.SceneTypes;
+import uaic.fii.MarvelMonPlay.repositories.MarvelRepository;
+import uaic.fii.MarvelMonPlay.repositories.PokemonRepository;
 import uaic.fii.MarvelMonPlay.repositories.impl.ActionRepositoryImpl;
 import uaic.fii.MarvelMonPlay.repositories.impl.EventRepository;
 import uaic.fii.MarvelMonPlay.repositories.impl.ItemRepositoryImpl;
+import uaic.fii.MarvelMonPlay.repositories.impl.MarvelRepositoryImpl;
 import uaic.fii.MarvelMonPlay.repositories.impl.NextScenesRepository;
 import uaic.fii.MarvelMonPlay.repositories.impl.OptionRepositoryImpl;
+import uaic.fii.MarvelMonPlay.repositories.impl.PokemonRepositoryImpl;
 import uaic.fii.MarvelMonPlay.repositories.impl.SceneRepository;
+import uaic.fii.MarvelMonPlay.services.NextScene;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 
-public class addAllItems {
+public class populateDatabase {
     static private final SparqlEndpointImpl serv = new SparqlEndpointImpl("http://localhost:7200/repositories/db",
             "http://localhost:7200/repositories/db/statements");
 
@@ -59,7 +64,9 @@ public class addAllItems {
         List<Scene> ss = new ArrayList<Scene>();
         SceneRepository sc = new SceneRepository(serv);
         NextScenesRepository rf = new NextScenesRepository(serv);
-        /* 
+        MarvelRepository mr = new MarvelRepositoryImpl(serv);
+        PokemonRepository pr = new PokemonRepositoryImpl(serv);
+        OptionRepositoryImpl ac = new OptionRepositoryImpl(serv);
         // Scene1
         Scene s1 = new Scene("S1",
                 "You just woke up in a strange place. You look around and let yourself be overwhelmed by the magnificence of the surroundings. You find yourself laying in a patch of earth scattered by the most crystalline waters. You get up and go to inspect the area but your own reflection in the water steals your attention. A strange aura seems to be wrapped around your persona.",
@@ -96,7 +103,10 @@ public class addAllItems {
 
         i.add(new Option("S10A", "Try talk to him", Event.NONE, OptionsEnum.A));
         i.add(new Option("S10B", "Jump in the water after him", Event.NONE, OptionsEnum.B));
-
+        
+        i.add(new Option("S18A", "Let's fight", Event.START_FIGHT, OptionsEnum.A));
+        i.add(new Option("S18B", "The 'no fight' option sounds good", Event.NONE, OptionsEnum.B));
+        
         ss.add(new Scene("S2", "Who do you want to see as your reflexion ?", "", i.subList(0, 4), SceneTypes.ACTIVE, "",
                 "NONE"));
         ss.add(new Scene("S3-WATER",
@@ -140,11 +150,12 @@ public class addAllItems {
                 "/marvel", i.subList(16, 18), SceneTypes.ACTIVE, "", "NONE"));
         ss.add(new Scene("S9-with-pokemon",
                 "The mysterious personage disappear without a word. You are heading toward the direction from which you feel energy, hoping to find the gate.",
-                "/realms/water.png", Collections.<Option>emptyList(), SceneTypes.PASSIVE, "", "Pika"));
+                "/realms/water.png", Collections.<Option>emptyList(), SceneTypes.PASSIVE, "", "squirtle"));
         ss.add(new Scene("S10", "How do you intend to catch the pokemon?", "/marvel", i.subList(18, 20),
                 SceneTypes.ACTIVE, "", "A"));
-
-        OptionRepositoryImpl ac = new OptionRepositoryImpl(serv);
+ ss.add(new Scene("S18", "I told you that the gates are protected. You seem like a decent person so I could just let you go, unless you want a training match.", "/marvel", i.subList(20, 22),
+                SceneTypes.ACTIVE, "Triton","NONE"));
+       
         for (Option o : i) {
             ac.save(o);
         }
@@ -178,34 +189,14 @@ public class addAllItems {
         for (NextSceneRef r : r_list) {
             rf.save(r);
             sc.setRef(r.RES_IDENTIFIER.substring(0, r.RES_IDENTIFIER.indexOf('_')), r.RES_IDENTIFIER);
-        }*/
-        System.out.println("Testam NextScene");
-        SceneService sss = new SceneService(sc, rf);
-        Scene s = sss.nextScene("S8", "Marvel1", "A");
-
-        Scene s_1 = sss.nextScene("S8", "Marvel2", "A");
-
-        Scene s2 = sss.nextScene("S9", "Marvel1", "A");
-        System.out.println("Scena8 when MArvel has the pokemon:");
-        System.out.println(s.RES_IDENTIFIER);
-
-        System.out.println("Scena8 when Marvel doesn't has the pokemon:");
-        System.out.println(s_1.RES_IDENTIFIER);
-        
-        System.out.println("Scena9:");
-        System.out.println(s2.RES_IDENTIFIER);
-        try {
-            System.out.println(sss.findByResIdentifier("S2").options.size());
-        } catch (ResourceNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
+        
     }
 
     public static void main(String[] args) {
-        //addActions();
-        //addEvents();
-        //addItems();
+        addActions();
+        addEvents();
+        addItems();
         addScenesAndOptions();
     }
 }

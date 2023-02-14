@@ -13,4 +13,9 @@ public interface PokemonRepository {
     TupleQueryResult findByName(String name);
     TupleQueryResult findByResIdentifier(String resIdentifier);
     void delete(Pokemon pokemon);
+    void choosePokemonToFight(String RES_IDENTIFIER, String PokemonEnemy_RES);
+    TupleQueryResult findCurrentPokemonEnemy(String Res_Marvel);
+    TupleQueryResult findPokemonsInFight(String MarvelRes);
+    TupleQueryResult findByNameAndOwner(String name, String marvel_res);
+
 }

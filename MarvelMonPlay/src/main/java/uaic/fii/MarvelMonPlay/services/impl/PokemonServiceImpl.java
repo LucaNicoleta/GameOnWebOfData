@@ -66,6 +66,7 @@ public class PokemonServiceImpl implements PokemonService {
                 Value healthPointsValue = bindingSet.getValue("healthPoints");
                 Value powerAttackValue = bindingSet.getValue("powerAttack");
                 Value powerDefensevalue = bindingSet.getValue("powerDefense");
+                String res = bindingSet.getValue("p").toString().substring(11);
 
                 int healthPoints = healthPointsValue == null ? Pokemon.MAX_HEALTH_POINTS : Integer.parseInt(healthPointsValue.stringValue());
                 int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
@@ -74,12 +75,40 @@ public class PokemonServiceImpl implements PokemonService {
                 Value imageURLValue = bindingSet.getValue("imageURL");
                 String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
 
-                pokemon = new Pokemon("to_be_changed", name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
+                pokemon = new Pokemon(res, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
             }
         }
         if(pokemon == null) {
             throw new ResourceNotFoundException("Pokemon " + name + " not found");
         }
+
+        return pokemon;
+    }
+
+    @Override
+    public Pokemon findByNameAndOwner(String name, String marvel_res) {
+        Pokemon pokemon = null;
+        try(TupleQueryResult tqr = pokemonRepository.findByNameAndOwner(name, marvel_res)){
+            if(tqr.hasNext()){
+                BindingSet bindingSet = tqr.next();
+                
+                String abilitiesValue = bindingSet.getValue("abilities").stringValue();
+                List<Ability> abilityList = getAbilities((abilitiesValue));
+                Value healthPointsValue = bindingSet.getValue("healthPoints");
+                Value powerAttackValue = bindingSet.getValue("powerAttack");
+                Value powerDefensevalue = bindingSet.getValue("powerDefense");
+                String res = bindingSet.getValue("p").toString().substring(11);
+                int healthPoints = healthPointsValue == null ? Pokemon.MAX_HEALTH_POINTS : Integer.parseInt(healthPointsValue.stringValue());
+                int powerAttack = powerAttackValue == null ? Pokemon.DEFAULT_POWER_ATTACK : Integer.parseInt(powerAttackValue.stringValue());
+                int powerDefense = powerDefensevalue == null ? Pokemon.DEFAULT_POWER_DEFENSE : Integer.parseInt(powerDefensevalue.stringValue());
+
+                Value imageURLValue = bindingSet.getValue("imageURL");
+                String imageURL = imageURLValue == null ? "" : imageURLValue.stringValue();
+
+                pokemon = new Pokemon(res, name, abilityList, healthPoints, powerAttack, powerDefense, imageURL);
+            }
+        }
+
 
         return pokemon;
     }
@@ -96,12 +125,11 @@ public class PokemonServiceImpl implements PokemonService {
                 Value imageURLValue = bs.getValue("imageURL");
 
                 String name = nameValue.stringValue();
-                List<Ability> abilities = getPokemonAbilities(resIdentifier);
                 int healthPoints = Integer.parseInt(healthPointsValue.stringValue());
                 int powerAttack = Integer.parseInt(powerAttackValue.stringValue());
                 int powerDefense = Integer.parseInt(powerDefenseValue.stringValue());
                 String imageURL = imageURLValue.stringValue();
-                return new Pokemon(resIdentifier, name, abilities, healthPoints, powerAttack, powerDefense, imageURL);
+                return new Pokemon(resIdentifier, name, null, healthPoints, powerAttack, powerDefense, imageURL);
             }
             throw new PokemonNotFoundException("Pokemon " + resIdentifier + " has not been found");
         }
@@ -159,7 +187,11 @@ public class PokemonServiceImpl implements PokemonService {
     public void delete(Pokemon pokemon) {
         pokemonRepository.delete(pokemon);
     }
-
+    @Override
+    public void pickPokemonForFight(String marvel_res,String pokemon_res, String pokemon_enemy_res){
+        pokemonRepository.choosePokemonToFight(pokemon_res, pokemon_enemy_res);
+    }
+    @Override
     public Event fightRound(Pokemon pokemon_mc, Pokemon pokemon_npc)
     {
         Event firstFight = pokemon_mc.receiveAttack(pokemon_npc.getPowerAttack(),"MC");
@@ -172,5 +204,39 @@ public class PokemonServiceImpl implements PokemonService {
         update(pokemon_mc, true);
         return secFight;
     }
-    
+    @Override
+    public List<Pokemon> findPokemonsInFight(String MarvelRes){
+        List<Pokemon> pokemons = new ArrayList<>();
+        try (TupleQueryResult tqr = pokemonRepository.findPokemonsInFight(MarvelRes)) {
+            if(tqr.hasNext()){
+                BindingSet bs = tqr.next();
+                Value pokemon_mc_Value = bs.getValue("p");
+                Value pokemon_npc_Value = bs.getValue("e");
+                String pokemon_mc = pokemon_mc_Value.stringValue().substring(11);
+                String pokemon_npc = pokemon_npc_Value.stringValue().substring(11);
+                pokemons.add(findByResIdentifier(pokemon_mc));
+                pokemons.add(findByResIdentifier(pokemon_npc));
+                
+            }
+            //throw new PokemonNotFoundException("enemy for pokemon owned by " + Res_Marvel + " has not been found");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return pokemons; 
+    }
+    @Override
+    public String findCurrentPokemonEnemy(String Res_Marvel){
+        try (TupleQueryResult tqr = pokemonRepository.findCurrentPokemonEnemy(Res_Marvel)) {
+            if(tqr.hasNext()){
+                BindingSet bs = tqr.next();
+                Value nameValue = bs.getValue("e");
+
+                String name = nameValue.stringValue().substring(11);
+                return name;
+            }
+            return null;
+            //throw new PokemonNotFoundException("enemy for pokemon owned by " + Res_Marvel + " has not been found");
+        }
+    }
 }

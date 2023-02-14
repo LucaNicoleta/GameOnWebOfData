@@ -27,7 +27,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authenticationProvider(authProvider()).formLogin().defaultSuccessUrl("/auth/success", false).failureUrl("/auth/failure").and()
+        http.authenticationProvider(authProvider())
+                .httpBasic()
+                .and()
+                .formLogin().defaultSuccessUrl("/auth/success", false).failureUrl("/auth/failure").and()
                 .logout().logoutSuccessUrl("/auth/logout_success").and()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
                 .and()

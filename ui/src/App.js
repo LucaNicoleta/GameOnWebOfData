@@ -1,22 +1,32 @@
 import './App.css';
 import GameScene from './gameScenes/game';
-import Login from './login/login';
+
 import Inventory from './inventory';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
+import Homepage from './homepage/homepage';
+import { AuthProvider } from './context/AuthContext';
+import { SceneProvider } from './context/SceneContext';
+
+import PrivateRoute from './misc/PrivateRoute'
+
 function App() {
 
   return (
+    <AuthProvider>
+      <SceneProvider>
     <Router>
       <Routes>
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/" element={<Login />} />
-        <Route path="play/*" element={<GameScene />} />
+        <Route path="/inventory" element={<PrivateRoute><Inventory /></PrivateRoute>} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="play/*" element={<PrivateRoute><GameScene /></PrivateRoute>} />
       </Routes>
-  </Router>);
+  </Router>
+  </SceneProvider>
+  </AuthProvider>);
 }
 
 export default App;

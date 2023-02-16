@@ -43,12 +43,9 @@ public class MarvelServiceImpl implements MarvelService {
                 BindingSet bindingSet = tupleQueryResult.next();
                 String name = bindingSet.getValue("name").stringValue();
                 String imageUrl = bindingSet.getValue("imageURL").stringValue();
-                String description = "";
-                if (bindingSet.getValue("description") != null) {
-                    description = bindingSet.getValue("description").stringValue();
-                }
 
-                marvelList.add(new Marvel("to_be_changed", name, imageUrl, description));
+
+                marvelList.add(new Marvel("to_be_changed", name, imageUrl));
             }
         }
         return marvelList;
@@ -67,11 +64,8 @@ public class MarvelServiceImpl implements MarvelService {
             if (tqr.hasNext()) {
                 BindingSet bindingSet = tqr.next();
                 String imageUrl = bindingSet.getValue("imageURL").stringValue();
-                String description = "";
-                if (bindingSet.getValue("description") != null) {
-                    description = bindingSet.getValue("description").stringValue();
-                }
-                marvel = new Marvel("to_be_changed", name, imageUrl, description);
+
+                marvel = new Marvel("to_be_changed", name, imageUrl);
             }
         }
         if(marvel == null){
@@ -138,9 +132,7 @@ public class MarvelServiceImpl implements MarvelService {
                 BindingSet bindingSet = tqr.next();
                 String name = bindingSet.getValue("name").stringValue();
                 String imageUrl = bindingSet.getValue("imageURL").stringValue();
-                Value descriptionValue = bindingSet.getValue("description");
-                String description = descriptionValue == null ? "" : descriptionValue.stringValue();
-                marvel = new Marvel(RES_IDENTIFIER, name, imageUrl, description);
+                marvel = new Marvel(RES_IDENTIFIER, name, imageUrl);
             }
         }
         if(marvel == null){
@@ -158,7 +150,12 @@ public class MarvelServiceImpl implements MarvelService {
     public void delete(Marvel marvel) {
         marvelRepository.delete(marvel);
     }
-
+    public void setElementRepresentativeForMarvel(String marvel_res, String element){
+        marvelRepository.setElementRepresentativeForMarvel(marvel_res, element);
+    }
+    public void addItemForMarvel(String marvel_res, String item_res){
+        marvelRepository.addItemForMarvel(marvel_res, item_res);
+    }
     public List<String> getNamesOfThePokemonsOwnedByMarvel(String RES_Marvel){
 
         List<String> names = new ArrayList<String>();

@@ -32,7 +32,7 @@ public class PlayerController {
     public String loginFailure(){
         return "Login failed!";
     }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
     public String registerUser(@RequestBody RegisterDto registerDto) throws PlayerAlreadyRegisteredException, ResourceNotFoundException {
         return registrationService.register(registerDto);

@@ -50,7 +50,7 @@ public class SceneRepository {
                         "select ?s  where {" +
 
                         " ?s   foaf:a IRI:Scene ." +
-                        "    ?m foaf:a IRI:Marvel ." +
+                        "    ?m a IRI:Marvel ." +
                         "    ?m IRI:belongsToElement ?e ." +
                         "   ?s IRI:requires ?e ." +
                         " Filter(?m=IRI:" + ResMarvel + "&&(" + scenes + "))" +
@@ -80,11 +80,11 @@ public class SceneRepository {
                         "?s1 IRI:requires ?pn . " +
                         "?s2 foaf:a IRI:Scene . " +
                         "?s2 IRI:requires \"NONE\" . " +
-                        "?m foaf:a IRI:Marvel ." +
-                        "?i IRI:hasInventoryPokemon ?p . " +
+                        "?p a IRI:Pokemon ." +
+                        
                         "?p IRI:hasName ?pn " +
-                        "Filter(?m=IRI:" + ResMarvel + "&&(" + scenes + ")"+"&&(" + scenes2 + "))" +
-                        "bind(IF(EXISTS{?m IRI:hasInventory ?i},?s1,?s2) as ?s)"+
+                        "Filter((" + scenes + ")"+"&&(" + scenes2 + "))" +
+                        "bind(IF(EXISTS{IRI:" + ResMarvel + " IRI:hasInventoryPokemon ?p},?s1,?s2) as ?s)"+
                         "}");
     }
 
@@ -164,7 +164,18 @@ public class SceneRepository {
                         s.toString() +
                         "}");
     }
-
+    public void deleteAllScenes(){
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                    "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "delete { "+
+                        "?s ?p ?o"+
+                    "}where{"+
+                        "?s ?p ?o ."+
+                        "?s foaf:a IRI:Scene ."+
+                    "}");
+    }
     public void setRef(String scene, String RefRES) {
 
         sparqlEndpoint.executeUpdate(

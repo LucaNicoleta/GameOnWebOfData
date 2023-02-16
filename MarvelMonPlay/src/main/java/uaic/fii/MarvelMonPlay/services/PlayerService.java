@@ -14,4 +14,7 @@ public interface PlayerService {
     void setMarvelCharacter(String PLAYER_RES_IDENTIFIER, Marvel marvel, boolean cascadeSave);
     void updateLevel(String PLAYER_RES_IDENTIFIER, Level level);
     void delete(Player player);
+    public void createNewSessionForPlayer(String res_identifier);
+    String getCurrentScene(String res_identifier);
+    void updatePlayerCurrentScene(String res_session, String new_scene_res);
 }

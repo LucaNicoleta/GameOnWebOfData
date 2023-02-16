@@ -17,6 +17,7 @@ import uaic.fii.MarvelMonPlay.services.EnemyGeneratorService;
 import uaic.fii.MarvelMonPlay.services.InventoryService;
 import uaic.fii.MarvelMonPlay.services.NextScene;
 import uaic.fii.MarvelMonPlay.services.PlayerService;
+import uaic.fii.MarvelMonPlay.services.impl.OptionService;
 import uaic.fii.MarvelMonPlay.services.impl.SceneService;
 
 import java.security.Principal;
@@ -29,6 +30,10 @@ public class GameController {
     private final EnemyGeneratorService enemyGeneratorService;
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private SceneService sceneService;
+    @Autowired
+    private OptionService optionService;
     private final NextScene nextSceneUseCase;
 
     @Autowired
@@ -47,29 +52,42 @@ public class GameController {
 
     @GetMapping("/start")
     @ResponseStatus(HttpStatus.OK)
-    public Scene startGame(HttpServletRequest request) throws UsernameNotFoundException{
+    public Scene startGame(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        String username = principal.getName();
-        Player player = playerService.findPlayerByUsername(username);
-        return player.getLevel().getScene();
+        System.out.println(principal);
+  
+        String username = principal.getName();     
+         playerService.createNewSessionForPlayer(username);;
+        try {
+            return sceneService.getFirstScene();
+        } catch (ResourceNotFoundException e) {
+            return null;
+        }
     }
 
-    @GetMapping("/nextScene")
+    @PostMapping("/nextScene")
     @ResponseStatus(HttpStatus.OK)
     public Scene nextScene(@RequestBody CurrentGameStateDto currentGameStateDto) {
+        System.out.println(currentGameStateDto);
         String currentSceneIdentifier = currentGameStateDto.getCurrentSceneResIdentifier();
-        String marvelIdentifier = currentGameStateDto.getMarvelResIdentifier();
+        String playerIdentifier = currentGameStateDto.getPlayerResIdentifier();
         String chosenOption = currentGameStateDto.getChosenOption();
-        return nextSceneUseCase.nextScene(currentSceneIdentifier, marvelIdentifier, chosenOption);
+        Player player =playerService.findPlayerByUsername(playerIdentifier);
+        String marvelIdentifier = player.getMarvelCharacter()!=null?player.getMarvelCharacter().RES_IDENTIFIER:"";
+
+        Scene next = nextSceneUseCase.nextScene(currentSceneIdentifier, playerIdentifier, chosenOption);
+        playerService.updatePlayerCurrentScene(player.getSessionRes(), next.RES_IDENTIFIER);
+        return next;
     }
 
     @GetMapping("/currentScene")
     @ResponseStatus(HttpStatus.OK)
     public Scene currentScene(HttpServletRequest request) {
+        System.out.println(request);
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
-        Player player = playerService.findPlayerByUsername(username);
-        return player.getLevel().scene;
+        String scene_res = playerService.getCurrentScene(username);
+        return sceneService.findByResIdentifier(scene_res);
     }
 
     @GetMapping("/restart")
@@ -79,7 +97,7 @@ public class GameController {
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);
         playerService.updateForRestart(player.RES_IDENTIFIER);
-        return player.getLevel().getScene();
+        return sceneService.getFirstScene();
     }
 
     @PostMapping("/set/marvel")
@@ -97,7 +115,7 @@ public class GameController {
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);
-        player.setLevel(level);
+        //player.setLevel(level);
         playerService.updateLevel(player.RES_IDENTIFIER, level);
         return "Level updated successfully!";
     }
@@ -108,6 +126,7 @@ public class GameController {
         Principal principal = request.getUserPrincipal();
         String username = principal.getName();
         Player player = playerService.findPlayerByUsername(username);
-        return inventoryService.getMarvelInventory(player);
+        InventoryDto c = inventoryService.getMarvelInventory(player);
+        return c;
     }
 }

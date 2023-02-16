@@ -39,7 +39,18 @@ public class OptionRepositoryImpl implements OptionRepository{
                         "IRI:" + option.RES_IDENTIFIER + " IRI:triggerEvent " + "IRI:" + option.eventTriggered.name()
                         + "" + " . }");
     }
-    
+    public void deleteAllOptions(){
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                    "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+                    "delete { "+
+                        "?s ?p ?o"+
+                    "}where{"+
+                        "?s ?p ?o ."+
+                        "?s foaf:a IRI:Option ."+
+                    "}");
+    }
     public TupleQueryResult getEventTriggeredByOption(String currentSceneRes, String choosenOption){
         return sparqlEndpoint.executeQuery(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +

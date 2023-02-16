@@ -22,8 +22,9 @@ public class manualTesting {
     static private OptionRepository optionRepository = new OptionRepositoryImpl(serv);
     static private PokemonRepository pokemonRepository = new PokemonRepositoryImpl(serv);
     
-    public static void main(){
+    public static void main(String[] args){/* 
         System.out.println("Testam NextScene");
+
         NextScene sss = new NextScene(sceneRepository, refRepository, marvelRepository, optionRepository, pokemonRepository );
         Scene s = sss.nextScene("S8", "Namor1", "A");
 
@@ -64,6 +65,6 @@ public class manualTesting {
         System.out.println("final match:");
         System.out.println(s_final.RES_IDENTIFIER);
         System.out.println(s_final.text);
-
+*/
     }
 }

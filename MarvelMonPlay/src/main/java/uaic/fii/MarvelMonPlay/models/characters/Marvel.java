@@ -10,19 +10,15 @@ public class Marvel extends Character{
     @JsonProperty("imageURL")
     private final String imageURL;
 
-    @JsonProperty("description")
-    private final String description;
-
     @JsonProperty("pokemonInventory")
     private List<Pokemon> pokemonInventory;
 
     @JsonProperty("itemInventory")
     private List<Item> itemInventory;
 
-    public Marvel(String RES_IDENTIFIER, String name, String imageURL, String description) {
+    public Marvel(String RES_IDENTIFIER, String name, String imageURL) {
         super(RES_IDENTIFIER, name);
         this.imageURL = imageURL;
-        this.description = description;
         pokemonInventory = new ArrayList<>();
         itemInventory = new ArrayList<>();
     }
@@ -62,15 +58,11 @@ public class Marvel extends Character{
         return imageURL;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
     @Override
     public String toString() {
         return "Marvel{" +
                 "imageURL='" + imageURL + '\'' +
-                ", description='" + description + '\'' +
                 ", pokemonInventory=" + pokemonInventory +
                 ", itemInventory=" + itemInventory +
                 ", name='" + name + '\'' +

@@ -35,12 +35,9 @@ public class SceneService {
 
                     String scenelRES = bindingSet.getValue("s").isIRI() ? bindingSet.getValue("s").toString() : "";
 
-                    try {
+                    
                         return findByResIdentifier(scenelRES.substring(scenelRES.indexOf('#') + 1));
-                    } catch (ResourceNotFoundException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
+                   
 
                 }
             }
@@ -51,13 +48,9 @@ public class SceneService {
 
                     String scenelRES = bindingSet.getValue("s").isIRI() ? bindingSet.getValue("s").toString() : "";
 
-                    try {
+                  
                         return findByResIdentifier(scenelRES.substring(scenelRES.indexOf('#') + 1));
-                    } catch (ResourceNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        return null;
-                    }
+                   
 
                 }
             }
@@ -74,13 +67,9 @@ public class SceneService {
 
                 String scenelRES = bindingSet.getValue("s").isIRI() ? bindingSet.getValue("s").toString() : "";
 
-                try {
+                
                     return findByResIdentifier(scenelRES.substring(scenelRES.indexOf('#') + 1));
-                } catch (ResourceNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    return null;
-                }
+
 
             }
         }
@@ -88,7 +77,7 @@ public class SceneService {
         return scene;
     }
 
-    public Scene findByResIdentifier(String RES_Identifier) throws ResourceNotFoundException {
+    public Scene findByResIdentifier(String RES_Identifier)  {
         Scene scene = null;
         try (TupleQueryResult tqr = sceneRepository.findSceneInfo(RES_Identifier)) {
             if (tqr.hasNext()) {

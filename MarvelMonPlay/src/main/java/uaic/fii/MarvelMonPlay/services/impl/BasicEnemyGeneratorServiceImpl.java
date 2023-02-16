@@ -64,7 +64,7 @@ public class BasicEnemyGeneratorServiceImpl implements EnemyGeneratorService {
         try {
             marvel = marvelApi.getMarvelCharacter(marvelName);
         } catch (ResourceNotFoundException e) {
-            marvel = new Marvel(marvelName.replaceAll(" ", ""), marvelName, "", "");
+            marvel = new Marvel(marvelName.replaceAll(" ", ""), marvelName, "");
         }
         return marvel;
     }

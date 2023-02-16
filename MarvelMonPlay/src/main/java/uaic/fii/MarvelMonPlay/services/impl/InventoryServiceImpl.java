@@ -32,9 +32,11 @@ public class InventoryServiceImpl implements InventoryService {
 
         List<Pokemon> pokemonInventory = marvelService.findPokemonInventory(marvel.RES_IDENTIFIER);
         List<Item> itemInventory = marvelService.findItemInventory(marvel.RES_IDENTIFIER);
-        return new InventoryDto()
+        InventoryDto inv = new InventoryDto()
                 .withPokemonInventory(pokemonInventory)
                 .withItemInventory(itemInventory)
                 .build();
+                
+        return inv;
     }
 }

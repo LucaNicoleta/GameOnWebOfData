@@ -15,8 +15,9 @@ public interface PlayerRepository {
     void update(Player player, boolean cascadeSave);
 
     void updateLevel(String PLAYER_RES_IDENTIFIER, Level level);
-
+    void updateProgressInGame(String Session_res, String new_scene_res);
+    public void createNewSessionForPlayer(String res_identifier);
     void setMarvelCharacter(String PLAYER_RES_IDENTIFIER, Marvel marvel, boolean cascadeSave);
-
+    TupleQueryResult getcurrentSceneForPlayer(String res_identifier);
     void updateForRestart(String PLAYER_RES_IDENTIFIER) throws ResourceNotFoundException;
 }

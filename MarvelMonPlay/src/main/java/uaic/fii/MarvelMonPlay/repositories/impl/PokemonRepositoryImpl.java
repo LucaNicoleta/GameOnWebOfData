@@ -30,18 +30,16 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "   PREFIX foaf: <http://xmlns.com/foaf/0.1/>   " +
                 "   INSERT DATA {   " +
                 "   IRI:" + pokemon.RES_IDENTIFIER + " a " + "IRI:Pokemon" + "  . " +
-                "   IRI:" + pokemon.RES_IDENTIFIER + " foaf:name " + "\"" + pokemon.getName() + "\"" + ". " +
+                "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasName " + "\"" + pokemon.getName() + "\"" + ". " +
                 "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:healthPoints " + "\"" + pokemon.getHealthPoints() + "\"" + ". " +
                 "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasPowerAttack " + "\"" + pokemon.getPowerAttack() + "\"" + ". " +
                 "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasDefense " + "\"" + pokemon.getPowerDefense() + "\"" + ". " +
                 "   IRI:" + pokemon.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + pokemon.getImageURL() + "\"" + "." +
-                getInsertStatementsForAbilities(pokemon) +
+                //getInsertStatementsForAbilities(pokemon) +
                 "}"
         );
 
-        if(cascadeSave){
-            saveAbilities(pokemon.getAbilities());
-        }
+        
     }
 
     @Override
@@ -155,7 +153,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
     private void updateAbilities(List<Ability> abilities) {
         abilities.forEach(ability -> abilityService.update(ability));
     }
-
+/* 
     private String getSelectStatementsForAbilities(Pokemon pokemon, boolean withOptionalClause) {
         List<Ability> abilities = pokemon.getAbilities();
         AtomicReference<String> statements = new AtomicReference<>("");
@@ -178,7 +176,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
                 "IRI:" + ability.RES_IDENTIFIER + ". ", (s, s2) -> s + s2));
         return statements.get();
     }
-
+*/
     @Override
     public TupleQueryResult findAll() {
         return sparqlEndpoint.executeQuery(
@@ -187,7 +185,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "SELECT ?character ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
-            "    ?character foaf:name ?name ." +
+            "    ?character IRI:hasName ?name ." +
             "    ?character IRI:hasAbility ?ability ." +
             "    ?character IRI:healthPoints ?healthPoints ." +
             "    ?character IRI:hasPowerAttack ?powerAttack ." +
@@ -206,7 +204,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "SELECT ?character (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "WHERE {" +
             "    ?character a IRI:Pokemon ." +
-            "    ?character foaf:name \"" + name + "\". " +
+            "    ?character IRI:hasName \"" + name + "\". " +
             "    ?character IRI:hasAbility ?ability ." +
             "    OPTIONAL{?character IRI:healthPoints ?healthPoints .}" +
             "    OPTIONAL{?character IRI:hasPowerAttack ?powerAttack .}" +
@@ -223,7 +221,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
         "SELECT ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
         "    WHERE {" +
-        "    IRI:" + resIdentifier + " foaf:a IRI:Pokemon ." +
+        "    IRI:" + resIdentifier + " a IRI:Pokemon ." +
         "    IRI:" + resIdentifier + " IRI:hasName ?name. " +
         "    OPTIONAL{IRI:" + resIdentifier + " IRI:hasAbility ?ability }." +
         "    IRI:" + resIdentifier + " IRI:healthPoints ?healthPoints ." +
@@ -238,7 +236,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "SELECT ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "    WHERE {" +
-            "    IRI:" + resIdentifier + " foaf:a IRI:Pokemon ." +
+            "    IRI:" + resIdentifier + " a IRI:Pokemon ." +
             "    IRI:" + resIdentifier + " IRI:hasName ?name. " +
             "    OPTIONAL{IRI:" + resIdentifier + " IRI:hasAbility ?ability }." +
             "    IRI:" + resIdentifier + " IRI:healthPoints ?healthPoints ." +
@@ -282,8 +280,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "select ?p ?e where{"+
             "?p IRI:fightsWith ?e."+
-            "IRI:"+MarvelRes+" IRI:hasInventory ?i."+
-            "?i IRI:hasInventoryPokemon ?p"+
+            "IRI:"+MarvelRes+" IRI:hasInventoryPokemon ?p"+
             "    }" 
         );
     }
@@ -294,10 +291,9 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "select ?e where{"+
             "?player IRI:hasLevel ?l ."+
-            "?player IRI:hasMarvelcharacter IRI:"+Res_Marvel+". "+
+            "?player IRI:hasMarvelCharacter IRI:"+Res_Marvel+". "+
             "?l IRI:currentEnemy ?me."+
-            "?me IRI:hasInventory ?i."+
-            "?i IRI:hasInventoryPokemon ?e"+
+            "?me IRI:hasInventoryPokemon ?e"+
             "    }" 
         );
     }
@@ -308,8 +304,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
         "SELECT ?p ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
         "    WHERE {" +
         "?p IRI:hasName \""+name+"\"."+
-        "IRI:"+marvel_res+" IRI:hasInventory ?i."+
-        "?i IRI:hasInventoryPokemon ?p."+
+        "IRI:"+marvel_res+" IRI:hasInventoryPokemon ?p."+
         "    ?p IRI:hasName ?name. " +
         "    OPTIONAL{?p IRI:hasAbility ?ability }." +
         "    ?p IRI:healthPoints ?healthPoints ." +
@@ -325,8 +320,7 @@ public class PokemonRepositoryImpl implements PokemonRepository {
             "SELECT ?p ?name (GROUP_CONCAT(DISTINCT ?ability; separator = \",\") AS ?abilities) ?healthPoints ?powerAttack ?powerDefense ?imageURL " +
             "    WHERE {" +
             "?p IRI:hasName \""+name+"\"."+
-            "IRI:"+marvel_res+" IRI:hasInventory ?i."+
-            "?i IRI:hasInventoryPokemon ?p."+
+            "IRI:"+marvel_res+" IRI:hasInventoryPokemon ?p."+
             "    ?p IRI:hasName ?name. " +
             "    OPTIONAL{?p IRI:hasAbility ?ability }." +
             "    ?p IRI:healthPoints ?healthPoints ." +

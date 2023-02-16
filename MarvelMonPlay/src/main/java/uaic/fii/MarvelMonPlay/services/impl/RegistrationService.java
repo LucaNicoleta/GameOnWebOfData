@@ -20,8 +20,7 @@ public class RegistrationService {
         return playerService.signUpUser(
             new Player(registerDto.getRES_IDENTIFIER(),
                 registerDto.getUsername(),
-                registerDto.getPassword(),
-                new Level(Stage.WATER, sceneService.getFirstScene()),
+                registerDto.getPassword(),"",
                 AppUserRole.USER)
         );
     }

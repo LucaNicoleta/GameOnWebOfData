@@ -33,7 +33,25 @@ public class PlayerServiceImpl implements PlayerService {
         playerRepository.createAccount(player.getUsername(), encodedPassword, AppUserRole.USER);
         return "Player successfully registered.";
     }
+    public String getCurrentScene(String res_identifier){
+        try (TupleQueryResult tqr = playerRepository.getcurrentSceneForPlayer(res_identifier)) {
+            if(tqr.hasNext()){
+                BindingSet bindingSet = tqr.next();
 
+                String sceneResIdentifier = bindingSet.getValue("scene").toString().substring(11);
+                
+                return sceneResIdentifier;
+            }
+        }
+        return null;
+    }
+    public     void updatePlayerCurrentScene(String res_session, String new_scene_res){
+        playerRepository.updateProgressInGame(res_session, new_scene_res);
+    }
+
+    public void createNewSessionForPlayer(String res_identifier){
+        playerRepository.createNewSessionForPlayer(res_identifier);
+    }
     private void checkIfPlayerAlreadyRegistered(Player player) throws PlayerAlreadyRegisteredException {
         String username = player.getUsername();
         try{
@@ -52,14 +70,17 @@ public class PlayerServiceImpl implements PlayerService {
                 if(marvelCharacterValue != null){
                     marvel = getMarvel(marvelCharacterValue.stringValue());
                 }
+                Value sessionValue = bindingSet.getValue("session");
                 String playerResIdentifier = bindingSet.getValue("player").stringValue();
                 playerResIdentifier = playerResIdentifier.substring(playerResIdentifier.indexOf("#")+1);
-                int levelIndex = Integer.parseInt(bindingSet.getValue("level").stringValue());
-                Level level = new Level(Stage.values()[levelIndex], null); //TODO:get level scene
+                String session_res = "";
+                if(sessionValue!=null)
+                session_res=sessionValue.toString().substring(11);
+                //Level level = new Level(Stage.values()[levelIndex], null); //TODO:get level scene
                 int appUserRoleIndex = Integer.parseInt(bindingSet.getValue("appUserRole").stringValue());
                 AppUserRole appUserRole = AppUserRole.values()[appUserRoleIndex];
                 String password = bindingSet.getValue("encryptedPassword").stringValue();
-                return new Player(playerResIdentifier, username, password, marvel, level, appUserRole);
+                return new Player(playerResIdentifier, username, password, marvel, session_res, appUserRole);
             }
         }
         throw new UsernameNotFoundException("Player with username \"" + username + "\" could not be found");

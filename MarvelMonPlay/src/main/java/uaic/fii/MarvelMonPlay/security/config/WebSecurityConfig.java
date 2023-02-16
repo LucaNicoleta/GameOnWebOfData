@@ -30,11 +30,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.authenticationProvider(authProvider()).formLogin().defaultSuccessUrl("/auth/success", false).failureUrl("/auth/failure").and()
                 .logout().logoutSuccessUrl("/auth/logout_success").and()
                 .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
+                
+                .anyRequest().authenticated()
                 .and()
-                .authorizeHttpRequests().anyRequest().authenticated()
-                .and()
-                .cors();
-        http.csrf().disable();
+                .httpBasic();
+        http.cors().and().csrf().disable();
         return http.build();
     }
 

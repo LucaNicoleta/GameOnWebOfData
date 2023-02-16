@@ -1,13 +1,16 @@
 package uaic.fii.MarvelMonPlay.api.mappings;
 
+import lombok.Data;
+
+@Data
 public class CurrentGameStateDto {
     private final String currentSceneResIdentifier;
-    private final String marvelResIdentifier;
+    private final String playerResIdentifier;
     private final String chosenOption;
 
     public CurrentGameStateDto(String currentSceneResIdentifier, String marvelResIdentifier, String chosenOption) {
         this.currentSceneResIdentifier = currentSceneResIdentifier;
-        this.marvelResIdentifier = marvelResIdentifier;
+        this.playerResIdentifier = marvelResIdentifier;
         this.chosenOption = chosenOption;
     }
 
@@ -15,8 +18,8 @@ public class CurrentGameStateDto {
         return currentSceneResIdentifier;
     }
 
-    public String getMarvelResIdentifier() {
-        return marvelResIdentifier;
+    public String getPlayerResIdentifier() {
+        return playerResIdentifier;
     }
 
     public String getChosenOption() {

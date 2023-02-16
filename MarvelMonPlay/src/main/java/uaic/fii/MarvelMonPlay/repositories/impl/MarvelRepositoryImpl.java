@@ -48,7 +48,6 @@ public class MarvelRepositoryImpl implements MarvelRepository {
             "INSERT DATA {" +
                 "IRI:" + marvel.RES_IDENTIFIER + " a " + "IRI:Marvel" + " ." +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName " + "\"" + marvel.getName() + "\"" + " ." +
-                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + marvel.getDescription() + "\"" + " ." +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + marvel.getImageURL() + "\"" + " ." +
                 getInsertStatementsForItems(marvel) +
                 getInsertStatementsForPokemon(marvel) +
@@ -124,7 +123,6 @@ public class MarvelRepositoryImpl implements MarvelRepository {
             "}" +
             "INSERT {" +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasName " + "\"" + marvel.getName() + "\". " +
-                "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasDescription " + "\"" + marvel.getDescription() + "\". " +
                 "IRI:" + marvel.RES_IDENTIFIER + " IRI:hasImageURL " + "\"" + marvel.getImageURL() + "\". " +
                 getInsertStatementsForItems(marvel) +
                 getInsertStatementsForPokemon(marvel) +
@@ -206,13 +204,62 @@ public class MarvelRepositoryImpl implements MarvelRepository {
     private void saveItems(List<Item> itemInventory) {
         itemInventory.forEach(item -> itemRepository.save(item));
     }
+    public void setElementRepresentativeForMarvel(String marvel_res, String element){
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "INSERT DATA {" +
+                "IRI:" + marvel_res + " IRI:belongsToElement " + "IRI:" + element+" ." +
+            "}"
+        );
+    }
+    public void addItemForMarvel(String marvel_res, String item_res){
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "INSERT DATA {" +
+                "IRI:" + marvel_res + " IRI:hasInventoryItem " + "IRI:" + item_res+" ." +
+            "}"
+        );
+    }
+    public void insertMarvelEnemy(){
+        System.out.println( "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>"+
+        "INSERT DATA {" +
+            "IRI:Level_Water foaf:a IRI:Level. "+
+            "IRI:Level_Water IRI:currentEnemy IRI:Triton. "+
+            "IRI:Triton a IRI:Marvel . "+
+            "IRI:Triton IRI:hasInventoryPokemon IRI:tentacruel . "+
+            "IRI:tentacruel a IRI:Pokemon . "+
+           
+            "IRI:tentacruel IRI:hasDefense 10 . "+
+            "IRI:tentacruel IRI:hasPowerAttack 10 . "+
+            "IRI:tentacruel IRI:healthPoints 10 . "+
+            "IRI:tentacruel IRI:hasName \"tentacruel\". "+
+             "IRI:tentacruel IRI:hasImageURL \"/\". "+
+        "}");
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>"+
+            "INSERT DATA {" +
+                "IRI:Level_Water foaf:a IRI:Level. "+
+                "IRI:Level_Water IRI:currentEnemy IRI:Triton. "+
+                "IRI:Triton a IRI:Marvel . "+
+                "IRI:Triton IRI:hasInventoryPokemon IRI:tentacruel . "+
+                "IRI:tentacruel a IRI:Pokemon . "+
+               
+                "IRI:tentacruel IRI:hasDefense 10 . "+
+                "IRI:tentacruel IRI:hasPowerAttack 10 . "+
+                "IRI:tentacruel IRI:healthPoints 10 . "+
+                "IRI:tentacruel IRI:hasName \"tentacruel\". "+
+                 "IRI:tentacruel IRI:hasImageURL \"/\". "+
+            "}"
+        );
+    }
     @Override
     public TupleQueryResult getListOfPokemonNamesOwnedByMarvel(String MarvelRES){
         return sparqlEndpoint.executeQuery(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
             "SELECT ?pokemonName where {" +
-            "    IRI:" + MarvelRES + " IRI:hasInventory ?i . " +
-            "?i IRI:hasInventoryPokemon ?p . "+
+            "    IRI:" + MarvelRES + " IRI:hasInventoryPokemon ?p . "+
             "?p IRI:hasName ?pokemonName . "+
             "}"
         );

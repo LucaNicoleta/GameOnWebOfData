@@ -22,20 +22,20 @@ public class Player implements UserDetails {
     private String username;
     private String password;
     private Marvel marvelCharacter;
-    private Level level;
+    private String sessionIdentifier;
     private AppUserRole appUserRole;
 
-    public Player(String RES_IDENTIFIER, String username, String password, Marvel marvelCharacter, Level level, AppUserRole appUserRole) {
+    public Player(String RES_IDENTIFIER, String username, String password, Marvel marvelCharacter, String sessionIdentifier, AppUserRole appUserRole) {
         this.RES_IDENTIFIER = RES_IDENTIFIER;
         this.username = username;
         this.password = password;
         this.marvelCharacter = marvelCharacter;
-        this.level = level;
+        this.sessionIdentifier = sessionIdentifier;
         this.appUserRole = appUserRole;
     }
 
-    public Player(String RES_IDENTIFIER, String username, String password, Level level, AppUserRole appUserRole) {
-        this(RES_IDENTIFIER, username, password, null, level, appUserRole);
+    public Player(String RES_IDENTIFIER, String username, String password, String sessionIdentifier, AppUserRole appUserRole) {
+        this(RES_IDENTIFIER, username, password, null, sessionIdentifier, appUserRole);
     }
 
     @Override
@@ -81,15 +81,19 @@ public class Player implements UserDetails {
         return marvelCharacter;
     }
 
+    public String getSessionRes(){
+        return sessionIdentifier;
+    }
+
     public void setMarvelCharacter(Marvel marvelCharacter) {
         this.marvelCharacter = marvelCharacter;
     }
-
+/* 
     public Level getLevel() {
         return level;
     }
 
     public void setLevel(Level level) {
         this.level = level;
-    }
+    }*/
 }

@@ -35,13 +35,13 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         return sparqlEndpoint.executeQuery(
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                 "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
-                "SELECT ?player ?encryptedPassword ?marvelCharacter ?level ?appUserRole " +
+                "SELECT ?player ?encryptedPassword ?marvelCharacter ?session ?appUserRole " +
                 "WHERE {" +
                 "  ?player a vgo:Player. " +
                 "  ?player vgo:username \"" + username + "\". " +
                 "  ?player IRI:hasEncryptedPassword ?encryptedPassword ." + //TODO: encryptedPassword does not seem to be really encrypted
                 "  OPTIONAL{?player IRI:hasMarvelCharacter ?marvelCharacter .}" +
-                "  ?player IRI:hasLevel ?level ." +
+                "  OPTIONAL{?player IRI:isPlayerInSession ?session .}" +
                 "  ?player IRI:hasAppUserRole ?appUserRole ." +
             "}"
         );
@@ -56,7 +56,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "vgo:username " + "\"" + player.getUsername() + "\"" + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + player.getMarvelCharacter().RES_IDENTIFIER + ". " +
-                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
+                //"IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasAppUserRole " + player.getAppUserRole().ordinal() + ". " +
             "}"
         );
@@ -74,12 +74,58 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "IRI:" + userName + " a " + "vgo:Player" + "; " +
                 "vgo:username " + "\"" + userName + "\"" + ". " +
                 "IRI:" + userName + " IRI:hasEncryptedPassword " + "\"" + encryptedPassword + "\"" + ". " +
-                "IRI:" + userName + " IRI:hasLevel 0." +
+                "IRI:" + userName + " IRI:hasLevel IRI:Level_Water. " +
                 "IRI:" + userName + " IRI:hasAppUserRole " + appUserRole.ordinal() + ". " +
             "}"
         );
     }
+    public void createNewSessionForPlayer(String res_identifier){
+        String s =            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+        "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+        "PREFIX foaf: <http://xmlns.com/foaf/0.1/>"+
+        "INSERT DATA {" +
+            "IRI:" + res_identifier + "Session foaf:a " + "vgo:Session" + ". " +
+            "IRI:" + res_identifier + " IRI:isPlayerInSession "  + res_identifier + "Session "  + ". " +
+            "IRI:" + res_identifier + "Session" + " IRI:currentScene IRI:S1." +
+        "}";
+        System.out.println(s);
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>"+
+            "INSERT DATA {" +
+                "IRI:" + res_identifier + "Session foaf:a " + "vgo:Session" + ". " +
+                "IRI:" + res_identifier + " IRI:isPlayerInSession IRI:"  + res_identifier + "Session "  + ". " +
+                "IRI:" + res_identifier + "Session" + " IRI:currentScene IRI:S1." +
+            "}"
+        );
+    }
+    public void updateProgressInGame(String Session_res, String new_scene_res){
+        sparqlEndpoint.executeUpdate(
+            "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+            "delete where{"+
+            "IRI:"+Session_res+" IRI:currentScene ?o"+
+            "};"+
+            "INSERT data{"+
+            "IRI:"+Session_res+" IRI:currentScene IRI:"+new_scene_res+
+            "};"
+        );
+    }
+    public TupleQueryResult getcurrentSceneForPlayer(String res_identifier){
+        return sparqlEndpoint.executeQuery(
+                "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
+                "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/>"+
+                "SELECT ?scene " +
+                "WHERE {" +
+                "  ?player a vgo:Player. " +
+                "  ?player vgo:username \"" + res_identifier + "\". " +
+                "  ?player IRI:isPlayerInSession ?session ." + 
 
+                "  ?session IRI:currentScene ?scene ." +
+            "}"
+        );
+    }
     public void update(Player player, boolean cascadeSave) {
         sparqlEndpoint.executeUpdate(
             "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
@@ -91,7 +137,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "vgo:username " + "\"" + player.getUsername() + "\"" + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasEncryptedPassword " + "\"" + player.getPassword() + "\"" + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + player.getMarvelCharacter().RES_IDENTIFIER + ". " +
-                "IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
+                //"IRI:" + player.RES_IDENTIFIER + " IRI:hasLevel " + player.getLevel().getStage().ordinal() + ". " +
                 "IRI:" + player.RES_IDENTIFIER + " IRI:hasAppUserRole " + player.getAppUserRole().ordinal() + ". " +
             "}"
         );
@@ -119,7 +165,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                 "PREFIX IRI: <" + IRIFactory.BASE_ONTOLOGY_IRI + ">" +
                         "PREFIX vgo: <http://purl.org/net/VideoGameOntology#>" +
                         "DELETE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o} " +
-                        "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o}" +
+                        "WHERE {IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter ?o};" +
                         "INSERT DATA {" +
                         "IRI:" + PLAYER_RES_IDENTIFIER + " IRI:hasMarvelCharacter IRI:" + marvel.RES_IDENTIFIER + "}"
         );

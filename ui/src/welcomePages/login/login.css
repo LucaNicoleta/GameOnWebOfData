@@ -1,0 +1,16 @@
+
+
+.login-tab-text{
+  cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    font-weight: bold;
+    color: white;
+    border-left: 4px double white;
+    border-right: 4px double white;
+
+}
+

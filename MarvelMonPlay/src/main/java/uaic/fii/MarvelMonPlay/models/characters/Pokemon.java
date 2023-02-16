@@ -10,7 +10,7 @@ public class Pokemon extends Character{
     public static final int MAX_HEALTH_POINTS = 100;
     public static final int DEFAULT_POWER_ATTACK = 10;
     public static final int DEFAULT_POWER_DEFENSE = 10;
-    private List<Ability> abilities;
+  
     private int healthPoints;
     private int powerAttack;
     private int powerDefense;
@@ -18,7 +18,6 @@ public class Pokemon extends Character{
 
     public Pokemon(String RES_IDENTIFIER, String name, List<Ability> abilities, int healthPoints, int powerAttack, int powerDefense, String imageURL){
         super(RES_IDENTIFIER, name);
-        this.abilities = abilities;
         this.healthPoints = healthPoints;
         this.powerAttack = powerAttack;
         this.powerDefense = powerDefense;
@@ -51,11 +50,11 @@ public class Pokemon extends Character{
     public void setHealthPoints(int healthPoints){
         this.healthPoints = healthPoints;
     }
-
+/* 
     public List<Ability> getAbilities() {
         return new ArrayList<>(abilities);
     }
-
+*/
     public int getPowerAttack() {
         return powerAttack;
     }
@@ -113,17 +112,9 @@ public class Pokemon extends Character{
         this.powerDefense = powerDefense;
     }
 
-    public void setAbilities(List<Ability> abilities) {
-        this.abilities = abilities;
-    }
 
-    public void addAbility(Ability ability){
-        abilities.add(ability);
-    }
 
-    public void removeAbility(Ability ability){
-        abilities.remove(ability);
-    }
+
 
     public String getImageURL() {
         return imageURL;
@@ -136,7 +127,6 @@ public class Pokemon extends Character{
     @Override
     public String toString() {
         return "Pokemon{" +
-                "abilities=" + abilities +
                 ", healthPoints=" + healthPoints +
                 ", powerAttack=" + powerAttack +
                 ", powerDefense=" + powerDefense +
